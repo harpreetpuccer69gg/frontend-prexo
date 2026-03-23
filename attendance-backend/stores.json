@@ -1,0 +1,3607 @@
+[
+  {
+    "store_name": "Nikol",
+    "latitude": 23.063856,
+    "longitude": 72.678002
+  },
+  {
+    "store_name": "Chandkheda",
+    "latitude": 23.1176121,
+    "longitude": 72.5635078
+  },
+  {
+    "store_name": "Gota",
+    "latitude": 23.09745,
+    "longitude": 72.541548
+  },
+  {
+    "store_name": "Vastral",
+    "latitude": 22.992516,
+    "longitude": 72.65348
+  },
+  {
+    "store_name": "South Bopal",
+    "latitude": 23.024151,
+    "longitude": 72.472096
+  },
+  {
+    "store_name": "Gandhinagar (Randesan)",
+    "latitude": 23.172507,
+    "longitude": 72.642696
+  },
+  {
+    "store_name": "Adani Shantigram_Khodiyar",
+    "latitude": 23.15173,
+    "longitude": 72.542431
+  },
+  {
+    "store_name": "Danilimda & ShahAlam",
+    "latitude": 22.99805685,
+    "longitude": 72.58763555
+  },
+  {
+    "store_name": "Shela_2",
+    "latitude": 22.990539,
+    "longitude": 72.454272
+  },
+  {
+    "store_name": "Gurukul (Bhuyangdev) Solaris CP Nagar 1",
+    "latitude": 23.058909,
+    "longitude": 72.539254
+  },
+  {
+    "store_name": "Thaltej",
+    "latitude": 23.057651,
+    "longitude": 72.507285
+  },
+  {
+    "store_name": "Gandhinagar (Vavol)",
+    "latitude": 23.230198,
+    "longitude": 72.619469
+  },
+  {
+    "store_name": "Makarba",
+    "latitude": 22.99334347,
+    "longitude": 72.50105428
+  },
+  {
+    "store_name": "Naroda_2",
+    "latitude": 23.093535,
+    "longitude": 72.66161
+  },
+  {
+    "store_name": "Navrangpura",
+    "latitude": 23.03852897,
+    "longitude": 72.5598458
+  },
+  {
+    "store_name": "Sargasan",
+    "latitude": 23.1861426,
+    "longitude": 72.6127571
+  },
+  {
+    "store_name": "Memco_Bapunagar",
+    "latitude": 23.056095,
+    "longitude": 72.62878
+  },
+  {
+    "store_name": "Jodhpur Char Rasta",
+    "latitude": 23.016664,
+    "longitude": 72.522582
+  },
+  {
+    "store_name": "Ambala City",
+    "latitude": 30.3654,
+    "longitude": 76.76448
+  },
+  {
+    "store_name": "Nawada",
+    "latitude": 25.559773,
+    "longitude": 84.6717
+  },
+  {
+    "store_name": "APR",
+    "latitude": 12.92866,
+    "longitude": 77.70336
+  },
+  {
+    "store_name": "Hoodi",
+    "latitude": 12.98982898,
+    "longitude": 77.70587092
+  },
+  {
+    "store_name": "Kadugodi Kannamangala",
+    "latitude": 13.02868352,
+    "longitude": 77.76228799
+  },
+  {
+    "store_name": "KR Puram",
+    "latitude": 13.026532,
+    "longitude": 77.718403
+  },
+  {
+    "store_name": "Kundanahalli Gate",
+    "latitude": 12.95973691,
+    "longitude": 77.71533752
+  },
+  {
+    "store_name": "Whitefield",
+    "latitude": 12.980587,
+    "longitude": 77.749992
+  },
+  {
+    "store_name": "Whitefield 2",
+    "latitude": 12.964202,
+    "longitude": 77.733301
+  },
+  {
+    "store_name": "Cox Town",
+    "latitude": 13.00131831,
+    "longitude": 77.63080557
+  },
+  {
+    "store_name": "Peenya",
+    "latitude": 13.02111111,
+    "longitude": 77.52277778
+  },
+  {
+    "store_name": "R T Nagar",
+    "latitude": 13.035275,
+    "longitude": 77.606378
+  },
+  {
+    "store_name": "Rajajinagar/Vijaynagar",
+    "latitude": 12.97580671,
+    "longitude": 77.54787777
+  },
+  {
+    "store_name": "Sanjay Nagar",
+    "latitude": 13.047634,
+    "longitude": 77.575026
+  },
+  {
+    "store_name": "Chikkabanavara",
+    "latitude": 13.0599436,
+    "longitude": 77.5059844
+  },
+  {
+    "store_name": "Banaswadi",
+    "latitude": 13.0180799,
+    "longitude": 77.6589727
+  },
+  {
+    "store_name": "Bhartiya City",
+    "latitude": 13.102461,
+    "longitude": 77.628729
+  },
+  {
+    "store_name": "Hennur Bagalur",
+    "latitude": 13.06882404,
+    "longitude": 77.64720233
+  },
+  {
+    "store_name": "Maruthi Layout Thanisandra",
+    "latitude": 13.05878,
+    "longitude": 77.610939
+  },
+  {
+    "store_name": "Seshadripuram",
+    "latitude": 12.991314,
+    "longitude": 77.574789
+  },
+  {
+    "store_name": "Yelahanka",
+    "latitude": 13.10793,
+    "longitude": 77.57923
+  },
+  {
+    "store_name": "JC Road",
+    "latitude": 12.957899,
+    "longitude": 77.585244
+  },
+  {
+    "store_name": "Kalyan Nagar 2",
+    "latitude": 13.023135,
+    "longitude": 77.629454
+  },
+  {
+    "store_name": "Budigere",
+    "latitude": 13.06093585,
+    "longitude": 77.7449285
+  },
+  {
+    "store_name": "Kalkere",
+    "latitude": 13.036198,
+    "longitude": 77.665598
+  },
+  {
+    "store_name": "Kodigehalli road",
+    "latitude": 13.006819,
+    "longitude": 77.70946
+  },
+  {
+    "store_name": "Kanakapura / BTM/MICO A",
+    "latitude": 12.89119,
+    "longitude": 77.5626291
+  },
+  {
+    "store_name": "Uttarahalli",
+    "latitude": 12.889367,
+    "longitude": 77.541356
+  },
+  {
+    "store_name": "RR Nagar",
+    "latitude": 12.925061,
+    "longitude": 77.514225
+  },
+  {
+    "store_name": "JP nagar",
+    "latitude": 12.895192,
+    "longitude": 77.586411
+  },
+  {
+    "store_name": "Bommanahalli",
+    "latitude": 12.898186,
+    "longitude": 77.633753
+  },
+  {
+    "store_name": "Electronics City",
+    "latitude": 12.837683,
+    "longitude": 77.660964
+  },
+  {
+    "store_name": "HSR",
+    "latitude": 12.90409,
+    "longitude": 77.65056
+  },
+  {
+    "store_name": "Bannerghata",
+    "latitude": 12.87834,
+    "longitude": 77.607494
+  },
+  {
+    "store_name": "Bommasandra",
+    "latitude": 12.803309,
+    "longitude": 77.701262
+  },
+  {
+    "store_name": "Hosa road",
+    "latitude": 12.882149,
+    "longitude": 77.67636
+  },
+  {
+    "store_name": "Gottigere",
+    "latitude": 12.857084,
+    "longitude": 77.593721
+  },
+  {
+    "store_name": "J P Nagar 9th Phase",
+    "latitude": 12.86824,
+    "longitude": 77.569911
+  },
+  {
+    "store_name": "Banashankari",
+    "latitude": 12.926968,
+    "longitude": 77.547351
+  },
+  {
+    "store_name": "Gunjur Balagere",
+    "latitude": 12.939125,
+    "longitude": 77.728906
+  },
+  {
+    "store_name": "Indiranagar",
+    "latitude": 12.95697312,
+    "longitude": 77.66245512
+  },
+  {
+    "store_name": "Koramangala",
+    "latitude": 12.93298,
+    "longitude": 77.63135
+  },
+  {
+    "store_name": "Sarjapura, Bellandur",
+    "latitude": 12.920678,
+    "longitude": 77.66677
+  },
+  {
+    "store_name": "BTM Layout",
+    "latitude": 12.905442,
+    "longitude": 77.609199
+  },
+  {
+    "store_name": "Padmanabhanagar",
+    "latitude": 12.918305,
+    "longitude": 77.5686023
+  },
+  {
+    "store_name": "Doddakannelli",
+    "latitude": 12.907861,
+    "longitude": 77.689333
+  },
+  {
+    "store_name": "Belathur",
+    "latitude": 13.00851631,
+    "longitude": 77.75968221
+  },
+  {
+    "store_name": "Thalagattpura",
+    "latitude": 12.8606303,
+    "longitude": 77.5417067
+  },
+  {
+    "store_name": "Doddanekkundi 1",
+    "latitude": 12.975583,
+    "longitude": 77.705177
+  },
+  {
+    "store_name": "Mailsandra",
+    "latitude": 12.916917,
+    "longitude": 77.498667
+  },
+  {
+    "store_name": "Nagarbhavi",
+    "latitude": 12.9778611,
+    "longitude": 77.5165556
+  },
+  {
+    "store_name": "HSR Layout Extension",
+    "latitude": 12.9083069,
+    "longitude": 77.632475
+  },
+  {
+    "store_name": "Nagasandra",
+    "latitude": 13.029528,
+    "longitude": 77.498139
+  },
+  {
+    "store_name": "BEL Road Option 2",
+    "latitude": 13.03925875,
+    "longitude": 77.5525547
+  },
+  {
+    "store_name": "E-city 2",
+    "latitude": 12.842205,
+    "longitude": 77.683337
+  },
+  {
+    "store_name": "kattigenahallli (Bagalur)",
+    "latitude": 13.123313,
+    "longitude": 77.623851
+  },
+  {
+    "store_name": "Maragondanahalli",
+    "latitude": 13.03558756,
+    "longitude": 77.69581302
+  },
+  {
+    "store_name": "Vidyaranyapura",
+    "latitude": 13.063806,
+    "longitude": 77.552167
+  },
+  {
+    "store_name": "Gopalan Mall, Mahadevapura",
+    "latitude": 12.997194,
+    "longitude": 77.673389
+  },
+  {
+    "store_name": "Marathalli Option 2",
+    "latitude": 12.94835391,
+    "longitude": 77.6982448
+  },
+  {
+    "store_name": "Bommasandra 2 (Jigani)",
+    "latitude": 12.792004,
+    "longitude": 77.6552413
+  },
+  {
+    "store_name": "Heganahalli",
+    "latitude": 13.005556,
+    "longitude": 77.513
+  },
+  {
+    "store_name": "Thanisandra",
+    "latitude": 13.062445,
+    "longitude": 77.634432
+  },
+  {
+    "store_name": "Yeshwanthpur",
+    "latitude": 13.0186,
+    "longitude": 77.550503
+  },
+  {
+    "store_name": "Manipal County Road",
+    "latitude": 12.8745,
+    "longitude": 77.647111
+  },
+  {
+    "store_name": "Devanahalli",
+    "latitude": 13.235833,
+    "longitude": 77.712972
+  },
+  {
+    "store_name": "Iggalur",
+    "latitude": 12.768222,
+    "longitude": 77.700139
+  },
+  {
+    "store_name": "Singasandra DSU (Dayananda Sagar University) Hosur Road",
+    "latitude": 12.8882231,
+    "longitude": 77.6430373
+  },
+  {
+    "store_name": "Royasandra Opti 2",
+    "latitude": 12.946611,
+    "longitude": 77.487
+  },
+  {
+    "store_name": "Abbigere",
+    "latitude": 13.074056,
+    "longitude": 77.519889
+  },
+  {
+    "store_name": "Jayanagar 1",
+    "latitude": 12.925813,
+    "longitude": 77.593558
+  },
+  {
+    "store_name": "APR Site 2",
+    "latitude": 12.92032,
+    "longitude": 77.69632
+  },
+  {
+    "store_name": "Mallathalli",
+    "latitude": 12.968106,
+    "longitude": 77.500694
+  },
+  {
+    "store_name": "AGS Layout",
+    "latitude": 12.903398,
+    "longitude": 77.523796
+  },
+  {
+    "store_name": "Adugodi",
+    "latitude": 12.950556,
+    "longitude": 77.607389
+  },
+  {
+    "store_name": "Jayanagar Option 5",
+    "latitude": 12.938817,
+    "longitude": 77.579971
+  },
+  {
+    "store_name": "Indiranagar ( Ambedkar College )",
+    "latitude": 12.972583,
+    "longitude": 77.638077
+  },
+  {
+    "store_name": "Frazer Town",
+    "latitude": 12.996528,
+    "longitude": 77.619056
+  },
+  {
+    "store_name": "Varthur",
+    "latitude": 12.928218,
+    "longitude": 77.739097
+  },
+  {
+    "store_name": "Nagavara HRB Layout",
+    "latitude": 13.041425,
+    "longitude": 77.624175
+  },
+  {
+    "store_name": "Richmond Town",
+    "latitude": 12.9639524,
+    "longitude": 77.596307
+  },
+  {
+    "store_name": "Malleshpalaya (Basavanagara) Kaggadasapura",
+    "latitude": 12.980568,
+    "longitude": 77.681843
+  },
+  {
+    "store_name": "Haralur",
+    "latitude": 12.907528,
+    "longitude": 77.676132
+  },
+  {
+    "store_name": "Kurudusonnenahalli",
+    "latitude": 13.005575,
+    "longitude": 77.7262
+  },
+  {
+    "store_name": "Azad Nagar",
+    "latitude": 12.954988,
+    "longitude": 77.5449
+  },
+  {
+    "store_name": "Munnekollal",
+    "latitude": 12.945639,
+    "longitude": 77.7189
+  },
+  {
+    "store_name": "Chikkabellandur",
+    "latitude": 12.9146178,
+    "longitude": 77.7162
+  },
+  {
+    "store_name": "Barabanki",
+    "latitude": 26.92725,
+    "longitude": 81.18413
+  },
+  {
+    "store_name": "Bihar Sharif",
+    "latitude": 25.197172,
+    "longitude": 85.5245
+  },
+  {
+    "store_name": "Phase 2, Sector 54",
+    "latitude": 30.72367,
+    "longitude": 76.72773
+  },
+  {
+    "store_name": "ISB Road Mohali",
+    "latitude": 30.670258,
+    "longitude": 76.735215
+  },
+  {
+    "store_name": "Peer Muchalla",
+    "latitude": 30.655767,
+    "longitude": 76.843867
+  },
+  {
+    "store_name": "Panchkula Sec 26",
+    "latitude": 30.6723032,
+    "longitude": 76.8904352
+  },
+  {
+    "store_name": "Industrial Area 1",
+    "latitude": 30.709883,
+    "longitude": 76.8049
+  },
+  {
+    "store_name": "Prabhunath Nagar - OPT 4",
+    "latitude": 25.78945,
+    "longitude": 84.7447
+  },
+  {
+    "store_name": "Selaiyur",
+    "latitude": 12.89788155,
+    "longitude": 80.1422959
+  },
+  {
+    "store_name": "Alapakkam",
+    "latitude": 13.047059,
+    "longitude": 80.165023
+  },
+  {
+    "store_name": "Kelambankam/ Padur \u2013 OMR Road",
+    "latitude": 12.7910359,
+    "longitude": 80.2208282
+  },
+  {
+    "store_name": "Madhavaram",
+    "latitude": 13.147398,
+    "longitude": 80.223919
+  },
+  {
+    "store_name": "Mudichur",
+    "latitude": 12.920107,
+    "longitude": 80.090077
+  },
+  {
+    "store_name": "Nagalkeni (Chrompet)",
+    "latitude": 12.963571,
+    "longitude": 80.1297
+  },
+  {
+    "store_name": "Royapuram",
+    "latitude": 13.116938,
+    "longitude": 80.296245
+  },
+  {
+    "store_name": "Vandalur",
+    "latitude": 12.8641496,
+    "longitude": 80.0793102
+  },
+  {
+    "store_name": "Velachery",
+    "latitude": 12.98569,
+    "longitude": 80.220402
+  },
+  {
+    "store_name": "Virugambakkam",
+    "latitude": 13.04628146,
+    "longitude": 80.19604096
+  },
+  {
+    "store_name": "Padi",
+    "latitude": 13.099604,
+    "longitude": 80.185091
+  },
+  {
+    "store_name": "Korattur",
+    "latitude": 13.11719929,
+    "longitude": 80.19733445
+  },
+  {
+    "store_name": "Mugalivakkam",
+    "latitude": 13.022364,
+    "longitude": 80.14857
+  },
+  {
+    "store_name": "Perambur",
+    "latitude": 13.134175,
+    "longitude": 80.254974
+  },
+  {
+    "store_name": "Thoriapakkam",
+    "latitude": 12.927159,
+    "longitude": 80.229919
+  },
+  {
+    "store_name": "Saidapet",
+    "latitude": 13.024746,
+    "longitude": 80.216542
+  },
+  {
+    "store_name": "Neelankarai",
+    "latitude": 12.95023,
+    "longitude": 80.255792
+  },
+  {
+    "store_name": "Royapettah",
+    "latitude": 13.054117,
+    "longitude": 80.26326
+  },
+  {
+    "store_name": "Egmore",
+    "latitude": 13.0971491,
+    "longitude": 80.2627
+  },
+  {
+    "store_name": "Mugapair",
+    "latitude": 13.073011,
+    "longitude": 80.1824
+  },
+  {
+    "store_name": "Navalur",
+    "latitude": 12.8330518,
+    "longitude": 80.2308
+  },
+  {
+    "store_name": "Perumbakkam",
+    "latitude": 12.90721901,
+    "longitude": 80.203
+  },
+  {
+    "store_name": "Avadi",
+    "latitude": 13.1188278,
+    "longitude": 80.0898
+  },
+  {
+    "store_name": "Vikaspuri",
+    "latitude": 28.639098,
+    "longitude": 77.069795
+  },
+  {
+    "store_name": "DABRI",
+    "latitude": 28.611274,
+    "longitude": 77.083821
+  },
+  {
+    "store_name": "DwarkaSec14",
+    "latitude": 28.613738,
+    "longitude": 77.02897
+  },
+  {
+    "store_name": "Santnagar",
+    "latitude": 28.557177,
+    "longitude": 77.254196
+  },
+  {
+    "store_name": "Shalimar Bagh / Inderlok",
+    "latitude": 28.67475842,
+    "longitude": 77.16900196
+  },
+  {
+    "store_name": "Malviya Nagar/KhirkiExtension",
+    "latitude": 28.534801,
+    "longitude": 77.218468
+  },
+  {
+    "store_name": "Paschim Vihar",
+    "latitude": 28.6796702,
+    "longitude": 77.102368
+  },
+  {
+    "store_name": "Rajauri Garden",
+    "latitude": 28.64842,
+    "longitude": 77.12328
+  },
+  {
+    "store_name": "Rohini Sec 16",
+    "latitude": 28.743797,
+    "longitude": 77.12238
+  },
+  {
+    "store_name": "South Patel Nagar",
+    "latitude": 28.64564,
+    "longitude": 77.1677
+  },
+  {
+    "store_name": "Uttam Nagar",
+    "latitude": 28.620569,
+    "longitude": 77.048918
+  },
+  {
+    "store_name": "Sainik Farm",
+    "latitude": 28.506641,
+    "longitude": 77.199562
+  },
+  {
+    "store_name": "YamunaVihar",
+    "latitude": 28.70351,
+    "longitude": 77.25954
+  },
+  {
+    "store_name": "VasantKunj",
+    "latitude": 28.519152,
+    "longitude": 77.161469
+  },
+  {
+    "store_name": "Sec-10, Dwarka",
+    "latitude": 28.58633181,
+    "longitude": 77.04895144
+  },
+  {
+    "store_name": "NFC",
+    "latitude": 28.574148,
+    "longitude": 77.273659
+  },
+  {
+    "store_name": "Dwarka Sec 23",
+    "latitude": 28.558556,
+    "longitude": 77.050255
+  },
+  {
+    "store_name": "Geeta Colony",
+    "latitude": 28.65765835,
+    "longitude": 77.27347923
+  },
+  {
+    "store_name": "Hari Nagar",
+    "latitude": 28.63421,
+    "longitude": 77.10089
+  },
+  {
+    "store_name": "Karol Bagh",
+    "latitude": 28.65908,
+    "longitude": 77.19198
+  },
+  {
+    "store_name": "Jasola Vihar",
+    "latitude": 28.549479,
+    "longitude": 77.28968
+  },
+  {
+    "store_name": "PALAM",
+    "latitude": 28.59424681,
+    "longitude": 77.08824378
+  },
+  {
+    "store_name": "Rohini Sector 7",
+    "latitude": 28.7034,
+    "longitude": 77.11774
+  },
+  {
+    "store_name": "Mohan Garden",
+    "latitude": 28.6378838,
+    "longitude": 77.03220436
+  },
+  {
+    "store_name": "Mahipalpur",
+    "latitude": 28.540018,
+    "longitude": 77.130978
+  },
+  {
+    "store_name": "Nangloi",
+    "latitude": 28.67322856,
+    "longitude": 77.06012262
+  },
+  {
+    "store_name": "Rajkori Delhi",
+    "latitude": 28.514793,
+    "longitude": 77.116614
+  },
+  {
+    "store_name": "Janakpuri",
+    "latitude": 28.628345,
+    "longitude": 77.073472
+  },
+  {
+    "store_name": "Kapashera",
+    "latitude": 28.530526,
+    "longitude": 77.087536
+  },
+  {
+    "store_name": "Welcome - DMRC",
+    "latitude": 28.67176931,
+    "longitude": 77.27701388
+  },
+  {
+    "store_name": "Motia Khan",
+    "latitude": 28.65118,
+    "longitude": 77.205437
+  },
+  {
+    "store_name": "Najafgarh",
+    "latitude": 28.61444685,
+    "longitude": 76.98137167
+  },
+  {
+    "store_name": "Arya Nagar",
+    "latitude": 28.472338,
+    "longitude": 77.13376
+  },
+  {
+    "store_name": "Tis Hazari",
+    "latitude": 28.667,
+    "longitude": 77.2178
+  },
+  {
+    "store_name": "Delhi Kamla Nagar",
+    "latitude": 28.686905,
+    "longitude": 77.1949
+  },
+  {
+    "store_name": "Rajendra Place",
+    "latitude": 28.644289,
+    "longitude": 77.188866
+  },
+  {
+    "store_name": "Chattarpur",
+    "latitude": 28.49566389,
+    "longitude": 77.184415
+  },
+  {
+    "store_name": "Pitampura",
+    "latitude": 28.69355,
+    "longitude": 77.14947
+  },
+  {
+    "store_name": "Shalimar Bagh",
+    "latitude": 28.7266667,
+    "longitude": 77.1461111
+  },
+  {
+    "store_name": "Naraina",
+    "latitude": 28.63119647,
+    "longitude": 77.13580548
+  },
+  {
+    "store_name": "Sangam Vihar",
+    "latitude": 28.500216,
+    "longitude": 77.233845
+  },
+  {
+    "store_name": "Rohini Sec 23",
+    "latitude": 28.72437,
+    "longitude": 77.081344
+  },
+  {
+    "store_name": "Burari",
+    "latitude": 28.735794,
+    "longitude": 77.197342
+  },
+  {
+    "store_name": "Mayur Vihar Kondli Dallupura",
+    "latitude": 28.60619032,
+    "longitude": 77.31611291
+  },
+  {
+    "store_name": "Khichripur",
+    "latitude": 28.6222724,
+    "longitude": 77.31300877
+  },
+  {
+    "store_name": "Delhi Rani Bagh",
+    "latitude": 28.68895401,
+    "longitude": 77.133
+  },
+  {
+    "store_name": "Punjabi Bagh",
+    "latitude": 28.674227,
+    "longitude": 77.122963
+  },
+  {
+    "store_name": "Moti Nagar",
+    "latitude": 28.65725,
+    "longitude": 77.143222
+  },
+  {
+    "store_name": "Jangpura",
+    "latitude": 28.58173,
+    "longitude": 77.250427
+  },
+  {
+    "store_name": "Jahangirpuri",
+    "latitude": 28.721251,
+    "longitude": 77.1765
+  },
+  {
+    "store_name": "Sarita Vihar",
+    "latitude": 28.5365397,
+    "longitude": 77.2938556
+  },
+  {
+    "store_name": "South Ex Adjoining TVS",
+    "latitude": 28.574221,
+    "longitude": 77.221481
+  },
+  {
+    "store_name": "Jia Sarai",
+    "latitude": 28.549427,
+    "longitude": 77.1807
+  },
+  {
+    "store_name": "Tughlakabad Extension",
+    "latitude": 28.5230578,
+    "longitude": 77.2611985
+  },
+  {
+    "store_name": "Vasant Vihar",
+    "latitude": 28.569116,
+    "longitude": 77.161101
+  },
+  {
+    "store_name": "Rithala",
+    "latitude": 28.723734,
+    "longitude": 77.099876
+  },
+  {
+    "store_name": "BadhkalRoad",
+    "latitude": 28.420286,
+    "longitude": 77.28701
+  },
+  {
+    "store_name": "ShaheedNagarGZB, Chikamberpur",
+    "latitude": 28.67746,
+    "longitude": 77.34022
+  },
+  {
+    "store_name": "Crossing Republic",
+    "latitude": 28.62884466,
+    "longitude": 77.44168388
+  },
+  {
+    "store_name": "EkMurti",
+    "latitude": 28.602141,
+    "longitude": 77.446063
+  },
+  {
+    "store_name": "GGNSec4",
+    "latitude": 28.477388,
+    "longitude": 77.004536
+  },
+  {
+    "store_name": "GGNSec40/45",
+    "latitude": 28.446375,
+    "longitude": 77.06145
+  },
+  {
+    "store_name": "South CIty 2",
+    "latitude": 28.426771,
+    "longitude": 77.045833
+  },
+  {
+    "store_name": "GGNSec64",
+    "latitude": 28.393389,
+    "longitude": 77.067611
+  },
+  {
+    "store_name": "GreaterFaridabad",
+    "latitude": 28.396347,
+    "longitude": 77.36232
+  },
+  {
+    "store_name": "GGNSec56",
+    "latitude": 28.410444,
+    "longitude": 77.032778
+  },
+  {
+    "store_name": "GreenFields",
+    "latitude": 28.466875,
+    "longitude": 77.288063
+  },
+  {
+    "store_name": "Kowledge Park III",
+    "latitude": 28.480632,
+    "longitude": 77.481902
+  },
+  {
+    "store_name": "NIT5",
+    "latitude": 28.3937109,
+    "longitude": 77.3054624
+  },
+  {
+    "store_name": "Noida",
+    "latitude": 28.55253,
+    "longitude": 77.32111
+  },
+  {
+    "store_name": "Noida Sec 141",
+    "latitude": 28.50737,
+    "longitude": 77.419318
+  },
+  {
+    "store_name": "NoidaSec122",
+    "latitude": 28.59595894,
+    "longitude": 77.39763848
+  },
+  {
+    "store_name": "Noida Phase 2",
+    "latitude": 28.522216,
+    "longitude": 77.396793
+  },
+  {
+    "store_name": "Raj Nagar Ext",
+    "latitude": 28.70628,
+    "longitude": 77.41741
+  },
+  {
+    "store_name": "Rampura",
+    "latitude": 28.380593,
+    "longitude": 76.965358
+  },
+  {
+    "store_name": "Wazidpur Noida 129",
+    "latitude": 28.502475,
+    "longitude": 77.392825
+  },
+  {
+    "store_name": "Sec46Noida",
+    "latitude": 28.5492,
+    "longitude": 77.36301
+  },
+  {
+    "store_name": "SurajpurNoida",
+    "latitude": 28.450937,
+    "longitude": 77.533159
+  },
+  {
+    "store_name": "Vaishali",
+    "latitude": 28.6423297,
+    "longitude": 77.33457003
+  },
+  {
+    "store_name": "WazirabadGGN",
+    "latitude": 28.431204,
+    "longitude": 77.086523
+  },
+  {
+    "store_name": "Indirapuram",
+    "latitude": 28.64106272,
+    "longitude": 77.37780052
+  },
+  {
+    "store_name": "Sect 22 Palam Gurugram Udghyog Vihar",
+    "latitude": 28.5058,
+    "longitude": 77.069229
+  },
+  {
+    "store_name": "Lohia Nagar arya nagar",
+    "latitude": 28.68006338,
+    "longitude": 77.42502557
+  },
+  {
+    "store_name": "Sec-16 Faridabad",
+    "latitude": 28.4133288,
+    "longitude": 77.31923042
+  },
+  {
+    "store_name": "Sec-23, Gurugram",
+    "latitude": 28.503077,
+    "longitude": 77.031596
+  },
+  {
+    "store_name": "Sec-2 Greater Noida",
+    "latitude": 28.57579,
+    "longitude": 77.447123
+  },
+  {
+    "store_name": "Sector-103, Gurugram",
+    "latitude": 28.499791,
+    "longitude": 76.995239
+  },
+  {
+    "store_name": "Vasundhara",
+    "latitude": 28.66029265,
+    "longitude": 77.37026173
+  },
+  {
+    "store_name": "Sec-14 Gurugram",
+    "latitude": 28.468358,
+    "longitude": 77.035617
+  },
+  {
+    "store_name": "Sec-37 Faridabad",
+    "latitude": 28.480804,
+    "longitude": 77.305504
+  },
+  {
+    "store_name": "Sec-10 Noida",
+    "latitude": 28.5899375,
+    "longitude": 77.33528676
+  },
+  {
+    "store_name": "Zeta 1 Gr Noida",
+    "latitude": 28.497729,
+    "longitude": 77.52373
+  },
+  {
+    "store_name": "Kherki Dhaula",
+    "latitude": 28.406543,
+    "longitude": 76.955742
+  },
+  {
+    "store_name": "Faridabad Sec 7",
+    "latitude": 28.374725,
+    "longitude": 77.328598
+  },
+  {
+    "store_name": "Siddharth Vihar, Ghaziabad",
+    "latitude": 28.65563674,
+    "longitude": 77.40055234
+  },
+  {
+    "store_name": "DLFPhase2 & Phase 3 Chakkarpur",
+    "latitude": 28.47722244,
+    "longitude": 77.08535756
+  },
+  {
+    "store_name": "Sec-37D Gurugram",
+    "latitude": 28.454523,
+    "longitude": 76.982733
+  },
+  {
+    "store_name": "Noida Sector 116",
+    "latitude": 28.569726,
+    "longitude": 77.4014
+  },
+  {
+    "store_name": "Sector-62, Gurgaon",
+    "latitude": 28.405682,
+    "longitude": 77.092331
+  },
+  {
+    "store_name": "Sec10A Gurugram",
+    "latitude": 28.44525,
+    "longitude": 77.014993
+  },
+  {
+    "store_name": "Ggn Sector 53",
+    "latitude": 28.443212,
+    "longitude": 77.095602
+  },
+  {
+    "store_name": "GGN Sector 92",
+    "latitude": 28.415139,
+    "longitude": 76.91625
+  },
+  {
+    "store_name": "Avantika Vihar, Ghaziabad",
+    "latitude": 28.67121352,
+    "longitude": 77.47712968
+  },
+  {
+    "store_name": "DLF Phase 3 U Block",
+    "latitude": 28.493568,
+    "longitude": 77.0969
+  },
+  {
+    "store_name": "Sect 102 , BPTP (GGN Sector 102)",
+    "latitude": 28.481453,
+    "longitude": 76.966531
+  },
+  {
+    "store_name": "GGN Sector 112",
+    "latitude": 28.507667,
+    "longitude": 77.000528
+  },
+  {
+    "store_name": "Sushant Lok-Block B",
+    "latitude": 28.45974,
+    "longitude": 77.07454
+  },
+  {
+    "store_name": "Sec-63, Noida (Mnow & HL)",
+    "latitude": 28.621409,
+    "longitude": 77.377949
+  },
+  {
+    "store_name": "Village Akbarpur, Behrampur",
+    "latitude": 28.631918,
+    "longitude": 77.413252
+  },
+  {
+    "store_name": "Omicrin-2",
+    "latitude": 28.46582,
+    "longitude": 77.56277
+  },
+  {
+    "store_name": "Sector 51 Samaspur",
+    "latitude": 28.41558,
+    "longitude": 77.06728
+  },
+  {
+    "store_name": "sec-150",
+    "latitude": 28.4362216,
+    "longitude": 77.478334
+  },
+  {
+    "store_name": "Sec-31 Faridabad",
+    "latitude": 28.447662,
+    "longitude": 77.313675
+  },
+  {
+    "store_name": "Sec-86-Nawada",
+    "latitude": 28.394092,
+    "longitude": 76.938491
+  },
+  {
+    "store_name": "kundli haryana",
+    "latitude": 28.909772,
+    "longitude": 77.109456
+  },
+  {
+    "store_name": "Gr. Noida Chi-5",
+    "latitude": 28.426287,
+    "longitude": 77.5054
+  },
+  {
+    "store_name": "Noida Ace City",
+    "latitude": 28.563,
+    "longitude": 77.4483
+  },
+  {
+    "store_name": "Rewari Model Town",
+    "latitude": 28.187356,
+    "longitude": 76.623698
+  },
+  {
+    "store_name": "Bhiwadi Khanpur",
+    "latitude": 28.2012885,
+    "longitude": 76.8095103
+  },
+  {
+    "store_name": "Kamal Colony Rohtak",
+    "latitude": 28.891771,
+    "longitude": 76.622013
+  },
+  {
+    "store_name": "Rohtak Shastri Nagar",
+    "latitude": 28.896257,
+    "longitude": 76.582588
+  },
+  {
+    "store_name": "Sonipat Sector 12",
+    "latitude": 28.985859,
+    "longitude": 77.021388
+  },
+  {
+    "store_name": "Gaur City Center",
+    "latitude": 28.607403,
+    "longitude": 77.428694
+  },
+  {
+    "store_name": "Bidhannagar",
+    "latitude": 23.51585,
+    "longitude": 87.3566
+  },
+  {
+    "store_name": "Chandmari",
+    "latitude": 26.183815,
+    "longitude": 91.782571
+  },
+  {
+    "store_name": "Sawkuchi",
+    "latitude": 26.116269,
+    "longitude": 91.77128
+  },
+  {
+    "store_name": "Jalukbari",
+    "latitude": 26.157959,
+    "longitude": 91.674209
+  },
+  {
+    "store_name": "Santipur",
+    "latitude": 26.167971,
+    "longitude": 91.733669
+  },
+  {
+    "store_name": "Kahilipara",
+    "latitude": 26.138985,
+    "longitude": 91.764965
+  },
+  {
+    "store_name": "Ganeshguri",
+    "latitude": 26.15991941,
+    "longitude": 91.77639447
+  },
+  {
+    "store_name": "Beltola_Guwahati",
+    "latitude": 26.1202267,
+    "longitude": 91.8050739
+  },
+  {
+    "store_name": "Panjabari_Guwahati",
+    "latitude": 26.13438733,
+    "longitude": 91.82025944
+  },
+  {
+    "store_name": "Narengi",
+    "latitude": 26.1703765,
+    "longitude": 91.8282564
+  },
+  {
+    "store_name": "Barsapara",
+    "latitude": 26.14341472,
+    "longitude": 91.74067308
+  },
+  {
+    "store_name": "Lachit Nagar - Opt 2",
+    "latitude": 26.178989,
+    "longitude": 91.753467
+  },
+  {
+    "store_name": "Geetanagar",
+    "latitude": 26.173401,
+    "longitude": 91.787
+  },
+  {
+    "store_name": "Yadav Nagar (Baghdulhan)",
+    "latitude": 25.696198,
+    "longitude": 85.2184
+  },
+  {
+    "store_name": "Shramika Nagar",
+    "latitude": 17.4722,
+    "longitude": 78.55571
+  },
+  {
+    "store_name": "Kantha Reddy Nagar",
+    "latitude": 17.370768,
+    "longitude": 78.4194
+  },
+  {
+    "store_name": "Madhura Nagar Nizampet",
+    "latitude": 17.534276,
+    "longitude": 78.3928
+  },
+  {
+    "store_name": "King Koti Hyderguda",
+    "latitude": 17.39314,
+    "longitude": 78.48383
+  },
+  {
+    "store_name": "RC Puram",
+    "latitude": 17.53028,
+    "longitude": 78.2946
+  },
+  {
+    "store_name": "Malkajgiri",
+    "latitude": 17.449015,
+    "longitude": 78.5357
+  },
+  {
+    "store_name": "Vanasthalipuram",
+    "latitude": 17.334688,
+    "longitude": 78.5543
+  },
+  {
+    "store_name": "Riddhi Siddhi (BTS)",
+    "latitude": 26.869877,
+    "longitude": 75.774376
+  },
+  {
+    "store_name": "Subhash Nagar(Shastri Nagar)",
+    "latitude": 26.939566,
+    "longitude": 75.796829
+  },
+  {
+    "store_name": "Jhotwara BTS",
+    "latitude": 26.94383879,
+    "longitude": 75.743494
+  },
+  {
+    "store_name": "Nirman Nagar",
+    "latitude": 26.8855264,
+    "longitude": 75.7500877
+  },
+  {
+    "store_name": "Malviya Nagar (BTS)",
+    "latitude": 26.837359,
+    "longitude": 75.814346
+  },
+  {
+    "store_name": "Jagatpura SKIT",
+    "latitude": 26.823438,
+    "longitude": 75.8602
+  },
+  {
+    "store_name": "22 Godown Tonk Phatak",
+    "latitude": 26.896226,
+    "longitude": 75.787032
+  },
+  {
+    "store_name": "Vidhyadhar Nagar",
+    "latitude": 26.965833,
+    "longitude": 75.782167
+  },
+  {
+    "store_name": "Mahal Road Jagatpura",
+    "latitude": 26.805209,
+    "longitude": 75.860432
+  },
+  {
+    "store_name": "Pratap Nagar Option 2",
+    "latitude": 26.804207,
+    "longitude": 75.8179791
+  },
+  {
+    "store_name": "Vaishali Nagar",
+    "latitude": 26.9203,
+    "longitude": 75.733948
+  },
+  {
+    "store_name": "Adarsh Nagar",
+    "latitude": 26.908583,
+    "longitude": 75.823835
+  },
+  {
+    "store_name": "Amrapali Circle",
+    "latitude": 26.8992,
+    "longitude": 75.6986
+  },
+  {
+    "store_name": "Amer road",
+    "latitude": 26.9419303,
+    "longitude": 75.8381392
+  },
+  {
+    "store_name": "Vaishali Nagar Extn.Rangoli Garden",
+    "latitude": 26.9094,
+    "longitude": 75.7159
+  },
+  {
+    "store_name": "Kalyanpura",
+    "latitude": 26.8451169,
+    "longitude": 75.7609956
+  },
+  {
+    "store_name": "Shyam Nagar",
+    "latitude": 26.40944,
+    "longitude": 80.3692
+  },
+  {
+    "store_name": "Indra Nagar-1",
+    "latitude": 26.51272,
+    "longitude": 80.26202
+  },
+  {
+    "store_name": "SWAROOP NAGAR",
+    "latitude": 26.48133,
+    "longitude": 80.32133
+  },
+  {
+    "store_name": "Saket Nagar",
+    "latitude": 26.4328,
+    "longitude": 80.3146
+  },
+  {
+    "store_name": "Lal Bangla",
+    "latitude": 26.42669,
+    "longitude": 80.39141
+  },
+  {
+    "store_name": "Kalyanpur",
+    "latitude": 26.48548,
+    "longitude": 80.27306
+  },
+  {
+    "store_name": "Naubasta",
+    "latitude": 26.41441,
+    "longitude": 80.3181
+  },
+  {
+    "store_name": "IIT",
+    "latitude": 26.497672,
+    "longitude": 80.242756
+  },
+  {
+    "store_name": "Barra",
+    "latitude": 26.444609,
+    "longitude": 80.2863
+  },
+  {
+    "store_name": "Kharar - Sector 115",
+    "latitude": 30.718312,
+    "longitude": 76.653077
+  },
+  {
+    "store_name": "Ruby Urbana Mundapura",
+    "latitude": 22.511792,
+    "longitude": 88.418582
+  },
+  {
+    "store_name": "Dumdum Park",
+    "latitude": 22.6097329,
+    "longitude": 88.4205616
+  },
+  {
+    "store_name": "Barrackpore",
+    "latitude": 22.770606,
+    "longitude": 88.368413
+  },
+  {
+    "store_name": "Park Circus",
+    "latitude": 22.54058647,
+    "longitude": 88.36995656
+  },
+  {
+    "store_name": "Baranagar",
+    "latitude": 22.645854,
+    "longitude": 88.387331
+  },
+  {
+    "store_name": "Liluah",
+    "latitude": 22.62024703,
+    "longitude": 88.3533715
+  },
+  {
+    "store_name": "Dumdum_Nagerbaza Golpark",
+    "latitude": 22.624596,
+    "longitude": 88.419704
+  },
+  {
+    "store_name": "RATHTALA Ariadaha",
+    "latitude": 22.6655735,
+    "longitude": 88.37060629
+  },
+  {
+    "store_name": "MADHYAMGRAM",
+    "latitude": 22.696655,
+    "longitude": 88.467557
+  },
+  {
+    "store_name": "Behala Chowrasta",
+    "latitude": 22.48183775,
+    "longitude": 88.3174
+  },
+  {
+    "store_name": "Joka Opt-2",
+    "latitude": 22.447766,
+    "longitude": 88.30062
+  },
+  {
+    "store_name": "Serampore",
+    "latitude": 22.743294,
+    "longitude": 88.345
+  },
+  {
+    "store_name": "Konnagar_Hooghly",
+    "latitude": 22.697742,
+    "longitude": 88.358864
+  },
+  {
+    "store_name": "BIRATI Nimta",
+    "latitude": 22.65743102,
+    "longitude": 88.40930206
+  },
+  {
+    "store_name": "SODHPUR_PANIHATI",
+    "latitude": 22.694467,
+    "longitude": 88.373446
+  },
+  {
+    "store_name": "Howrah Salkia",
+    "latitude": 22.607221,
+    "longitude": 88.343764
+  },
+  {
+    "store_name": "Salt Lake Sector 1",
+    "latitude": 22.59306,
+    "longitude": 88.39749
+  },
+  {
+    "store_name": "Sirity",
+    "latitude": 22.49227,
+    "longitude": 88.3327
+  },
+  {
+    "store_name": "Purbalok, Mukundapur",
+    "latitude": 22.49603,
+    "longitude": 88.402763
+  },
+  {
+    "store_name": "BARASAT",
+    "latitude": 22.735901,
+    "longitude": 88.482294
+  },
+  {
+    "store_name": "FORESHORE ROAD Shibpur",
+    "latitude": 22.571473,
+    "longitude": 88.330475
+  },
+  {
+    "store_name": "Rajarhat_Raigachi",
+    "latitude": 22.633644,
+    "longitude": 88.460358
+  },
+  {
+    "store_name": "RANIKUTHI_KOLKATA",
+    "latitude": 22.485711,
+    "longitude": 88.355372
+  },
+  {
+    "store_name": "Salt lake Sec V Opt 3",
+    "latitude": 22.58391229,
+    "longitude": 88.43443182
+  },
+  {
+    "store_name": "Garia WB",
+    "latitude": 22.460971,
+    "longitude": 88.382251
+  },
+  {
+    "store_name": "Baguhati (Hatiara)",
+    "latitude": 22.610416,
+    "longitude": 88.447298
+  },
+  {
+    "store_name": "Uttarpara",
+    "latitude": 22.662966,
+    "longitude": 88.347387
+  },
+  {
+    "store_name": "Dasnagar",
+    "latitude": 22.607395,
+    "longitude": 88.307405
+  },
+  {
+    "store_name": "Taratalla_Kolkata",
+    "latitude": 22.511774,
+    "longitude": 88.321952
+  },
+  {
+    "store_name": "Shyambazar",
+    "latitude": 22.603992,
+    "longitude": 88.375313
+  },
+  {
+    "store_name": "Gariahat(Ballygunje)",
+    "latitude": 22.522732,
+    "longitude": 88.373033
+  },
+  {
+    "store_name": "Manicktala",
+    "latitude": 22.58654097,
+    "longitude": 88.3869
+  },
+  {
+    "store_name": "Tangra",
+    "latitude": 22.557875,
+    "longitude": 88.38099
+  },
+  {
+    "store_name": "New Town Action Area III",
+    "latitude": 22.57098292,
+    "longitude": 88.50336996
+  },
+  {
+    "store_name": "Dumdum Subhasnagar",
+    "latitude": 22.640623,
+    "longitude": 88.3993
+  },
+  {
+    "store_name": "Belgharia",
+    "latitude": 22.689087,
+    "longitude": 88.4061
+  },
+  {
+    "store_name": "Belur",
+    "latitude": 22.64306714,
+    "longitude": 88.3366
+  },
+  {
+    "store_name": "Purbachal Madhyamgram",
+    "latitude": 22.697106,
+    "longitude": 88.4478
+  },
+  {
+    "store_name": "Rishra",
+    "latitude": 22.716628,
+    "longitude": 88.3548
+  },
+  {
+    "store_name": "Newtown Jatragachi",
+    "latitude": 22.591565,
+    "longitude": 88.4693
+  },
+  {
+    "store_name": "Sinthee More",
+    "latitude": 22.62501,
+    "longitude": 88.3802
+  },
+  {
+    "store_name": "Doltala",
+    "latitude": 22.680384,
+    "longitude": 88.4631
+  },
+  {
+    "store_name": "Michaelnagar",
+    "latitude": 22.67315,
+    "longitude": 88.4347
+  },
+  {
+    "store_name": "Rahara Bazar",
+    "latitude": 22.723623,
+    "longitude": 88.3863
+  },
+  {
+    "store_name": "Janakipuram Extension",
+    "latitude": 26.9341711,
+    "longitude": 80.9472395
+  },
+  {
+    "store_name": "Krishna Nagar",
+    "latitude": 26.79549,
+    "longitude": 80.88086
+  },
+  {
+    "store_name": "Vikas Nagar",
+    "latitude": 26.89622,
+    "longitude": 80.95656
+  },
+  {
+    "store_name": "Rajajipuram",
+    "latitude": 26.846623,
+    "longitude": 80.882599
+  },
+  {
+    "store_name": "Vrindavan Colony",
+    "latitude": 26.75038,
+    "longitude": 80.95447
+  },
+  {
+    "store_name": "Chinhat",
+    "latitude": 26.8575,
+    "longitude": 81.03924
+  },
+  {
+    "store_name": "Gomti Nagar",
+    "latitude": 26.85793,
+    "longitude": 80.9934
+  },
+  {
+    "store_name": "Ashiyana",
+    "latitude": 26.7901996,
+    "longitude": 80.9198362
+  },
+  {
+    "store_name": "Hazratganj",
+    "latitude": 26.83802,
+    "longitude": 80.94378
+  },
+  {
+    "store_name": "Chowk - Dubagga Chauraha Balaganj",
+    "latitude": 26.87333,
+    "longitude": 80.8693
+  },
+  {
+    "store_name": "Anand Vihar - Takrohi Road",
+    "latitude": 26.89405,
+    "longitude": 81.00837
+  },
+  {
+    "store_name": "Uttardhauna",
+    "latitude": 26.893038,
+    "longitude": 81.065117
+  },
+  {
+    "store_name": "NBCC",
+    "latitude": 26.83551,
+    "longitude": 81.00878
+  },
+  {
+    "store_name": "Girdhar Kunj Vrindavan 2",
+    "latitude": 26.782,
+    "longitude": 80.95296
+  },
+  {
+    "store_name": "IIM Road",
+    "latitude": 26.93267,
+    "longitude": 80.90863
+  },
+  {
+    "store_name": "Lucknow - Kursi Road",
+    "latitude": 26.9256455,
+    "longitude": 80.9666924
+  },
+  {
+    "store_name": "Maha Nagar/Nishat Ganj",
+    "latitude": 26.8756106,
+    "longitude": 80.93589402
+  },
+  {
+    "store_name": "Alambagh",
+    "latitude": 26.81048,
+    "longitude": 80.9053
+  },
+  {
+    "store_name": "Phase 7, Mohali option 2",
+    "latitude": 30.713202,
+    "longitude": 76.709847
+  },
+  {
+    "store_name": "Andheri West",
+    "latitude": 19.140354,
+    "longitude": 72.840515
+  },
+  {
+    "store_name": "Belapur/Nerul - New Mumbai",
+    "latitude": 19.02197,
+    "longitude": 73.02846
+  },
+  {
+    "store_name": "Bhandup",
+    "latitude": 19.14664087,
+    "longitude": 72.93221319
+  },
+  {
+    "store_name": "Borivali West",
+    "latitude": 19.220619,
+    "longitude": 72.8493631
+  },
+  {
+    "store_name": "Ghansoli",
+    "latitude": 19.12064,
+    "longitude": 72.99084
+  },
+  {
+    "store_name": "Malad Goregaon",
+    "latitude": 19.17454,
+    "longitude": 72.85625
+  },
+  {
+    "store_name": "Govandi",
+    "latitude": 19.0511,
+    "longitude": 72.91009
+  },
+  {
+    "store_name": "Kalamboli",
+    "latitude": 19.04362,
+    "longitude": 73.10261
+  },
+  {
+    "store_name": "Kamothe",
+    "latitude": 19.01207,
+    "longitude": 73.08953
+  },
+  {
+    "store_name": "Kharghar",
+    "latitude": 19.05495,
+    "longitude": 73.06731
+  },
+  {
+    "store_name": "Kurla Kamani",
+    "latitude": 19.0852879,
+    "longitude": 72.8898189
+  },
+  {
+    "store_name": "Lower Parel",
+    "latitude": 19.0009301,
+    "longitude": 72.8304546
+  },
+  {
+    "store_name": "Mahim",
+    "latitude": 19.041991,
+    "longitude": 72.843457
+  },
+  {
+    "store_name": "Nepean Sea Road",
+    "latitude": 18.9518957,
+    "longitude": 72.79500347
+  },
+  {
+    "store_name": "Andheri Sakinaka",
+    "latitude": 19.107766,
+    "longitude": 72.889321
+  },
+  {
+    "store_name": "Santracruz",
+    "latitude": 19.1047,
+    "longitude": 72.83913
+  },
+  {
+    "store_name": "Sewri",
+    "latitude": 18.9843,
+    "longitude": 72.84216
+  },
+  {
+    "store_name": "Sion",
+    "latitude": 19.0451656,
+    "longitude": 72.8682807
+  },
+  {
+    "store_name": "Thane Wagle Estate",
+    "latitude": 19.2035361,
+    "longitude": 72.9517756
+  },
+  {
+    "store_name": "Vashi",
+    "latitude": 19.08071,
+    "longitude": 73.012624
+  },
+  {
+    "store_name": "Wadi Bunder",
+    "latitude": 18.96368,
+    "longitude": 72.840553
+  },
+  {
+    "store_name": "Powai",
+    "latitude": 19.11505132,
+    "longitude": 72.91776201
+  },
+  {
+    "store_name": "Dahisar",
+    "latitude": 19.2600721,
+    "longitude": 72.8635238
+  },
+  {
+    "store_name": "Virar",
+    "latitude": 19.451794,
+    "longitude": 72.808169
+  },
+  {
+    "store_name": "Panvel",
+    "latitude": 18.99902,
+    "longitude": 73.116522
+  },
+  {
+    "store_name": "Kalyan West",
+    "latitude": 19.250044,
+    "longitude": 73.12785
+  },
+  {
+    "store_name": "Thane - Anand nagar",
+    "latitude": 19.26468596,
+    "longitude": 72.97070602
+  },
+  {
+    "store_name": "Kandivali Hindustan Naka",
+    "latitude": 19.20489,
+    "longitude": 72.82777
+  },
+  {
+    "store_name": "Kalyan East",
+    "latitude": 19.2234,
+    "longitude": 73.1254
+  },
+  {
+    "store_name": "Sanpada",
+    "latitude": 19.06098803,
+    "longitude": 73.01566433
+  },
+  {
+    "store_name": "Kharghar Sector 10",
+    "latitude": 19.0327975,
+    "longitude": 73.0737926
+  },
+  {
+    "store_name": "Palava 2",
+    "latitude": 19.16608034,
+    "longitude": 73.11618361
+  },
+  {
+    "store_name": "Dombivili East",
+    "latitude": 19.20716,
+    "longitude": 73.09827
+  },
+  {
+    "store_name": "Sushant Golf City",
+    "latitude": 26.79528,
+    "longitude": 81.00864
+  },
+  {
+    "store_name": "Badlapur East",
+    "latitude": 19.15973,
+    "longitude": 73.22857
+  },
+  {
+    "store_name": "Vasai East",
+    "latitude": 19.4042284,
+    "longitude": 72.83203
+  },
+  {
+    "store_name": "Mulund West & East",
+    "latitude": 19.16771036,
+    "longitude": 72.93848586
+  },
+  {
+    "store_name": "Badlapur",
+    "latitude": 19.16484,
+    "longitude": 73.24705
+  },
+  {
+    "store_name": "Airoli",
+    "latitude": 19.160472,
+    "longitude": 72.9980105
+  },
+  {
+    "store_name": "Ulhasnagar",
+    "latitude": 19.2402528,
+    "longitude": 73.1588603
+  },
+  {
+    "store_name": "Vasai West (Ambadi Rd)",
+    "latitude": 19.3847256,
+    "longitude": 72.8303871
+  },
+  {
+    "store_name": "Koparkhairane",
+    "latitude": 19.09451,
+    "longitude": 73.01293
+  },
+  {
+    "store_name": "Virar East",
+    "latitude": 19.4476493,
+    "longitude": 72.8226821
+  },
+  {
+    "store_name": "Palava Xperia",
+    "latitude": 19.1648383,
+    "longitude": 73.0758126
+  },
+  {
+    "store_name": "Mira Road",
+    "latitude": 19.277383,
+    "longitude": 72.8819633
+  },
+  {
+    "store_name": "Gokuldham - Goregaon",
+    "latitude": 19.173306,
+    "longitude": 72.874333
+  },
+  {
+    "store_name": "Ambernath East",
+    "latitude": 19.192639,
+    "longitude": 73.195738
+  },
+  {
+    "store_name": "Andheri MIDC Chakala",
+    "latitude": 19.1181474,
+    "longitude": 72.86823381
+  },
+  {
+    "store_name": "Goregaon West",
+    "latitude": 19.1552315,
+    "longitude": 72.8428
+  },
+  {
+    "store_name": "Nalasopara West",
+    "latitude": 19.42167222,
+    "longitude": 72.80754865
+  },
+  {
+    "store_name": "Pale Gaon - Ambernath East",
+    "latitude": 19.18948035,
+    "longitude": 73.17474889
+  },
+  {
+    "store_name": "Thane - Raimaster (Manpada)",
+    "latitude": 19.238908,
+    "longitude": 72.977549
+  },
+  {
+    "store_name": "Wadala",
+    "latitude": 19.01693,
+    "longitude": 72.8468
+  },
+  {
+    "store_name": "Taloja City Corner",
+    "latitude": 19.080444,
+    "longitude": 73.094167
+  },
+  {
+    "store_name": "Virar West - Global City",
+    "latitude": 19.46893398,
+    "longitude": 72.8069
+  },
+  {
+    "store_name": "Bhayander West",
+    "latitude": 19.29965233,
+    "longitude": 72.84467396
+  },
+  {
+    "store_name": "Borivali East",
+    "latitude": 19.2296594,
+    "longitude": 72.860949
+  },
+  {
+    "store_name": "Thane - Kothari Compound",
+    "latitude": 19.235958,
+    "longitude": 72.968265
+  },
+  {
+    "store_name": "Titwala (Regency Sarvam)",
+    "latitude": 19.29722,
+    "longitude": 73.21361
+  },
+  {
+    "store_name": "Dombivali West",
+    "latitude": 19.22646,
+    "longitude": 73.083248
+  },
+  {
+    "store_name": "BKC Mumbai",
+    "latitude": 19.063962,
+    "longitude": 72.858551
+  },
+  {
+    "store_name": "Mithanpura",
+    "latitude": 26.11855,
+    "longitude": 85.39739
+  },
+  {
+    "store_name": "Bishanduttpur",
+    "latitude": 26.139623,
+    "longitude": 85.3634
+  },
+  {
+    "store_name": "Rajendra Nagar",
+    "latitude": 12.3305,
+    "longitude": 76.661894
+  },
+  {
+    "store_name": "Vijay Nagar 2nd Stage",
+    "latitude": 12.336934,
+    "longitude": 76.614858
+  },
+  {
+    "store_name": "Chamundi Vihar",
+    "latitude": 12.302406,
+    "longitude": 76.6881
+  },
+  {
+    "store_name": "Saraswathipuram",
+    "latitude": 12.296415,
+    "longitude": 76.6296
+  },
+  {
+    "store_name": "Sec. 5 Panchkula",
+    "latitude": 30.7001667,
+    "longitude": 76.8534167
+  },
+  {
+    "store_name": "Kuvempu Nagara",
+    "latitude": 12.274298,
+    "longitude": 76.628184
+  },
+  {
+    "store_name": "BAZAR SAMITY(Rajendra nagar)",
+    "latitude": 25.60789,
+    "longitude": 85.1738
+  },
+  {
+    "store_name": "RAJEEV NAGAR",
+    "latitude": 25.63347,
+    "longitude": 85.08843
+  },
+  {
+    "store_name": "Gola road",
+    "latitude": 25.62829,
+    "longitude": 85.05649
+  },
+  {
+    "store_name": "KHAGAUL_PATNA (lekha nagar)",
+    "latitude": 25.59987,
+    "longitude": 85.03667
+  },
+  {
+    "store_name": "Patliputra",
+    "latitude": 25.62382,
+    "longitude": 85.11011
+  },
+  {
+    "store_name": "Phulwarisarif",
+    "latitude": 25.576186,
+    "longitude": 85.058001
+  },
+  {
+    "store_name": "Rukanpura",
+    "latitude": 25.608462,
+    "longitude": 85.078486
+  },
+  {
+    "store_name": "PATNA CITY, Opt-3",
+    "latitude": 25.59119,
+    "longitude": 85.22124
+  },
+  {
+    "store_name": "Anishabad Opt-5 & Opt-6",
+    "latitude": 25.57593,
+    "longitude": 85.100942
+  },
+  {
+    "store_name": "Bhoothnath Rd_Kankarbagh Chitragupta Nagar",
+    "latitude": 25.5951,
+    "longitude": 85.17702
+  },
+  {
+    "store_name": "Jaganpura - Opt 3",
+    "latitude": 25.56622,
+    "longitude": 85.152136
+  },
+  {
+    "store_name": "Exhibition Rd",
+    "latitude": 25.60801,
+    "longitude": 85.14268
+  },
+  {
+    "store_name": "Kankarbagh - Shivaji Park",
+    "latitude": 25.596594,
+    "longitude": 85.148894
+  },
+  {
+    "store_name": "Ranipur",
+    "latitude": 25.594513,
+    "longitude": 85.2008
+  },
+  {
+    "store_name": "Gardanibagh",
+    "latitude": 25.590617,
+    "longitude": 85.1225
+  },
+  {
+    "store_name": "Punawale",
+    "latitude": 18.635224,
+    "longitude": 73.741922
+  },
+  {
+    "store_name": "Nanded City",
+    "latitude": 18.4570126,
+    "longitude": 73.7883073
+  },
+  {
+    "store_name": "Ravet",
+    "latitude": 18.656539,
+    "longitude": 73.744594
+  },
+  {
+    "store_name": "Katraj Gokulnagar Tilekar Nagar",
+    "latitude": 18.444032,
+    "longitude": 73.885653
+  },
+  {
+    "store_name": "Vimanagar Wadgaon Sheri",
+    "latitude": 18.55274,
+    "longitude": 73.916896
+  },
+  {
+    "store_name": "Hinjewadi Phase 01",
+    "latitude": 18.5860417,
+    "longitude": 73.7383857
+  },
+  {
+    "store_name": "Karvenagar",
+    "latitude": 18.491145,
+    "longitude": 73.82279
+  },
+  {
+    "store_name": "Baner",
+    "latitude": 18.5660317,
+    "longitude": 73.7698
+  },
+  {
+    "store_name": "Narhe",
+    "latitude": 18.446095,
+    "longitude": 73.820747
+  },
+  {
+    "store_name": "Akurdi",
+    "latitude": 18.654549,
+    "longitude": 73.780658
+  },
+  {
+    "store_name": "Jambulkarwadi Duttanagar",
+    "latitude": 18.448088,
+    "longitude": 73.84891
+  },
+  {
+    "store_name": "Mohammed Wadi",
+    "latitude": 18.462292,
+    "longitude": 73.924472
+  },
+  {
+    "store_name": "Rahatani",
+    "latitude": 18.605829,
+    "longitude": 73.784018
+  },
+  {
+    "store_name": "Warje",
+    "latitude": 18.489377,
+    "longitude": 73.793303
+  },
+  {
+    "store_name": "Mundwa_Pune",
+    "latitude": 18.529095,
+    "longitude": 73.949488
+  },
+  {
+    "store_name": "Dighe Pune",
+    "latitude": 18.617688,
+    "longitude": 73.875615
+  },
+  {
+    "store_name": "Katraj (Gokulnagar)- Pune",
+    "latitude": 18.448654,
+    "longitude": 73.868681
+  },
+  {
+    "store_name": "Sinhgad Road",
+    "latitude": 18.468914,
+    "longitude": 73.8193
+  },
+  {
+    "store_name": "Hadapsar_IN-MFC / Ramtekdi",
+    "latitude": 18.498322,
+    "longitude": 73.920669
+  },
+  {
+    "store_name": "Hadapsar / Phursungi",
+    "latitude": 18.486971,
+    "longitude": 73.954748
+  },
+  {
+    "store_name": "Wagholi",
+    "latitude": 18.582867,
+    "longitude": 73.990435
+  },
+  {
+    "store_name": "Lohegaon",
+    "latitude": 18.59756,
+    "longitude": 73.918276
+  },
+  {
+    "store_name": "Kondhwa (Vanawadi)",
+    "latitude": 18.483978,
+    "longitude": 73.89384
+  },
+  {
+    "store_name": "Moshi",
+    "latitude": 18.677905,
+    "longitude": 73.828436
+  },
+  {
+    "store_name": "Kharadi",
+    "latitude": 18.56477031,
+    "longitude": 73.9514
+  },
+  {
+    "store_name": "Shivaji Nagar",
+    "latitude": 18.537515,
+    "longitude": 73.8357
+  },
+  {
+    "store_name": "Hinjewadi Phase 3",
+    "latitude": 18.5855655,
+    "longitude": 73.6838705
+  },
+  {
+    "store_name": "Yemlur",
+    "latitude": 12.945572,
+    "longitude": 77.6856
+  },
+  {
+    "store_name": "Junnasandra",
+    "latitude": 12.8968548,
+    "longitude": 77.702323
+  },
+  {
+    "store_name": "KIIT",
+    "latitude": 20.347863,
+    "longitude": 85.8151
+  },
+  {
+    "store_name": "Khandagiri",
+    "latitude": 20.27842,
+    "longitude": 85.7705
+  },
+  {
+    "store_name": "Azadpur",
+    "latitude": 28.702881,
+    "longitude": 77.182434
+  },
+  {
+    "store_name": "Vaishali Sector 17",
+    "latitude": 28.65492021,
+    "longitude": 77.34498487
+  },
+  {
+    "store_name": "HITEC City",
+    "latitude": 17.463472,
+    "longitude": 78.3765
+  },
+  {
+    "store_name": "Ramnagar",
+    "latitude": 17.413489,
+    "longitude": 78.4985
+  },
+  {
+    "store_name": "Southern Avenue",
+    "latitude": 22.51384,
+    "longitude": 88.35507
+  },
+  {
+    "store_name": "Bansdroni",
+    "latitude": 22.466664,
+    "longitude": 88.3597
+  },
+  {
+    "store_name": "New Garia",
+    "latitude": 22.47513,
+    "longitude": 88.40204
+  },
+  {
+    "store_name": "Arjun Ganj",
+    "latitude": 26.808643,
+    "longitude": 80.9994
+  },
+  {
+    "store_name": "Nalasopara East",
+    "latitude": 19.42124017,
+    "longitude": 72.8186
+  },
+  {
+    "store_name": "Nerul",
+    "latitude": 19.040133,
+    "longitude": 73.009605
+  },
+  {
+    "store_name": "Sector 16 Greater Noida",
+    "latitude": 28.576967,
+    "longitude": 77.48547
+  },
+  {
+    "store_name": "Noida Sector 18",
+    "latitude": 28.564008,
+    "longitude": 77.3343
+  },
+  {
+    "store_name": "Alandi",
+    "latitude": 18.6685659,
+    "longitude": 73.8913819
+  },
+  {
+    "store_name": "Manglabag",
+    "latitude": 20.466806,
+    "longitude": 85.8744
+  },
+  {
+    "store_name": "VIP Road",
+    "latitude": 30.640236,
+    "longitude": 76.8163
+  },
+  {
+    "store_name": "Mahesh Nagar/Ambala Cantt",
+    "latitude": 30.335177,
+    "longitude": 76.8723
+  },
+  {
+    "store_name": "Chappraula",
+    "latitude": 28.618305,
+    "longitude": 77.4855
+  },
+  {
+    "store_name": "Manikonda opt 3",
+    "latitude": 17.394454,
+    "longitude": 78.3628
+  },
+  {
+    "store_name": "Gopalpur Mukherjee Nagar",
+    "latitude": 28.718924,
+    "longitude": 77.222
+  },
+  {
+    "store_name": "HMT Layout",
+    "latitude": 13.01703,
+    "longitude": 77.58592
+  },
+  {
+    "store_name": "GGN Sector 56",
+    "latitude": 28.428642,
+    "longitude": 77.0988
+  },
+  {
+    "store_name": "Khopoli",
+    "latitude": 18.7913366,
+    "longitude": 73.3377258
+  },
+  {
+    "store_name": "Shaikpet",
+    "latitude": 17.4099615,
+    "longitude": 78.3982
+  },
+  {
+    "store_name": "Ashok Nagar",
+    "latitude": 17.502465,
+    "longitude": 78.307807
+  },
+  {
+    "store_name": "Manchirevula",
+    "latitude": 17.38375,
+    "longitude": 78.3418
+  },
+  {
+    "store_name": "Uttam Nagar Hastal Village",
+    "latitude": 28.637639,
+    "longitude": 77.052
+  },
+  {
+    "store_name": "Begur",
+    "latitude": 12.884206,
+    "longitude": 77.6254
+  },
+  {
+    "store_name": "Basaveshwar Nagar",
+    "latitude": 12.997777,
+    "longitude": 77.5441
+  },
+  {
+    "store_name": "Hoskote",
+    "latitude": 13.066642,
+    "longitude": 77.8012
+  },
+  {
+    "store_name": "Shivaji Nagar",
+    "latitude": 12.991842,
+    "longitude": 77.6039
+  },
+  {
+    "store_name": "Karthik Nagar",
+    "latitude": 12.975933,
+    "longitude": 77.6943
+  },
+  {
+    "store_name": "Rampura",
+    "latitude": 13.054032,
+    "longitude": 77.683
+  },
+  {
+    "store_name": "Karawal Nagar Extn",
+    "latitude": 28.724632,
+    "longitude": 77.2684
+  },
+  {
+    "store_name": "Adyar",
+    "latitude": 13.0058569,
+    "longitude": 80.2572
+  },
+  {
+    "store_name": "New Bowenpally",
+    "latitude": 17.458889,
+    "longitude": 78.4769
+  },
+  {
+    "store_name": "ASN Vivekananda Pally",
+    "latitude": 23.694067,
+    "longitude": 86.9525
+  },
+  {
+    "store_name": "Garden Reach",
+    "latitude": 22.525208,
+    "longitude": 88.2707
+  },
+  {
+    "store_name": "Shyamnagar",
+    "latitude": 22.829588,
+    "longitude": 88.3984
+  },
+  {
+    "store_name": "Bhomikal",
+    "latitude": 20.2885,
+    "longitude": 85.85641
+  },
+  {
+    "store_name": "Greenfield City",
+    "latitude": 22.487011,
+    "longitude": 88.2794
+  },
+  {
+    "store_name": "Barasat Kazipara",
+    "latitude": 22.728225,
+    "longitude": 88.4982
+  },
+  {
+    "store_name": "Kothapet",
+    "latitude": 17.366424,
+    "longitude": 78.5442
+  },
+  {
+    "store_name": "Tellapur",
+    "latitude": 17.477087,
+    "longitude": 78.3036
+  },
+  {
+    "store_name": "Usha Mullapudi",
+    "latitude": 17.523936,
+    "longitude": 78.4279
+  },
+  {
+    "store_name": "Boduppal",
+    "latitude": 17.412278,
+    "longitude": 78.595
+  },
+  {
+    "store_name": "Moghalpura",
+    "latitude": 17.361084,
+    "longitude": 78.4781
+  },
+  {
+    "store_name": "Dammaiguda",
+    "latitude": 17.490352,
+    "longitude": 78.6
+  },
+  {
+    "store_name": "Miyapur",
+    "latitude": 17.525023,
+    "longitude": 78.3421
+  },
+  {
+    "store_name": "Ballygunge Place",
+    "latitude": 22.533095,
+    "longitude": 88.39
+  },
+  {
+    "store_name": "Akurli",
+    "latitude": 19.19693311,
+    "longitude": 72.8578
+  },
+  {
+    "store_name": "Dombivali-Runwal",
+    "latitude": 19.192396,
+    "longitude": 73.0915
+  },
+  {
+    "store_name": "shanti nagar",
+    "latitude": 13.341469,
+    "longitude": 77.1036
+  },
+  {
+    "store_name": "Narol",
+    "latitude": 22.971669,
+    "longitude": 72.6004
+  },
+  {
+    "store_name": "Immadihalli",
+    "latitude": 12.963567,
+    "longitude": 77.762718
+  },
+  {
+    "store_name": "Attibele",
+    "latitude": 12.7824,
+    "longitude": 77.765084
+  },
+  {
+    "store_name": "Sholinganallur",
+    "latitude": 12.89093,
+    "longitude": 80.230865
+  },
+  {
+    "store_name": "Madangir",
+    "latitude": 28.525315,
+    "longitude": 77.232831
+  },
+  {
+    "store_name": "Gurgaon Ashok Vihar Ph 2",
+    "latitude": 28.495882,
+    "longitude": 77.021805
+  },
+  {
+    "store_name": "Gandhi Nagar",
+    "latitude": 16.27829,
+    "longitude": 80.4439
+  },
+  {
+    "store_name": "Brodipet",
+    "latitude": 16.312039,
+    "longitude": 80.414991
+  },
+  {
+    "store_name": "Governorpet",
+    "latitude": 16.517671,
+    "longitude": 80.641932
+  },
+  {
+    "store_name": "Auto Nagar",
+    "latitude": 16.501332,
+    "longitude": 80.680722
+  },
+  {
+    "store_name": "Vinod Nagar",
+    "latitude": 28.61825,
+    "longitude": 77.28683
+  },
+  {
+    "store_name": "Icchapore",
+    "latitude": 22.82014,
+    "longitude": 88.3734
+  },
+  {
+    "store_name": "Dahisar West - Ic Colony",
+    "latitude": 19.23708013,
+    "longitude": 72.8457
+  },
+  {
+    "store_name": "Indira Nagar",
+    "latitude": 19.95818155,
+    "longitude": 73.777
+  },
+  {
+    "store_name": "Old Alwal",
+    "latitude": 17.4981556,
+    "longitude": 78.4957
+  },
+  {
+    "store_name": "Vishnu Garden",
+    "latitude": 28.651764,
+    "longitude": 77.092482
+  },
+  {
+    "store_name": "Serilingampalle",
+    "latitude": 17.48191,
+    "longitude": 78.36225
+  },
+  {
+    "store_name": "Shakti Vihar Molar Band",
+    "latitude": 28.500328,
+    "longitude": 77.3182
+  },
+  {
+    "store_name": "Vadavalli",
+    "latitude": 11.03012124,
+    "longitude": 76.8977
+  },
+  {
+    "store_name": "Tadepalli",
+    "latitude": 16.472212,
+    "longitude": 80.617
+  },
+  {
+    "store_name": "Ganapathy",
+    "latitude": 11.04208,
+    "longitude": 76.9929
+  },
+  {
+    "store_name": "Poonamalle",
+    "latitude": 13.04687975,
+    "longitude": 80.093
+  },
+  {
+    "store_name": "Ayyapakkam",
+    "latitude": 13.09592541,
+    "longitude": 80.1494
+  },
+  {
+    "store_name": "Mathur",
+    "latitude": 13.16970892,
+    "longitude": 80.2456
+  },
+  {
+    "store_name": "Perambur 2",
+    "latitude": 13.11349587,
+    "longitude": 80.2409
+  },
+  {
+    "store_name": "Guduvancherry",
+    "latitude": 12.83544,
+    "longitude": 80.0482
+  },
+  {
+    "store_name": "CMB- Ramanathapuram",
+    "latitude": 10.99853318,
+    "longitude": 76.99307748
+  },
+  {
+    "store_name": "SANJAY COLONY",
+    "latitude": 28.36335,
+    "longitude": 77.28892
+  },
+  {
+    "store_name": "Kattupakkam",
+    "latitude": 13.04749272,
+    "longitude": 80.1198
+  },
+  {
+    "store_name": "Madipakkam",
+    "latitude": 12.97093457,
+    "longitude": 80.1966
+  },
+  {
+    "store_name": "Chitlapakkam",
+    "latitude": 12.93681816,
+    "longitude": 80.1426
+  },
+  {
+    "store_name": "CMB- Peelamedu",
+    "latitude": 11.02224265,
+    "longitude": 77.01186099
+  },
+  {
+    "store_name": "Thiruverkadu",
+    "latitude": 13.08374368,
+    "longitude": 80.1273
+  },
+  {
+    "store_name": "Anna Nagar",
+    "latitude": 12.72635,
+    "longitude": 77.8199
+  },
+  {
+    "store_name": "Kundrathur",
+    "latitude": 12.99451,
+    "longitude": 80.1057
+  },
+  {
+    "store_name": "Sompura Gate",
+    "latitude": 12.8602,
+    "longitude": 77.77981
+  },
+  {
+    "store_name": "Singapura",
+    "latitude": 13.07776541,
+    "longitude": 77.5384
+  },
+  {
+    "store_name": "Ballupur Chowk",
+    "latitude": 30.326812,
+    "longitude": 78.0122
+  },
+  {
+    "store_name": "Model Town",
+    "latitude": 30.87795,
+    "longitude": 75.84654
+  },
+  {
+    "store_name": "Alagapuram",
+    "latitude": 11.677523,
+    "longitude": 78.130122
+  },
+  {
+    "store_name": "Kumar Nagar",
+    "latitude": 11.11252,
+    "longitude": 77.33647
+  },
+  {
+    "store_name": "TRP - Medical college",
+    "latitude": 11.08296,
+    "longitude": 77.366
+  },
+  {
+    "store_name": "IIT Roorkee Area",
+    "latitude": 29.865176,
+    "longitude": 77.8711
+  },
+  {
+    "store_name": "Saya ji park",
+    "latitude": 22.317273,
+    "longitude": 73.236
+  },
+  {
+    "store_name": "Nathnagar_Bhagalpur",
+    "latitude": 25.237975,
+    "longitude": 86.94
+  },
+  {
+    "store_name": "Puri-Atharnala",
+    "latitude": 19.82007,
+    "longitude": 85.8336
+  },
+  {
+    "store_name": "Garchuk",
+    "latitude": 26.115032,
+    "longitude": 91.7173
+  },
+  {
+    "store_name": "Jai Vihar Colony _ Bhagalpur",
+    "latitude": 25.251422,
+    "longitude": 87.029
+  },
+  {
+    "store_name": "Uttorayon",
+    "latitude": 26.735358,
+    "longitude": 88.408
+  },
+  {
+    "store_name": "SLM - Fort Main Road",
+    "latitude": 11.65167,
+    "longitude": 78.1553
+  },
+  {
+    "store_name": "New Sama",
+    "latitude": 22.34169,
+    "longitude": 73.19263
+  },
+  {
+    "store_name": "Bhavanipuram",
+    "latitude": 16.5393,
+    "longitude": 80.5971
+  },
+  {
+    "store_name": "UER - 1",
+    "latitude": 30.902136,
+    "longitude": 75.9032
+  },
+  {
+    "store_name": "Wagholi AlphaHomes",
+    "latitude": 18.584581,
+    "longitude": 73.9771
+  },
+  {
+    "store_name": "Chinchwad",
+    "latitude": 18.632839,
+    "longitude": 73.8026
+  },
+  {
+    "store_name": "Kondhwa Shalimar",
+    "latitude": 18.470174,
+    "longitude": 73.8788
+  },
+  {
+    "store_name": "Handewadi",
+    "latitude": 18.481422,
+    "longitude": 73.9285
+  },
+  {
+    "store_name": "Talegaon",
+    "latitude": 18.74030869,
+    "longitude": 73.6789
+  },
+  {
+    "store_name": "Alka puri",
+    "latitude": 22.30734,
+    "longitude": 73.17088
+  },
+  {
+    "store_name": "Odhav",
+    "latitude": 23.025572,
+    "longitude": 72.6691
+  },
+  {
+    "store_name": "Manjalpur",
+    "latitude": 22.2733212,
+    "longitude": 73.1876795
+  },
+  {
+    "store_name": "Paldi",
+    "latitude": 23.0140822,
+    "longitude": 72.5619429
+  },
+  {
+    "store_name": "New Ranip",
+    "latitude": 23.089515,
+    "longitude": 72.565
+  },
+  {
+    "store_name": "Vinzol",
+    "latitude": 22.95012,
+    "longitude": 72.64459
+  },
+  {
+    "store_name": "Ramamurthy Nagar",
+    "latitude": 13.0203,
+    "longitude": 77.6739
+  },
+  {
+    "store_name": "Hosahalli",
+    "latitude": 12.9973396,
+    "longitude": 77.4803075
+  },
+  {
+    "store_name": "Kharar Sector 117",
+    "latitude": 30.727929,
+    "longitude": 76.6737
+  },
+  {
+    "store_name": "Patel nagar GMS",
+    "latitude": 30.31252,
+    "longitude": 78.01408227
+  },
+  {
+    "store_name": "Lado Sarai",
+    "latitude": 28.5186213,
+    "longitude": 77.1804804
+  },
+  {
+    "store_name": "Brij Puri",
+    "latitude": 28.70271,
+    "longitude": 77.27774
+  },
+  {
+    "store_name": "Dwarka Sector 7",
+    "latitude": 28.5808,
+    "longitude": 77.07135
+  },
+  {
+    "store_name": "KHODA, SECTOR 62 A",
+    "latitude": 28.62099,
+    "longitude": 77.34857
+  },
+  {
+    "store_name": "Gurgaon Sector 7",
+    "latitude": 28.46341,
+    "longitude": 77.01783
+  },
+  {
+    "store_name": "SECTOR PIE-2",
+    "latitude": 28.45149,
+    "longitude": 77.51278
+  },
+  {
+    "store_name": "Noida Sector 104",
+    "latitude": 28.537316,
+    "longitude": 77.37879
+  },
+  {
+    "store_name": "Sehatpur Village",
+    "latitude": 28.48039,
+    "longitude": 77.33413
+  },
+  {
+    "store_name": "Sanjay Nagar",
+    "latitude": 28.698015,
+    "longitude": 77.48579
+  },
+  {
+    "store_name": "Nehru Nagar",
+    "latitude": 28.66323,
+    "longitude": 77.44995
+  },
+  {
+    "store_name": "Chandar Nagar",
+    "latitude": 28.66422999,
+    "longitude": 77.328691
+  },
+  {
+    "store_name": "Panchsheel Greens, Harsh Vihar",
+    "latitude": 28.61962,
+    "longitude": 77.45696
+  },
+  {
+    "store_name": "Hengrabari",
+    "latitude": 26.1499904,
+    "longitude": 91.8033307
+  },
+  {
+    "store_name": "Boragaon",
+    "latitude": 26.11927027,
+    "longitude": 91.68935004
+  },
+  {
+    "store_name": "Mallapur",
+    "latitude": 17.436708,
+    "longitude": 78.5745
+  },
+  {
+    "store_name": "Santosh Nagar",
+    "latitude": 17.35278,
+    "longitude": 78.5178
+  },
+  {
+    "store_name": "Medipally",
+    "latitude": 17.3992666,
+    "longitude": 78.6047356
+  },
+  {
+    "store_name": "Shamshabad",
+    "latitude": 17.26102,
+    "longitude": 78.3784
+  },
+  {
+    "store_name": "TC Colony",
+    "latitude": 22.80876536,
+    "longitude": 86.17003162
+  },
+  {
+    "store_name": "Vidhyapati Nagar",
+    "latitude": 22.79766338,
+    "longitude": 86.23274657
+  },
+  {
+    "store_name": "NIT Campus",
+    "latitude": 22.78310343,
+    "longitude": 86.15492538
+  },
+  {
+    "store_name": "Bagbera Colony",
+    "latitude": 22.76207411,
+    "longitude": 86.19095343
+  },
+  {
+    "store_name": "Baruipur",
+    "latitude": 22.36154,
+    "longitude": 88.4298
+  },
+  {
+    "store_name": "Dankuni",
+    "latitude": 22.68566457,
+    "longitude": 88.29090271
+  },
+  {
+    "store_name": "Kadamtala",
+    "latitude": 22.587707,
+    "longitude": 88.3174
+  },
+  {
+    "store_name": "Reckjoani",
+    "latitude": 22.61470361,
+    "longitude": 88.46826081
+  },
+  {
+    "store_name": "Tajganj",
+    "latitude": 27.14775,
+    "longitude": 78.0534
+  },
+  {
+    "store_name": "Awas Vikas",
+    "latitude": 27.20457,
+    "longitude": 77.9434
+  },
+  {
+    "store_name": "Shashtri Nagar",
+    "latitude": 26.470931,
+    "longitude": 80.296533
+  },
+  {
+    "store_name": "Thane Balkum Majiwada",
+    "latitude": 19.22227296,
+    "longitude": 72.9976
+  },
+  {
+    "store_name": "Bhayander East",
+    "latitude": 19.30699,
+    "longitude": 72.858923
+  },
+  {
+    "store_name": "Murlichachk",
+    "latitude": 25.59402598,
+    "longitude": 85.06933906
+  },
+  {
+    "store_name": "Radha Mohan Nagar",
+    "latitude": 25.57257,
+    "longitude": 85.0854
+  },
+  {
+    "store_name": "Thane Naupada",
+    "latitude": 19.19881986,
+    "longitude": 72.96964293
+  },
+  {
+    "store_name": "Mithila Colony",
+    "latitude": 25.64283817,
+    "longitude": 85.074932
+  },
+  {
+    "store_name": "Mulund East",
+    "latitude": 19.168928,
+    "longitude": 72.960609
+  },
+  {
+    "store_name": "Ulhasnagar - Meraki Square",
+    "latitude": 19.206389,
+    "longitude": 73.1618
+  },
+  {
+    "store_name": "Khar",
+    "latitude": 19.064535,
+    "longitude": 72.83751
+  },
+  {
+    "store_name": "Ghatkopar East (Kurla East - Bantar Bhavan)",
+    "latitude": 19.07843,
+    "longitude": 72.906869
+  },
+  {
+    "store_name": "Sulem Sarai",
+    "latitude": 25.445,
+    "longitude": 81.777
+  },
+  {
+    "store_name": "Malviya Nagar",
+    "latitude": 25.43072,
+    "longitude": 81.82835
+  },
+  {
+    "store_name": "Ashok Nagar",
+    "latitude": 23.34569,
+    "longitude": 85.3089
+  },
+  {
+    "store_name": "Misirgonda",
+    "latitude": 23.401236,
+    "longitude": 85.3183
+  },
+  {
+    "store_name": "Karim Ganj",
+    "latitude": 24.7842,
+    "longitude": 84.9711
+  },
+  {
+    "store_name": "Meena Bazar_Motihari",
+    "latitude": 26.65100969,
+    "longitude": 84.91288215
+  },
+  {
+    "store_name": "Binodpur Katihar",
+    "latitude": 25.5434,
+    "longitude": 87.5689
+  },
+  {
+    "store_name": "Shastri Nagar",
+    "latitude": 28.951765,
+    "longitude": 77.728524
+  },
+  {
+    "store_name": "Hanamkonda",
+    "latitude": 18.0064,
+    "longitude": 79.5539
+  },
+  {
+    "store_name": "Kashibugga",
+    "latitude": 17.979891,
+    "longitude": 79.6085
+  },
+  {
+    "store_name": "Junction Mall",
+    "latitude": 23.53753844,
+    "longitude": 87.29049971
+  },
+  {
+    "store_name": "Old Canal Road",
+    "latitude": 19.98026486,
+    "longitude": 73.7685
+  },
+  {
+    "store_name": "Nashik Road - Suyojit Arcade",
+    "latitude": 19.96,
+    "longitude": 73.8313
+  },
+  {
+    "store_name": "Gangapur Shreeji Floating Villas",
+    "latitude": 20.0126938,
+    "longitude": 73.7339
+  },
+  {
+    "store_name": "Amrutdham Nashik Adgaon",
+    "latitude": 20.016902,
+    "longitude": 73.834719
+  },
+  {
+    "store_name": "Shivpur",
+    "latitude": 25.35858,
+    "longitude": 82.96473
+  },
+  {
+    "store_name": "Navapura",
+    "latitude": 25.36118627,
+    "longitude": 83.01503184
+  },
+  {
+    "store_name": "Lahartara",
+    "latitude": 25.30523,
+    "longitude": 82.95286
+  },
+  {
+    "store_name": "Amanora",
+    "latitude": 18.5129765,
+    "longitude": 73.9456815
+  },
+  {
+    "store_name": "Bhaktinagar",
+    "latitude": 26.752636,
+    "longitude": 88.4418
+  },
+  {
+    "store_name": "College Para",
+    "latitude": 26.7213047,
+    "longitude": 88.4354755
+  },
+  {
+    "store_name": "Dhanori",
+    "latitude": 18.5765857,
+    "longitude": 73.8848902
+  },
+  {
+    "store_name": "KoregaonPark",
+    "latitude": 18.531301,
+    "longitude": 73.9203
+  },
+  {
+    "store_name": "Unnao",
+    "latitude": 26.54560218,
+    "longitude": 80.48532536
+  },
+  {
+    "store_name": "Laxmi nagar delhi",
+    "latitude": 28.63568096,
+    "longitude": 77.30954385
+  },
+  {
+    "store_name": "Chettipalayam",
+    "latitude": 11.16059,
+    "longitude": 77.346645
+  },
+  {
+    "store_name": "Oil Mill Road",
+    "latitude": 13.0065743,
+    "longitude": 77.6279105
+  },
+  {
+    "store_name": "Kadabagere",
+    "latitude": 12.98739,
+    "longitude": 77.44546
+  },
+  {
+    "store_name": "Hooghly",
+    "latitude": 22.8935,
+    "longitude": 88.3881
+  },
+  {
+    "store_name": "Yapral",
+    "latitude": 17.5095111,
+    "longitude": 78.5505857
+  },
+  {
+    "store_name": "Gudimalkapur",
+    "latitude": 17.3837481,
+    "longitude": 78.4257366
+  },
+  {
+    "store_name": "SG Palya",
+    "latitude": 12.925177,
+    "longitude": 77.608212
+  },
+  {
+    "store_name": "Thirunindravur",
+    "latitude": 13.12404,
+    "longitude": 80.05094
+  },
+  {
+    "store_name": "Noothenchery",
+    "latitude": 12.898,
+    "longitude": 80.18086
+  },
+  {
+    "store_name": "Madhapur",
+    "latitude": 17.4422599,
+    "longitude": 78.4020786
+  },
+  {
+    "store_name": "Banjara Hills",
+    "latitude": 17.4130172,
+    "longitude": 78.4419917
+  },
+  {
+    "store_name": "Kondapur",
+    "latitude": 17.4672326,
+    "longitude": 78.3515064
+  },
+  {
+    "store_name": "Paradise",
+    "latitude": 17.4401196,
+    "longitude": 78.4886973
+  },
+  {
+    "store_name": "Nacharam",
+    "latitude": 17.4293023,
+    "longitude": 78.5424957
+  },
+  {
+    "store_name": "Ramanthapur",
+    "latitude": 17.4000983,
+    "longitude": 78.5422635
+  },
+  {
+    "store_name": "Hambran Road",
+    "latitude": 30.92592,
+    "longitude": 75.83431
+  },
+  {
+    "store_name": "Pimple Gurav",
+    "latitude": 18.5841374,
+    "longitude": 73.8188722
+  },
+  {
+    "store_name": "Marunji",
+    "latitude": 18.6232653,
+    "longitude": 73.7201116
+  },
+  {
+    "store_name": "Mukung Nagar",
+    "latitude": 18.48662,
+    "longitude": 73.85836
+  },
+  {
+    "store_name": "Shahganj",
+    "latitude": 27.1836,
+    "longitude": 77.97085
+  },
+  {
+    "store_name": "Marripalem",
+    "latitude": 17.7469101,
+    "longitude": 83.2564105
+  },
+  {
+    "store_name": "Swastik City",
+    "latitude": 22.94569,
+    "longitude": 72.59367
+  },
+  {
+    "store_name": "Vidya Nagar",
+    "latitude": 13.1537224,
+    "longitude": 77.6313635
+  },
+  {
+    "store_name": "Perungudi",
+    "latitude": 12.97134,
+    "longitude": 80.23779
+  },
+  {
+    "store_name": "Kanchipuram",
+    "latitude": 12.83007,
+    "longitude": 79.70071
+  },
+  {
+    "store_name": "Saibaba Colony",
+    "latitude": 11.0276,
+    "longitude": 76.95019
+  },
+  {
+    "store_name": "Subhash nagar",
+    "latitude": 30.27823615,
+    "longitude": 77.99448468
+  },
+  {
+    "store_name": "Canal Road",
+    "latitude": 30.35742523,
+    "longitude": 78.07715195
+  },
+  {
+    "store_name": "Ring Road",
+    "latitude": 30.29644,
+    "longitude": 78.07429
+  },
+  {
+    "store_name": "Mayur Vihar Phase 1",
+    "latitude": 28.60559,
+    "longitude": 77.29876
+  },
+  {
+    "store_name": "Prem Agar 3",
+    "latitude": 28.700783,
+    "longitude": 77.05072
+  },
+  {
+    "store_name": "Jain Nagar Extn",
+    "latitude": 28.726032,
+    "longitude": 77.054771
+  },
+  {
+    "store_name": "Burari SDM",
+    "latitude": 28.7591605,
+    "longitude": 77.1932478
+  },
+  {
+    "store_name": "Krishna Nagar",
+    "latitude": 26.79986,
+    "longitude": 80.87448
+  },
+  {
+    "store_name": "Mumbai Central Worli",
+    "latitude": 18.977926,
+    "longitude": 72.823476
+  },
+  {
+    "store_name": "Balewadi",
+    "latitude": 18.5763576,
+    "longitude": 73.7634006
+  },
+  {
+    "store_name": "Pandsara",
+    "latitude": 21.15025,
+    "longitude": 72.82496
+  },
+  {
+    "store_name": "Katargram",
+    "latitude": 21.23099,
+    "longitude": 72.82475
+  },
+  {
+    "store_name": "Tandalja",
+    "latitude": 22.28807,
+    "longitude": 73.15271
+  },
+  {
+    "store_name": "Govandi New",
+    "latitude": 19.04949336,
+    "longitude": 72.90918408
+  },
+  {
+    "store_name": "Jhilmil",
+    "latitude": 28.67555538,
+    "longitude": 77.31649776
+  },
+  {
+    "store_name": "West Mambalam",
+    "latitude": 13.05499,
+    "longitude": 80.23008
+  },
+  {
+    "store_name": "Hinjewadi Phase2",
+    "latitude": 18.5934246,
+    "longitude": 73.7073284
+  },
+  {
+    "store_name": "Santcruz",
+    "latitude": 19.07864141,
+    "longitude": 72.84272855
+  },
+  {
+    "store_name": "Shree Rameshwaram",
+    "latitude": 23.18464,
+    "longitude": 77.46697
+  },
+  {
+    "store_name": "Jharia",
+    "latitude": 23.8121141,
+    "longitude": 86.464842
+  },
+  {
+    "store_name": "vijay nagar",
+    "latitude": 22.69484,
+    "longitude": 75.86755
+  },
+  {
+    "store_name": "Awadhpuri",
+    "latitude": 23.23218,
+    "longitude": 77.47205
+  },
+  {
+    "store_name": "Sangam Nagar",
+    "latitude": 22.7363,
+    "longitude": 75.83469
+  },
+  {
+    "store_name": "Raghunath Nagar",
+    "latitude": 23.17659,
+    "longitude": 77.435925
+  },
+  {
+    "store_name": "Mandya",
+    "latitude": 12.5223085,
+    "longitude": 76.8923124
+  },
+  {
+    "store_name": "Tilakwadi",
+    "latitude": 15.830007,
+    "longitude": 74.5061269
+  },
+  {
+    "store_name": "Gokul Road",
+    "latitude": 15.3521708,
+    "longitude": 75.1107106
+  }
+]

@@ -1,0 +1,88 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #2874F0;
+  --primary-dark: #1a5dc8;
+  --primary-light: #e8f0fe;
+  --secondary: #FB641B;
+  --secondary-dark: #e0541a;
+  --bg: #F1F3F6;
+  --card: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #555555;
+  --text-muted: #878787;
+  --border: #e0e0e0;
+  --success: #26a541;
+  --error: #d32f2f;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+p { color: var(--text-secondary); }
+
+a { text-decoration: none; }
+
+button {
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+button:active { transform: scale(0.98); }
+
+input {
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(40,116,240,0.12);
+}
+
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
