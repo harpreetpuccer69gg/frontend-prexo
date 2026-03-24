@@ -125,7 +125,7 @@ function AdminDashboard() {
 
       {/* ── Top Bar ── */}
       <header style={s.navbar}>
-        <div style={s.navInner}>
+        <div style={s.navInner} className="nav-inner">
           <div style={s.navLeft}>
             <h2 style={s.navTitle}>Attendance Overview</h2>
             <span style={s.navSub}>{todayStr} · Live Insights</span>
@@ -136,10 +136,10 @@ function AdminDashboard() {
         </div>
       </header>
 
-      <main style={s.main}>
+      <main style={s.main} className="main-content">
 
         {/* ── Stats ── */}
-        <div style={s.statsRow}>
+        <div style={s.statsRow} className="stats-row">
           {[
             { label: "Total Records",    value: records.length,  icon: "📋", color: "#2874F0", bg: "#e8f0fe" },
             { label: "Active TLs",       value: totalTLs,        icon: "👥", color: "#26a541", bg: "#e8f5e9" },

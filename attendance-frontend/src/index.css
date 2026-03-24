@@ -81,6 +81,41 @@ input:focus {
 
 @media (max-width: 768px) {
   html { font-size: 15px; }
+
+  /* Navbar */
+  .nav-user-info { display: none !important; }
+  .nav-badge { display: none !important; }
+
+  /* Action grid: stack on mobile */
+  .action-grid { grid-template-columns: 1fr !important; }
+
+  /* Stats row: 2 columns on mobile */
+  .stats-row { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Main padding */
+  .main-content { padding: 16px !important; }
+
+  /* Page header stack */
+  .page-header { flex-direction: column !important; align-items: flex-start !important; }
+
+  /* Filter bar stack */
+  .filter-bar { flex-direction: column !important; }
+  .filter-bar input, .filter-bar select { width: 100% !important; }
+
+  /* Tab bar scroll */
+  .tab-bar { overflow-x: auto; white-space: nowrap; }
+
+  /* Modal full width */
+  .modal { width: 92vw !important; padding: 20px 16px !important; }
+
+  /* Navbar inner padding */
+  .nav-inner { padding: 0 14px !important; }
+}
+
+@media (max-width: 480px) {
+  /* Stats row: 1 column on very small screens */
+  .stats-row { grid-template-columns: 1fr !important; }
+  .nav-title { font-size: 15px !important; }
 }
 
 @keyframes spin {

@@ -197,7 +197,7 @@ function Dashboard() {
 		<div style={s.page}>
 			{/* Top Navigation */}
 			<header style={s.navbar}>
-				<div style={s.navInner}>
+				<div style={s.navInner} className="nav-inner">
 					<div style={s.navBrand}>
 						<div style={s.navIcon}>TL</div>
 						<span style={s.navTitle}>TL Attendance</span>
@@ -206,13 +206,13 @@ function Dashboard() {
 						{userProfile.name && (
 							<div style={s.navUser}>
 								<div style={s.navAvatar}>{userProfile.name.charAt(0).toUpperCase()}</div>
-								<div style={s.navUserInfo}>
+								<div style={s.navUserInfo} className="nav-user-info">
 									<span style={s.navUserName}>{userProfile.name}</span>
 									{userProfile.city && <span style={s.navUserCity}>{userProfile.city}</span>}
 								</div>
 							</div>
 						)}
-						<span style={s.navBadge}>📍 Live</span>
+						<span style={s.navBadge} className="nav-badge">📍 Live</span>
 						<button
 							style={s.logoutBtn}
 							onClick={handleLogout}
@@ -256,10 +256,10 @@ function Dashboard() {
 			)}
 
 			{/* Main Content */}
-			<main style={s.main}>
+			<main style={s.main} className="main-content">
 
 				{/* Page Title */}
-				<div style={s.pageHeader}>
+				<div style={s.pageHeader} className="page-header">
 					<div>
 						<h2 style={s.pageTitle}>
 							{userProfile.name ? `Welcome, ${userProfile.name}` : "My Attendance"}
@@ -287,7 +287,7 @@ function Dashboard() {
 				)}
 
 				{/* Action Cards */}
-				<div style={s.actionGrid}>
+				<div style={s.actionGrid} className="action-grid">
 					<div style={s.actionCard}>
 						<div style={s.actionCardIcon} onClick={handlePunchIn}>
 							<span style={s.actionEmoji}>🟢</span>
@@ -577,7 +577,7 @@ const s = {
 
 	// Modal styles
 	modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999 },
-	modal:        { background: "#fff", borderRadius: 14, padding: "28px 28px 24px", width: "100%", maxWidth: 400, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" },
+	modal:        { background: "#fff", borderRadius: 14, padding: "28px 28px 24px", width: "100%", maxWidth: 400, boxShadow: "0 8px 32px rgba(0,0,0,0.18)", margin: "0 16px" },
 	modalTitle:   { fontSize: 18, fontWeight: 700, color: "#212121", marginBottom: 6 },
 	modalDate:    { fontSize: 13, color: "#878787", marginBottom: 14 },
 	modalTextarea:{ width: "100%", padding: "10px 12px", border: "1.5px solid #e0e0e0", borderRadius: 8, fontSize: 14, resize: "vertical", outline: "none", fontFamily: "inherit", boxSizing: "border-box" },
