@@ -242,6 +242,7 @@ const checkOutLat = r.checkOutLocation ? r.checkOutLocation.latitude : null;
 const checkOutLng = r.checkOutLocation ? r.checkOutLocation.longitude : null;
 
 return {
+_id: r._id,
 date: r.checkInTime ? new Date(r.checkInTime).toLocaleDateString("en-GB") : "-",
 userEmail: r.tlEmail,
 punchIn: r.checkInTime ? new Date(r.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "-",
