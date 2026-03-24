@@ -10,7 +10,6 @@ const COLS = [
   { key: "punchOut",         label: "Punch OUT" },
   { key: "location",         label: "Punch Loc" },
   { key: "fixedSite",        label: "Store Loc" },
-  { key: "distance",         label: "Distance" },
   { key: "duration",         label: "Duration" },
   { key: "city",             label: "City" },
   { key: "storeName",        label: "Store Name" },
@@ -18,6 +17,23 @@ const COLS = [
   { key: "tlNo",             label: "TL No." },
   { key: "reportingManager", label: "Reporting Manager" },
 ];
+
+const toCSV = (data) => {
+  const headers = ["Date","Email","Punch In","Punch Out","Punch Loc","Store Loc","Duration","City","Store Name","TL Name","TL No","Reporting Manager"];
+  const rows = data.map(r => [
+    r.date, r.userEmail, r.punchIn, r.punchOut, r.location,
+    r.fixedSite, r.duration, r.city, r.storeName, r.tlName, r.tlNo, r.reportingManager
+  ].map(v => `"${(v ?? "").toString().replace(/"/g, '""')}"`));
+  return [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+};
+
+const downloadCSV = (data, filename) => {
+  const blob = new Blob([toCSV(data)], { type: "text/csv" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+};
 
 function AdminDashboard() {
   const [records, setRecords]       = useState([]);
@@ -117,6 +133,16 @@ function AdminDashboard() {
   const activeNow       = records.filter(r => r.punchOut === "-").length;
   const todayLeaveCount = leaves.filter(l => l.date === todayStr).length;
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) return;
+    try {
+      await api.delete(`/attendance/admin/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      setRecords(prev => prev.filter(r => r._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete record");
+    }
+  };
+
   const clearFilters = () => { setSearch(""); setCityFilter("All"); setDateFilter(""); };
   const hasFilter    = search || cityFilter !== "All" || dateFilter;
 
@@ -199,6 +225,8 @@ function AdminDashboard() {
                 <button style={s.clearBtn} onClick={clearFilters}>✕ Clear</button>
               )}
               <button style={s.refreshBtn} onClick={fetchAll}>↻ Refresh</button>
+              <button style={s.exportBtn} onClick={() => downloadCSV(filtered, `attendance-filtered-${Date.now()}.csv`)}>⬇ Filtered</button>
+              <button style={s.exportBtn} onClick={() => downloadCSV(records, `attendance-all-${Date.now()}.csv`)}>⬇ All</button>
             </div>
 
             {/* ── Table Card ── */}
@@ -228,6 +256,7 @@ function AdminDashboard() {
                       <tr>
                         <th style={s.thIdx}>#</th>
                         {COLS.map(c => <th key={c.key} style={s.th}>{c.label}</th>)}
+                        <th style={s.th}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -272,7 +301,6 @@ function AdminDashboard() {
                                 </a>
                               ) : <span style={s.dash}>—</span>}
                             </td>
-                            <td style={s.td}><span style={s.distBadge}>{row.distance}</span></td>
                             <td style={s.td}>
                               {row.duration !== "-"
                                 ? <span style={s.durBadge}>{row.duration}</span>
@@ -299,6 +327,9 @@ function AdminDashboard() {
                               {row.reportingManager !== "-"
                                 ? <span style={s.managerTxt}>{row.reportingManager}</span>
                                 : <span style={s.dash}>—</span>}
+                            </td>
+                            <td style={s.td}>
+                              <button style={s.deleteBtn} onClick={() => handleDelete(row._id)}>🗑️</button>
                             </td>
                           </tr>
                         ))
@@ -475,6 +506,8 @@ const s = {
   punchOutTag: { background: "#fdecea", color: "#c62828", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
   dash: { color: "#ccc", fontSize: 13 },
   coordTxt: { fontSize: 11, color: "#555", fontFamily: "monospace", maxWidth: 200, display: "inline-block", overflow: "hidden", textOverflow: "ellipsis" },
+  exportBtn: { padding: "10px 14px", background: "#26a541", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" },
+  deleteBtn: { background: "#fdecea", color: "#c62828", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", fontWeight: 700 },
   distBadge: { background: "#e8f0fe", color: "#2874F0", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
   durBadge: { background: "#f3e8ff", color: "#6d28d9", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
   cityBadge: { background: "#e0f2fe", color: "#0369a1", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
