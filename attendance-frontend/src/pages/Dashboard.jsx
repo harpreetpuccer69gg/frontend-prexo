@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import api from "../Services/api";
+
+const IDLE_TIMEOUT = 8 * 60 * 60 * 1000; // 8 hours
 
 function Dashboard() {
 	const [attendance, setAttendance] = useState([]);
@@ -181,6 +183,26 @@ function Dashboard() {
 		const m = mins % 60;
 		return h > 0 ? `${h}h ${m}m` : `${m}m`;
 	};
+
+	const idleTimer = useRef(null);
+
+	const resetIdleTimer = () => {
+		if (idleTimer.current) clearTimeout(idleTimer.current);
+		idleTimer.current = setTimeout(() => {
+			localStorage.removeItem("token");
+			window.location.href = "/login";
+		}, IDLE_TIMEOUT);
+	};
+
+	useEffect(() => {
+		const events = ["mousemove", "keydown", "click", "touchstart", "scroll"];
+		events.forEach(e => window.addEventListener(e, resetIdleTimer));
+		resetIdleTimer();
+		return () => {
+			events.forEach(e => window.removeEventListener(e, resetIdleTimer));
+			if (idleTimer.current) clearTimeout(idleTimer.current);
+		};
+	}, []);
 
 	const handleLogout = async () => {
 		try {
