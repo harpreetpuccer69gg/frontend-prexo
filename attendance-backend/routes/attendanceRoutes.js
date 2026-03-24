@@ -520,6 +520,25 @@ router.delete("/admin/:id", auth, async (req, res) => {
 });
 
 /* =========================
+   ADMIN - DELETE LEAVE
+========================= */
+
+router.delete("/admin/leave/:id", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    const Leave = require("../models/Leave");
+    const deleted = await Leave.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Record not found" });
+    res.json({ message: "Leave record deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
    EXPORT ROUTER
 ========================= */
 

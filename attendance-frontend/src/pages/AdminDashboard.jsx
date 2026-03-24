@@ -143,6 +143,16 @@ function AdminDashboard() {
     }
   };
 
+  const handleDeleteLeave = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this leave record? This cannot be undone.")) return;
+    try {
+      await api.delete(`/attendance/admin/leave/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      setLeaves(prev => prev.filter(l => l._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete leave record");
+    }
+  };
+
   const clearFilters = () => { setSearch(""); setCityFilter("All"); setDateFilter(""); };
   const hasFilter    = search || cityFilter !== "All" || dateFilter;
 
@@ -393,6 +403,7 @@ function AdminDashboard() {
                       <th style={s.th}>Reporting Manager</th>
                       <th style={s.th}>Reason</th>
                       <th style={s.th}>Applied At</th>
+                      <th style={s.th}>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -428,6 +439,9 @@ function AdminDashboard() {
                           <td style={s.td}>{l.reportingManager || <span style={s.dash}>—</span>}</td>
                           <td style={s.td}>{l.reason || <span style={s.dash}>—</span>}</td>
                           <td style={s.td}>{new Date(l.appliedAt).toLocaleString()}</td>
+                          <td style={s.td}>
+                            <button style={s.deleteBtn} onClick={() => handleDeleteLeave(l._id)}>🗑️</button>
+                          </td>
                         </tr>
                       ))
                     )}
