@@ -5,13 +5,13 @@ const CITIES = ["All", "NCR", "Kolkata", "Mumbai", "Bengaluru"];
 
 const COLS = [
   { key: "date",             label: "Date" },
+  { key: "tlName",           label: "TL Name" },
   { key: "userEmail",        label: "User Email" },
   { key: "punchIn",          label: "Punch IN" },
   { key: "punchOut",         label: "Punch OUT" },
   { key: "duration",         label: "Duration" },
   { key: "city",             label: "City" },
   { key: "storeName",        label: "Store Name" },
-  { key: "tlName",           label: "TL Name" },
   { key: "reportingManager", label: "Reporting Manager" },
 ];
 
@@ -283,6 +283,9 @@ function AdminDashboard() {
                             <td style={s.tdIdx}>{i + 1}</td>
                             <td style={s.td}><span style={s.dateTxt}>{row.date}</span></td>
                             <td style={s.td}>
+                              <span style={s.tlName}>{row.tlName !== "-" ? row.tlName : <span style={s.dash}>—</span>}</span>
+                            </td>
+                            <td style={s.td}>
                               <div style={s.emailCell}>
                                 <div style={s.avatar}>{row.userEmail?.charAt(0).toUpperCase()}</div>
                                 <span style={s.emailTxt}>{row.userEmail}</span>
@@ -309,9 +312,6 @@ function AdminDashboard() {
                                 <span style={s.storeDot} />
                                 <span>{row.storeName}</span>
                               </div>
-                            </td>
-                            <td style={s.td}>
-                              <span style={s.tlName}>{row.tlName !== "-" ? row.tlName : <span style={s.dash}>—</span>}</span>
                             </td>
                             <td style={s.td}>
                               {row.reportingManager !== "-"
