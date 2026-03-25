@@ -41,8 +41,8 @@ function AdminDashboard() {
   const [cityFilter, setCityFilter] = useState("All");
   const [dateFilter, setDateFilter] = useState("");
 
-  // Tabs
   const [activeTab, setActiveTab]   = useState("attendance");
+  const [statsCity, setStatsCity]    = useState("Pan India");
 
   // Leaves state
   const [leaves, setLeaves]               = useState([]);
@@ -124,11 +124,16 @@ function AdminDashboard() {
     return matchSearch && matchDate;
   });
 
+  const STAT_CITIES = ["Pan India", "NCR", "Kolkata", "Mumbai", "Bengaluru", "Hyderabad"];
+
+  const statsRecords = statsCity === "Pan India" ? records : records.filter(r => r.city === statsCity);
+  const statsLeaves  = statsCity === "Pan India" ? leaves  : leaves.filter(l => l.city === statsCity);
+
   const todayStr        = new Date().toLocaleDateString("en-GB");
-  const totalTLs        = [...new Set(records.map(r => r.userEmail))].length;
-  const todayVisits     = records.filter(r => r.date === todayStr).length;
-  const activeNow       = records.filter(r => r.punchOut === "-").length;
-  const todayLeaveCount = leaves.filter(l => l.date === todayStr).length;
+  const totalTLs        = [...new Set(statsRecords.map(r => r.userEmail))].length;
+  const todayVisits     = statsRecords.filter(r => r.date === todayStr).length;
+  const activeNow       = statsRecords.filter(r => r.punchOut === "-").length;
+  const todayLeaveCount = statsLeaves.filter(l => l.date === todayStr).length;
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) return;
@@ -170,6 +175,19 @@ function AdminDashboard() {
       </header>
 
       <main style={s.main} className="main-content">
+
+        {/* ── Stats City Filter ── */}
+        <div style={s.statsCityBar}>
+          {STAT_CITIES.map(c => (
+            <button
+              key={c}
+              style={statsCity === c ? s.statsCityActive : s.statsCityBtn}
+              onClick={() => setStatsCity(c)}
+            >
+              {c === "Pan India" ? "🇮🇳 Pan India" : `📍 ${c}`}
+            </button>
+          ))}
+        </div>
 
         {/* ── Stats ── */}
         <div style={s.statsRow} className="stats-row">
@@ -449,6 +467,10 @@ const s = {
   adminBadge: { background: "#e8f0fe", color: "#2874F0", padding: "6px 16px", borderRadius: 20, fontSize: 12, fontWeight: 700 },
 
   main: { padding: "28px 28px 40px", flex: 1 },
+
+  statsCityBar:   { display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" },
+  statsCityActive: { padding: "7px 16px", background: "#2874F0", color: "#fff", border: "none", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" },
+  statsCityBtn:    { padding: "7px 16px", background: "#fff", color: "#555", border: "1.5px solid #e0e0e0", borderRadius: 20, fontSize: 13, fontWeight: 500, cursor: "pointer" },
 
   statsRow: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 24 },
   statCard: { background: "#fff", borderRadius: 12, padding: "18px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", gap: 14 },
