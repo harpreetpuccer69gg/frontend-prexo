@@ -8,21 +8,18 @@ const COLS = [
   { key: "userEmail",        label: "User Email" },
   { key: "punchIn",          label: "Punch IN" },
   { key: "punchOut",         label: "Punch OUT" },
-  { key: "location",         label: "Punch Loc" },
-  { key: "fixedSite",        label: "Store Loc" },
   { key: "duration",         label: "Duration" },
   { key: "city",             label: "City" },
   { key: "storeName",        label: "Store Name" },
   { key: "tlName",           label: "TL Name" },
-  { key: "tlNo",             label: "TL No." },
   { key: "reportingManager", label: "Reporting Manager" },
 ];
 
 const toCSV = (data) => {
-  const headers = ["Date","Email","Punch In","Punch Out","Punch Loc","Store Loc","Duration","City","Store Name","TL Name","TL No","Reporting Manager"];
+  const headers = ["Date","Email","Punch In","Punch Out","Duration","City","Store Name","TL Name","Reporting Manager"];
   const rows = data.map(r => [
-    r.date, r.userEmail, r.punchIn, r.punchOut, r.location,
-    r.fixedSite, r.duration, r.city, r.storeName, r.tlName, r.tlNo, r.reportingManager
+    r.date, r.userEmail, r.punchIn, r.punchOut,
+    r.duration, r.city, r.storeName, r.tlName, r.reportingManager
   ].map(v => `"${(v ?? "").toString().replace(/"/g, '""')}"`));
   return [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
 };
@@ -298,20 +295,6 @@ function AdminDashboard() {
                                 : <span style={s.dash}>—</span>}
                             </td>
                             <td style={s.td}>
-                              {row.location !== "-" ? (
-                                <a href={`https://www.google.com/maps?q=${row.location}`} target="_blank" rel="noreferrer" style={s.mapLink}>
-                                  📍 View
-                                </a>
-                              ) : <span style={s.dash}>—</span>}
-                            </td>
-                            <td style={s.td}>
-                              {row.fixedSite !== "-" ? (
-                                <a href={`https://www.google.com/maps?q=${row.fixedSite}`} target="_blank" rel="noreferrer" style={{ ...s.mapLink, color: "#26a541", background: "#e8f5e9" }}>
-                                  🏠 View
-                                </a>
-                              ) : <span style={s.dash}>—</span>}
-                            </td>
-                            <td style={s.td}>
                               {row.duration !== "-"
                                 ? <span style={s.durBadge}>{row.duration}</span>
                                 : <span style={s.dash}>—</span>}
@@ -329,9 +312,6 @@ function AdminDashboard() {
                             </td>
                             <td style={s.td}>
                               <span style={s.tlName}>{row.tlName !== "-" ? row.tlName : <span style={s.dash}>—</span>}</span>
-                            </td>
-                            <td style={s.td}>
-                              {row.tlNo !== "-" ? row.tlNo : <span style={s.dash}>—</span>}
                             </td>
                             <td style={s.td}>
                               {row.reportingManager !== "-"
