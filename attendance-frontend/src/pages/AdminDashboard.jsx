@@ -137,8 +137,8 @@ function AdminDashboard() {
 
   // Total Records = raw count (all today punch-ins + today leaves)
   const totalRecords    = todayRecords.length + todayLeaveCount;
-  // Active TLs = unique TLs who punched in today (regardless of punchout)
-  const totalTLs        = [...new Set(todayRecords.map(r => r.userEmail))].length;
+  // Active TLs = unique TLs currently in field (punched in today, NOT punched out)
+  const totalTLs        = [...new Set(todayRecords.filter(r => !r.punchOut || r.punchOut === "-").map(r => r.userEmail))].length;
   // Today Visits = total store visits (each punch-in = 1 visit)
   const todayVisits     = todayRecords.length;
   // Currently In = unique TLs still in field (no punchout yet)
