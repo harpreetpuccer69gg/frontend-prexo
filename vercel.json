@@ -1,9 +1,4 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "attendance-frontend/dist",
-  "installCommand": "npm install",
-  "framework": "vite",
-  "rootDirectory": "attendance-frontend",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
