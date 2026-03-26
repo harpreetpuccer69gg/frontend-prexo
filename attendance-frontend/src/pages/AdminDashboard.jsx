@@ -141,8 +141,8 @@ function AdminDashboard() {
   const totalTLs        = [...new Set(todayRecords.filter(r => !r.punchOut || r.punchOut === "-").map(r => r.userEmail))].length;
   // Today Visits = total store visits (each punch-in = 1 visit)
   const todayVisits     = todayRecords.length;
-  // Currently In = unique TLs still in field (no punchout yet)
-  const activeNow       = [...new Set(todayRecords.filter(r => !r.punchOut || r.punchOut === "-").map(r => r.userEmail))].length;
+  // Currently In = total open punch-ins today (store visits still open, no punchout)
+  const activeNow       = todayRecords.filter(r => !r.punchOut || r.punchOut === "-").length;
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) return;
