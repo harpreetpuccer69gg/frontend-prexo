@@ -124,14 +124,25 @@ function AdminDashboard() {
     return matchSearch && matchCity && matchDate;
   });
 
-  const todayStr        = new Date().toLocaleDateString("en-GB");
+  // D-0 resets at 7:00 AM — before 7AM show yesterday, after 7AM show today
+  const now             = new Date();
+  const statDate        = now.getHours() < 7 ? new Date(now - 86400000) : now;
+  const todayStr        = statDate.toLocaleDateString("en-GB"); // DD/MM/YYYY
+
   const statsRecords    = cityFilter === "All" ? records : records.filter(r => r.city === cityFilter);
   const statsLeaves     = cityFilter === "All" ? leaves  : leaves.filter(l => l.city === cityFilter);
-  const totalTLs        = [...new Set(statsRecords.map(r => r.userEmail))].length;
-  const todayVisits     = statsRecords.filter(r => r.date === todayStr).length;
-  const activeNow       = statsRecords.filter(r => r.date === todayStr && r.punchOut === "-").length;
+
+  const todayRecords    = statsRecords.filter(r => r.date === todayStr);
   const todayLeaveCount = statsLeaves.filter(l => l.date === todayStr).length;
-  const totalRecords    = totalTLs + todayLeaveCount;
+
+  // Total Records = raw count (all today punch-ins + today leaves)
+  const totalRecords    = todayRecords.length + todayLeaveCount;
+  // Active TLs = unique TLs who punched in today (regardless of punchout)
+  const totalTLs        = [...new Set(todayRecords.map(r => r.userEmail))].length;
+  // Today Visits = total store visits (each punch-in = 1 visit)
+  const todayVisits     = todayRecords.length;
+  // Currently In = unique TLs still in field (no punchout yet)
+  const activeNow       = [...new Set(todayRecords.filter(r => !r.punchOut || r.punchOut === "-").map(r => r.userEmail))].length;
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) return;
