@@ -124,10 +124,12 @@ function AdminDashboard() {
     return matchSearch && matchCity && matchDate;
   });
 
-  // D-0 resets at 7:00 AM — before 7AM show yesterday, after 7AM show today
-  const now             = new Date();
-  const statDate        = now.getHours() < 7 ? new Date(now - 86400000) : now;
-  const todayStr        = statDate.toLocaleDateString("en-GB"); // DD/MM/YYYY
+  // If date filter is selected use it, else use today (resets at 7AM)
+  const now          = new Date();
+  const statDate     = now.getHours() < 7 ? new Date(now - 86400000) : now;
+  const todayStr     = dateFilter
+    ? (() => { const [y, m, d] = dateFilter.split("-"); return `${d}/${m}/${y}`; })()
+    : statDate.toLocaleDateString("en-GB");
 
   const statsRecords    = cityFilter === "All" ? records : records.filter(r => r.city === cityFilter);
   const statsLeaves     = cityFilter === "All" ? leaves  : leaves.filter(l => l.city === cityFilter);
