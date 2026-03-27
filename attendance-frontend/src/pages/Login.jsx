@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from "../assets/flogo.png";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import api from "../Services/api";
@@ -58,7 +59,7 @@ function Login() {
 
       <div style={styles.right}>
         <div style={styles.card}>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Flipkart_logo.svg/200px-Flipkart_logo.svg.png" style={styles.logo} alt="Flipkart" />
+          <img src={logo} style={styles.logo} alt="Flipkart" />
           <h1 style={styles.title}>Welcome back</h1>
           <p style={styles.subtitle}>Sign in with your Flipkart Google account</p>
 
