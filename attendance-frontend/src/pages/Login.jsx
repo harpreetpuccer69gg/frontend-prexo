@@ -58,7 +58,7 @@ function Login() {
 
       <div style={styles.right}>
         <div style={styles.card}>
-          <img src="https://logos-world.net/wp-content/uploads/2020/11/Flipkart-Emblem.png" style={styles.logo} alt="Flipkart" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Flipkart_logo.svg/200px-Flipkart_logo.svg.png" style={styles.logo} alt="Flipkart" />
           <h1 style={styles.title}>Welcome back</h1>
           <p style={styles.subtitle}>Sign in with your Flipkart Google account</p>
 
