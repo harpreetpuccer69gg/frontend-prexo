@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import api from "../Services/api";
-import logo from "../assets/flipkart.png";
+import logo from "../assets/flipkart.png.png";
 
 function Login() {
   const [loading, setLoading] = useState(false);
