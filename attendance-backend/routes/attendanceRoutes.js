@@ -46,29 +46,18 @@ message: "You are not near any store"
 });
 }
 
-/* CHECK SAME STORE TODAY */
+/* CHECK IF ALREADY PUNCHED IN (open punch-in exists) */
 
-const today = new Date();
-today.setHours(0,0,0,0);
-
-const existingVisit = await Attendance.findOne({
+const openPunch = await Attendance.findOne({
 tlEmail: email,
-storeId: nearestStore._id,
-checkInTime: { $gte: today }
+checkOutTime: null
 });
 
-if (existingVisit) {
+if (openPunch) {
 return res.status(400).json({
-message: "You already visited this store today"
+message: "You already have an open punch-in. Please punch out first."
 });
 }
-
-/* AUTO CLOSE OLD ATTENDANCE */
-
-await Attendance.updateMany(
-{ tlEmail: email, checkOutTime: null },
-{ $set: { checkOutTime: new Date() } }
-);
 
 /* VISIT COUNT */
 
