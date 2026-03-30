@@ -54,9 +54,17 @@ checkOutTime: null
 });
 
 if (openPunch) {
+const hoursOpen = (new Date() - openPunch.checkInTime) / 3600000;
+if (hoursOpen < 8) {
 return res.status(400).json({
 message: "You already have an open punch-in. Please punch out first."
 });
+}
+// expired (>8hrs) — auto close silently, allow new punch-in
+await Attendance.updateOne(
+{ _id: openPunch._id },
+{ $set: { checkOutTime: null } }
+);
 }
 
 /* VISIT COUNT */
@@ -134,6 +142,15 @@ checkOutTime:null
 if(!openAttendance){
 return res.status(400).json({
 message:"No open punch-in found"
+});
+}
+
+/* BLOCK PUNCH OUT IF OLDER THAN 8 HOURS */
+
+const hoursOpen = (new Date() - openAttendance.checkInTime) / 3600000;
+if (hoursOpen > 8) {
+return res.status(400).json({
+message: "Punch out window expired. You can only punch out within 8 hours of punch in."
 });
 }
 
