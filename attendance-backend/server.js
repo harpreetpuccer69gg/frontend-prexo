@@ -10,16 +10,18 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
+  .split(",")
+  .map(o => o.trim())
+  .filter(Boolean);
+
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, Render health checks)
     if (!origin) return callback(null, true);
-    // Allow all Vercel deployments and localhost
-    const allowed = [
-      /\.vercel\.app$/,
-      /^http:\/\/localhost/
-    ];
-    const isAllowed = allowed.some(pattern => pattern.test(origin));
+    const isAllowed =
+      /\.vercel\.app$/.test(origin) ||
+      /^http:\/\/localhost/.test(origin) ||
+      ALLOWED_ORIGINS.includes(origin);
     if (isAllowed) return callback(null, true);
     return callback(new Error("Not allowed by CORS"));
   },
