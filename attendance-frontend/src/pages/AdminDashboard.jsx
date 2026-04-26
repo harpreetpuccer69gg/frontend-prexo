@@ -51,10 +51,11 @@ function AdminDashboard() {
   const [leaveDateFilter, setLeaveDateFilter] = useState("");
 
   // Not Reported state
-  const [notReported, setNotReported]           = useState([]);
+  const [notReported, setNotReported]               = useState([]);
   const [notReportedLoading, setNotReportedLoading] = useState(false);
   const [notReportedError, setNotReportedError]     = useState("");
   const [notReportedSearch, setNotReportedSearch]   = useState("");
+  const [notReportedDate, setNotReportedDate]       = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -89,11 +90,14 @@ function AdminDashboard() {
     setLeavesLoading(false);
   };
 
-  const fetchNotReported = async () => {
+  const fetchNotReported = async (date = "") => {
     setNotReportedLoading(true);
     setNotReportedError("");
     try {
-      const res = await api.get("/attendance/admin/not-reported", {
+      const url = date
+        ? `/attendance/admin/not-reported?date=${date}`
+        : "/attendance/admin/not-reported";
+      const res = await api.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotReported(res.data);
@@ -104,6 +108,8 @@ function AdminDashboard() {
   };
 
   useEffect(() => { fetchAll(); fetchLeaves(); fetchNotReported(); }, []);
+
+  useEffect(() => { fetchNotReported(notReportedDate); }, [notReportedDate]);
 
   /* ── Attendance filter ── */
   useEffect(() => {
@@ -238,7 +244,7 @@ function AdminDashboard() {
           {hasFilter && (
             <button style={s.clearBtn} onClick={clearFilters}>✕ Clear</button>
           )}
-          <button style={s.refreshBtn} onClick={() => { fetchAll(); fetchLeaves(); fetchNotReported(); }}>↻ Refresh</button>
+          <button style={s.refreshBtn} onClick={() => { fetchAll(); fetchLeaves(); fetchNotReported(notReportedDate); }}>↻ Refresh</button>
         </div>
 
         {/* ── Stats ── */}
@@ -512,8 +518,15 @@ function AdminDashboard() {
                 value={notReportedSearch}
                 onChange={e => setNotReportedSearch(e.target.value)}
               />
-              {notReportedSearch && (
-                <button style={s.clearBtn} onClick={() => setNotReportedSearch("")}>✕ Clear</button>
+              <input
+                style={s.dateInput}
+                type="date"
+                value={notReportedDate}
+                onChange={e => setNotReportedDate(e.target.value)}
+                title="Filter by date"
+              />
+              {(notReportedSearch || notReportedDate) && (
+                <button style={s.clearBtn} onClick={() => { setNotReportedSearch(""); setNotReportedDate(""); }}>✕ Clear</button>
               )}
             </div>
 
