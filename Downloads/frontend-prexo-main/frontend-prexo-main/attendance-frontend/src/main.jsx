@@ -1,0 +1,21 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import './index.css'
+import App from './App.jsx'
+
+// Keep Render backend alive — ping every 4 minutes to prevent cold start
+const BACKEND = import.meta.env.VITE_API_URL || "http://localhost:5005/api";
+const pingURL = BACKEND.replace(/\/api$/, "/");
+fetch(pingURL).catch(() => {});
+setInterval(() => fetch(pingURL).catch(() => {}), 4 * 60 * 1000);
+
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <App />
+    </GoogleOAuthProvider>
+  </StrictMode>,
+)
