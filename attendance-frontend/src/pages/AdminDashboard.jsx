@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../Services/api";
 
-const CITIES = ["All", "NCR", "Kolkata", "Mumbai", "Bengaluru"];
+const CITIES = ["All", "NCR", "Kolkata", "Mumbai", "Bengaluru", "Hyderabad"];
 
 const COLS = [
   { key: "date",             label: "Date" },
@@ -41,8 +41,7 @@ function AdminDashboard() {
   const [cityFilter, setCityFilter] = useState("All");
   const [dateFilter, setDateFilter] = useState("");
 
-  const [activeTab, setActiveTab]   = useState("attendance");
-  const [statsCity, setStatsCity]    = useState("Pan India");
+  const [activeTab, setActiveTab] = useState("attendance");
 
   // Leaves state
   const [leaves, setLeaves]               = useState([]);
@@ -50,6 +49,12 @@ function AdminDashboard() {
   const [leavesError, setLeavesError]     = useState("");
   const [leaveSearch, setLeaveSearch]     = useState("");
   const [leaveDateFilter, setLeaveDateFilter] = useState("");
+
+  // Not Reported state
+  const [notReported, setNotReported]           = useState([]);
+  const [notReportedLoading, setNotReportedLoading] = useState(false);
+  const [notReportedError, setNotReportedError]     = useState("");
+  const [notReportedSearch, setNotReportedSearch]   = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -84,9 +89,23 @@ function AdminDashboard() {
     setLeavesLoading(false);
   };
 
-  useEffect(() => { fetchAll(); fetchLeaves(); }, []);
+  const fetchNotReported = async () => {
+    setNotReportedLoading(true);
+    setNotReportedError("");
+    try {
+      const res = await api.get("/attendance/admin/not-reported", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setNotReported(res.data);
+    } catch (err) {
+      setNotReportedError(err.response?.data?.message || "Failed to load data");
+    }
+    setNotReportedLoading(false);
+  };
 
-  /* ── Attendance filter (unchanged) ── */
+  useEffect(() => { fetchAll(); fetchLeaves(); fetchNotReported(); }, []);
+
+  /* ── Attendance filter ── */
   useEffect(() => {
     let data = [...records];
     if (search.trim()) {
@@ -116,24 +135,36 @@ function AdminDashboard() {
       l.tlEmail?.toLowerCase().includes(q) ||
       l.tlName?.toLowerCase().includes(q) ||
       l.reportingManager?.toLowerCase().includes(q);
+    const matchCity = cityFilter === "All" || l.city === cityFilter;
     let matchDate = true;
     if (leaveDateFilter) {
       const [y, m, d] = leaveDateFilter.split("-");
       matchDate = l.date === `${d}/${m}/${y}`;
     }
-    return matchSearch && matchDate;
+    return matchSearch && matchCity && matchDate;
   });
 
-  const STAT_CITIES = ["Pan India", "NCR", "Kolkata", "Mumbai", "Bengaluru", "Hyderabad"];
+  // If date filter is selected use it, else use today (resets at 7AM)
+  const now          = new Date();
+  const statDate     = now.getHours() < 7 ? new Date(now - 86400000) : now;
+  const todayStr     = dateFilter
+    ? (() => { const [y, m, d] = dateFilter.split("-"); return `${d}/${m}/${y}`; })()
+    : statDate.toLocaleDateString("en-GB");
 
-  const statsRecords = statsCity === "Pan India" ? records : records.filter(r => r.city === statsCity);
-  const statsLeaves  = statsCity === "Pan India" ? leaves  : leaves.filter(l => l.city === statsCity);
+  const statsRecords    = cityFilter === "All" ? records : records.filter(r => r.city === cityFilter);
+  const statsLeaves     = cityFilter === "All" ? leaves  : leaves.filter(l => l.city === cityFilter);
 
-  const todayStr        = new Date().toLocaleDateString("en-GB");
-  const totalTLs        = [...new Set(statsRecords.map(r => r.userEmail))].length;
-  const todayVisits     = statsRecords.filter(r => r.date === todayStr).length;
-  const activeNow       = statsRecords.filter(r => r.punchOut === "-").length;
+  const todayRecords    = statsRecords.filter(r => r.date === todayStr);
   const todayLeaveCount = statsLeaves.filter(l => l.date === todayStr).length;
+
+  // Total Records = raw count (all today punch-ins + today leaves)
+  const totalRecords    = todayRecords.length + todayLeaveCount;
+  // Active TLs = unique TLs currently in field (punched in today, NOT punched out)
+  const totalTLs        = [...new Set(todayRecords.filter(r => !r.punchOut || r.punchOut === "-").map(r => r.userEmail))].length;
+  // Today Visits = total store visits (each punch-in = 1 visit)
+  const todayVisits     = todayRecords.length;
+  // Currently In = total open punch-ins today (store visits still open, no punchout)
+  const activeNow       = todayRecords.filter(r => !r.punchOut || r.punchOut === "-").length;
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) return;
@@ -153,6 +184,16 @@ function AdminDashboard() {
     } catch (err) {
       alert(err.response?.data?.message || "Failed to delete leave record");
     }
+  };
+
+  const to12hr = (t) => {
+    if (!t || t === "-") return t;
+    const [hStr, mStr] = t.split(":");
+    const h = parseInt(hStr, 10);
+    if (isNaN(h)) return t;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const h12  = h % 12 || 12;
+    return `${h12}:${mStr} ${ampm}`;
   };
 
   const clearFilters = () => { setSearch(""); setCityFilter("All"); setDateFilter(""); };
@@ -176,23 +217,38 @@ function AdminDashboard() {
 
       <main style={s.main} className="main-content">
 
-        {/* ── Stats City Filter ── */}
-        <div style={s.statsCityBar}>
-          {STAT_CITIES.map(c => (
-            <button
-              key={c}
-              style={statsCity === c ? s.statsCityActive : s.statsCityBtn}
-              onClick={() => setStatsCity(c)}
-            >
-              {c === "Pan India" ? "🇮🇳 Pan India" : `📍 ${c}`}
-            </button>
-          ))}
+        {/* ── Unified Filter Bar ── */}
+        <div style={s.filterBar}>
+          <input
+            style={s.searchInput}
+            placeholder="🔍  Search by email, TL name, store or manager..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+          <select style={s.select} value={cityFilter} onChange={e => setCityFilter(e.target.value)}>
+            {CITIES.map(c => <option key={c} value={c}>{c === "All" ? "🇮🇳 All Cities" : `📍 ${c}`}</option>)}
+          </select>
+          <input
+            style={s.dateInput}
+            type="date"
+            value={dateFilter}
+            onChange={e => setDateFilter(e.target.value)}
+            title="Filter by date"
+          />
+          {hasFilter && (
+            <button style={s.clearBtn} onClick={clearFilters}>✕ Clear</button>
+          )}
+          <button style={s.refreshBtn} onClick={() => { fetchAll(); fetchLeaves(); fetchNotReported(); }}>↻ Refresh</button>
         </div>
 
         {/* ── Stats ── */}
+        <div style={s.statsHeaderRow}>
+          <span style={s.statsLabel}>Live Stats</span>
+          <span style={s.d0Badge}>D-0 · Today</span>
+        </div>
         <div style={s.statsRow} className="stats-row">
           {[
-            { label: "Total Records",    value: records.length,  icon: "📋", color: "#2874F0", bg: "#e8f0fe" },
+            { label: "Total Records",    value: totalRecords,    icon: "📋", color: "#2874F0", bg: "#e8f0fe" },
             { label: "Active TLs",       value: totalTLs,        icon: "👥", color: "#26a541", bg: "#e8f5e9" },
             { label: "Today's Visits",   value: todayVisits,     icon: "📅", color: "#FB641B", bg: "#fff3e0" },
             { label: "Currently In",     value: activeNow,       icon: "📍", color: "#6d28d9", bg: "#f3e8ff" },
@@ -223,36 +279,18 @@ function AdminDashboard() {
             🏖️ Leaves & Week Offs
             {todayLeaveCount > 0 && <span style={s.tabBadge}>{todayLeaveCount}</span>}
           </button>
+          <button
+            style={activeTab === "not-reported" ? s.tabActive : s.tabInactive}
+            onClick={() => setActiveTab("not-reported")}
+          >
+            ⚠️ Not Reported
+            {notReported.length > 0 && <span style={{ ...s.tabBadge, background: "#c62828" }}>{notReported.length}</span>}
+          </button>
         </div>
 
-        {/* ── Attendance Tab (100% unchanged) ── */}
+        {/* ── Attendance Tab ── */}
         {activeTab === "attendance" && (
           <>
-            {/* ── Filters ── */}
-            <div style={s.filterBar}>
-              <input
-                style={s.searchInput}
-                placeholder="🔍  Search by email, TL name, store or manager..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-              />
-              <select style={s.select} value={cityFilter} onChange={e => setCityFilter(e.target.value)}>
-                {CITIES.map(c => <option key={c} value={c}>{c === "All" ? "All Cities" : c}</option>)}
-              </select>
-              <input
-                style={s.dateInput}
-                type="date"
-                value={dateFilter}
-                onChange={e => setDateFilter(e.target.value)}
-                title="Filter by date"
-              />
-              {hasFilter && (
-                <button style={s.clearBtn} onClick={clearFilters}>✕ Clear</button>
-              )}
-              <button style={s.refreshBtn} onClick={fetchAll}>↻ Refresh</button>
-              <button style={s.exportBtn} onClick={() => downloadCSV(filtered, `attendance-filtered-${Date.now()}.csv`)}>⬇ Filtered</button>
-              <button style={s.exportBtn} onClick={() => downloadCSV(records, `attendance-all-${Date.now()}.csv`)}>⬇ All</button>
-            </div>
 
             {/* ── Table Card ── */}
             <div style={s.tableCard}>
@@ -261,7 +299,11 @@ function AdminDashboard() {
                   <h3 style={s.tableTitle}>Attendance Records</h3>
                   <p style={s.tableSubtitle}>All TL punch-in/out data from the field</p>
                 </div>
-                <span style={s.tableCount}>{filtered.length} / {records.length} records</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <span style={s.tableCount}>{filtered.length} / {records.length} records</span>
+                  <button style={s.exportBtn} onClick={() => downloadCSV(filtered, `attendance-filtered-${Date.now()}.csv`)}>⬇ Filtered</button>
+                  <button style={s.exportBtn} onClick={() => downloadCSV(records, `attendance-all-${Date.now()}.csv`)}>⬇ All</button>
+                </div>
               </div>
 
               {loading ? (
@@ -309,10 +351,10 @@ function AdminDashboard() {
                                 <span style={s.emailTxt}>{row.userEmail}</span>
                               </div>
                             </td>
-                            <td style={s.td}><span style={s.punchInTag}>{row.punchIn}</span></td>
+                            <td style={s.td}><span style={s.punchInTag}>{to12hr(row.punchIn)}</span></td>
                             <td style={s.td}>
                               {row.punchOut !== "-"
-                                ? <span style={s.punchOutTag}>{row.punchOut}</span>
+                                ? <span style={s.punchOutTag}>{to12hr(row.punchOut)}</span>
                                 : <span style={s.dash}>—</span>}
                             </td>
                             <td style={s.td}>
@@ -379,7 +421,9 @@ function AdminDashboard() {
               {(leaveSearch || leaveDateFilter) && (
                 <button style={s.clearBtn} onClick={() => { setLeaveSearch(""); setLeaveDateFilter(""); }}>✕ Clear</button>
               )}
-              <button style={s.refreshBtn} onClick={fetchLeaves}>↻ Refresh</button>
+              {cityFilter !== "All" && (
+                <span style={s.cityBadge}>📍 {cityFilter}</span>
+              )}
             </div>
 
             {leavesLoading ? (
@@ -450,6 +494,94 @@ function AdminDashboard() {
           </div>
         )}
 
+        {/* ── Not Reported Tab ── */}
+        {activeTab === "not-reported" && (
+          <div style={s.tableCard}>
+            <div style={s.tableTop}>
+              <div>
+                <h3 style={s.tableTitle}>Not Reported Today</h3>
+                <p style={s.tableSubtitle}>TLs who have not punched in or applied leave today</p>
+              </div>
+              <span style={s.tableCount}>{notReported.length} TLs</span>
+            </div>
+
+            <div style={{ ...s.filterBar, padding: "12px 24px", marginBottom: 0, borderBottom: "1px solid #f0f0f0" }}>
+              <input
+                style={s.searchInput}
+                placeholder="🔍  Search by name, email or manager..."
+                value={notReportedSearch}
+                onChange={e => setNotReportedSearch(e.target.value)}
+              />
+              {notReportedSearch && (
+                <button style={s.clearBtn} onClick={() => setNotReportedSearch("")}>✕ Clear</button>
+              )}
+            </div>
+
+            {notReportedLoading ? (
+              <div style={s.centerMsg}><div style={s.spinner} /><p style={s.msgTxt}>Loading...</p></div>
+            ) : notReportedError ? (
+              <div style={s.centerMsg}><p style={s.errTxt}>⚠️ {notReportedError}</p><button style={s.retryBtn} onClick={fetchNotReported}>Retry</button></div>
+            ) : (
+              <div style={s.tableWrap}>
+                <table style={{ ...s.table, minWidth: 700 }}>
+                  <thead>
+                    <tr>
+                      <th style={s.thIdx}>#</th>
+                      <th style={s.th}>TL Name</th>
+                      <th style={s.th}>TL Email</th>
+                      <th style={s.th}>City</th>
+                      <th style={s.th}>Phone</th>
+                      <th style={s.th}>Reporting Manager</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {notReported.filter(r => {
+                      const q = notReportedSearch.toLowerCase();
+                      return !q ||
+                        r.tlName?.toLowerCase().includes(q) ||
+                        r.tlEmail?.toLowerCase().includes(q) ||
+                        r.reportingManager?.toLowerCase().includes(q);
+                    }).length === 0 ? (
+                      <tr>
+                        <td colSpan={6} style={s.emptyCell}>
+                          <div style={s.emptyState}>
+                            <span style={{ fontSize: 40 }}>✅</span>
+                            <p style={s.emptyTxt}>All TLs have reported today</p>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      notReported
+                        .filter(r => {
+                          const q = notReportedSearch.toLowerCase();
+                          return !q ||
+                            r.tlName?.toLowerCase().includes(q) ||
+                            r.tlEmail?.toLowerCase().includes(q) ||
+                            r.reportingManager?.toLowerCase().includes(q);
+                        })
+                        .map((r, i) => (
+                          <tr key={r.tlEmail} style={i % 2 === 0 ? s.trEven : s.trOdd}>
+                            <td style={s.tdIdx}>{i + 1}</td>
+                            <td style={s.td}><span style={s.tlName}>{r.tlName}</span></td>
+                            <td style={s.td}>
+                              <div style={s.emailCell}>
+                                <div style={s.avatar}>{r.tlEmail?.charAt(0).toUpperCase()}</div>
+                                <span style={s.emailTxt}>{r.tlEmail}</span>
+                              </div>
+                            </td>
+                            <td style={s.td}>{r.city !== "-" ? <span style={s.cityBadge}>{r.city}</span> : <span style={s.dash}>—</span>}</td>
+                            <td style={s.td}>{r.phone !== "-" ? r.phone : <span style={s.dash}>—</span>}</td>
+                            <td style={s.td}>{r.reportingManager !== "-" ? <span style={s.managerTxt}>{r.reportingManager}</span> : <span style={s.dash}>—</span>}</td>
+                          </tr>
+                        ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
       </main>
     </div>
   );
@@ -468,9 +600,9 @@ const s = {
 
   main: { padding: "28px 28px 40px", flex: 1 },
 
-  statsCityBar:   { display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" },
-  statsCityActive: { padding: "7px 16px", background: "#2874F0", color: "#fff", border: "none", borderRadius: 20, fontSize: 13, fontWeight: 700, cursor: "pointer" },
-  statsCityBtn:    { padding: "7px 16px", background: "#fff", color: "#555", border: "1.5px solid #e0e0e0", borderRadius: 20, fontSize: 13, fontWeight: 500, cursor: "pointer" },
+  statsHeaderRow: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
+  statsLabel:     { fontSize: 15, fontWeight: 700, color: "#212121" },
+  d0Badge:        { background: "#e8f5e9", color: "#2e7d32", padding: "3px 12px", borderRadius: 20, fontSize: 12, fontWeight: 700, letterSpacing: 0.5 },
 
   statsRow: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 24 },
   statCard: { background: "#fff", borderRadius: 12, padding: "18px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", gap: 14 },
