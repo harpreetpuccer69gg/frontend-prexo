@@ -5,6 +5,7 @@ const Store = require("../models/Store");
 const Attendance = require("../models/Attendance");
 const auth = require("../middleware/auth");
 
+const IST = "Asia/Kolkata";
 
 /* =========================
    PUNCH IN ROUTE
@@ -45,29 +46,26 @@ message: "You are not near any store"
 });
 }
 
-/* CHECK SAME STORE TODAY */
+/* CHECK IF ALREADY PUNCHED IN (open punch-in exists) */
 
-const today = new Date();
-today.setHours(0,0,0,0);
-
-const existingVisit = await Attendance.findOne({
+const openPunch = await Attendance.findOne({
 tlEmail: email,
-storeId: nearestStore._id,
-checkInTime: { $gte: today }
+checkOutTime: null
 });
 
-if (existingVisit) {
+if (openPunch) {
+const hoursOpen = (new Date() - openPunch.checkInTime) / 3600000;
+if (hoursOpen < 12) {
 return res.status(400).json({
-message: "You already visited this store today"
+message: "You already have an open punch-in. Please punch out first."
 });
 }
-
-/* AUTO CLOSE OLD ATTENDANCE */
-
-await Attendance.updateMany(
-{ tlEmail: email, checkOutTime: null },
-{ $set: { checkOutTime: new Date() } }
+// expired (>8hrs) — auto close silently, allow new punch-in
+await Attendance.updateOne(
+{ _id: openPunch._id },
+{ $set: { checkOutTime: null } }
 );
+}
 
 /* VISIT COUNT */
 
@@ -147,6 +145,15 @@ message:"No open punch-in found"
 });
 }
 
+/* BLOCK PUNCH OUT IF OLDER THAN 8 HOURS */
+
+const hoursOpen = (new Date() - openAttendance.checkInTime) / 3600000;
+if (hoursOpen > 12) {
+return res.status(400).json({
+message: "Punch out window expired. You can only punch out within 8 hours of punch in."
+});
+}
+
 
 /* GET STORE */
 
@@ -218,7 +225,6 @@ return res.status(403).json({ message: "Access denied" });
 
 const User = require("../models/User");
 
-// Build a map of email -> user profile for quick lookup
 const users = await User.find({}).select("name email city phone reportingManager role");
 const userMap = {};
 users.forEach(u => { userMap[u.email] = u; });
@@ -243,10 +249,10 @@ const checkOutLng = r.checkOutLocation ? r.checkOutLocation.longitude : null;
 
 return {
 _id: r._id,
-date: r.checkInTime ? new Date(r.checkInTime).toLocaleDateString("en-GB") : "-",
+date: r.checkInTime ? new Date(r.checkInTime).toLocaleDateString("en-GB", { timeZone: IST }) : "-",
 userEmail: r.tlEmail,
-punchIn: r.checkInTime ? new Date(r.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "-",
-punchOut: r.checkOutTime ? new Date(r.checkOutTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "-",
+punchIn: r.checkInTime ? new Date(r.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: IST }) : "-",
+punchOut: r.checkOutTime ? new Date(r.checkOutTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: IST }) : "-",
 location: checkInLat && checkInLng ? `${checkInLat},${checkInLng}` : "-",
 fixedSite: checkOutLat && checkOutLng ? `${checkOutLat},${checkOutLng}` : "-",
 distance: r.distanceMeters ? `${r.distanceMeters}m OK` : "100m OK",
@@ -285,7 +291,7 @@ let timeSpent = null;
 if(r.checkOutTime){
 timeSpent = Math.round(
 (r.checkOutTime - r.checkInTime) / 60000
-); // minutes
+);
 }
 
 return {
@@ -431,7 +437,7 @@ router.post("/apply-leave", auth, async (req, res) => {
       return res.status(400).json({ message: "leaveType must be 'leave' or 'weekoff'" });
     }
 
-    const today = new Date().toLocaleDateString("en-GB"); // DD/MM/YYYY
+    const today = new Date().toLocaleDateString("en-GB", { timeZone: IST });
 
     const existing = await Leave.findOne({ tlEmail: email, date: today });
     if (existing) {
@@ -532,6 +538,52 @@ router.delete("/admin/leave/:id", auth, async (req, res) => {
     const deleted = await Leave.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ message: "Record not found" });
     res.json({ message: "Leave record deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - NOT REPORTED TODAY
+========================= */
+
+router.get("/admin/not-reported", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const User  = require("../models/User");
+    const Leave = require("../models/Leave");
+
+    const today = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+
+    const now   = new Date();
+    const start = new Date(now);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(now);
+    end.setHours(23, 59, 59, 999);
+
+    const [allTLs, todayAttendance, todayLeaves] = await Promise.all([
+      User.find({ role: "tl" }).select("name email city phone reportingManager"),
+      Attendance.distinct("tlEmail", { checkInTime: { $gte: start, $lte: end } }),
+      Leave.distinct("tlEmail", { date: today })
+    ]);
+
+    const reportedEmails = new Set([...todayAttendance, ...todayLeaves]);
+
+    const notReported = allTLs
+      .filter(u => !reportedEmails.has(u.email))
+      .map(u => ({
+        tlName:           u.name            || "-",
+        tlEmail:          u.email           || "-",
+        city:             u.city            || "-",
+        phone:            u.phone           || "-",
+        reportingManager: u.reportingManager || "-"
+      }));
+
+    res.json(notReported);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
