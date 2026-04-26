@@ -545,8 +545,10 @@ router.delete("/admin/leave/:id", auth, async (req, res) => {
 });
 
 /* =========================
-   ADMIN - NOT REPORTED TODAY
+   ADMIN - NOT REPORTED
 ========================= */
+
+const TEST_EMAILS = ["hs8103536@gmail.com", "saiketramteke07@gmail.com"];
 
 router.get("/admin/not-reported", auth, async (req, res) => {
   try {
@@ -557,24 +559,30 @@ router.get("/admin/not-reported", auth, async (req, res) => {
     const User  = require("../models/User");
     const Leave = require("../models/Leave");
 
-    const today = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+    // Accept ?date=YYYY-MM-DD or default to today
+    let dateStr;
+    if (req.query.date) {
+      const [y, m, d] = req.query.date.split("-");
+      dateStr = `${d}/${m}/${y}`; // convert to DD/MM/YYYY for Leave model
+    } else {
+      dateStr = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+    }
 
-    const now   = new Date();
-    const start = new Date(now);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(now);
-    end.setHours(23, 59, 59, 999);
+    // Build start/end for Attendance query
+    const [dd, mm, yyyy] = dateStr.split("/");
+    const start = new Date(`${yyyy}-${mm}-${dd}T00:00:00+05:30`);
+    const end   = new Date(`${yyyy}-${mm}-${dd}T23:59:59+05:30`);
 
-    const [allTLs, todayAttendance, todayLeaves] = await Promise.all([
+    const [allTLs, dayAttendance, dayLeaves] = await Promise.all([
       User.find({ role: "tl" }).select("name email city phone reportingManager"),
       Attendance.distinct("tlEmail", { checkInTime: { $gte: start, $lte: end } }),
-      Leave.distinct("tlEmail", { date: today })
+      Leave.distinct("tlEmail", { date: dateStr })
     ]);
 
-    const reportedEmails = new Set([...todayAttendance, ...todayLeaves]);
+    const reportedEmails = new Set([...dayAttendance, ...dayLeaves]);
 
     const notReported = allTLs
-      .filter(u => !reportedEmails.has(u.email))
+      .filter(u => !reportedEmails.has(u.email) && !TEST_EMAILS.includes(u.email))
       .map(u => ({
         tlName:           u.name            || "-",
         tlEmail:          u.email           || "-",
