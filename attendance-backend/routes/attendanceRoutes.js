@@ -563,35 +563,48 @@ router.get("/admin/not-reported", auth, async (req, res) => {
     let dateStr;
     if (req.query.date) {
       const [y, m, d] = req.query.date.split("-");
-      dateStr = `${d}/${m}/${y}`; // convert to DD/MM/YYYY for Leave model
+      dateStr = `${d}/${m}/${y}`;
     } else {
       dateStr = new Date().toLocaleDateString("en-GB", { timeZone: IST });
     }
 
-    // Build start/end for Attendance query
     const [dd, mm, yyyy] = dateStr.split("/");
     const start = new Date(`${yyyy}-${mm}-${dd}T00:00:00+05:30`);
     const end   = new Date(`${yyyy}-${mm}-${dd}T23:59:59+05:30`);
 
-    const [allTLs, dayAttendance, dayLeaves] = await Promise.all([
-      User.find({ role: "tl" }).select("name email city phone reportingManager"),
-      Attendance.distinct("tlEmail", { checkInTime: { $gte: start, $lte: end } }),
+    const city = req.query.city; // optional city filter
+
+    const userQuery = { role: "tl" };
+    if (city && city !== "All") userQuery.city = city;
+
+    const [allTLs, dayAttendanceRaw, dayLeaves] = await Promise.all([
+      User.find(userQuery).select("name email city phone reportingManager"),
+      Attendance.aggregate([
+        { $match: { checkInTime: { $gte: start, $lte: end } } },
+        { $group: { _id: "$tlEmail", visitCount: { $sum: 1 } } }
+      ]),
       Leave.distinct("tlEmail", { date: dateStr })
     ]);
 
-    const reportedEmails = new Set([...dayAttendance, ...dayLeaves]);
+    // Map email -> visitCount
+    const visitMap = {};
+    dayAttendanceRaw.forEach(r => { visitMap[r._id] = r.visitCount; });
 
-    const notReported = allTLs
-      .filter(u => !reportedEmails.has(u.email) && !TEST_EMAILS.includes(u.email))
+    const leaveSet = new Set(dayLeaves);
+
+    const result = allTLs
+      .filter(u => !TEST_EMAILS.includes(u.email) && !leaveSet.has(u.email))
+      .filter(u => (visitMap[u.email] || 0) < 2)
       .map(u => ({
         tlName:           u.name            || "-",
         tlEmail:          u.email           || "-",
         city:             u.city            || "-",
         phone:            u.phone           || "-",
-        reportingManager: u.reportingManager || "-"
+        reportingManager: u.reportingManager || "-",
+        visitCount:       visitMap[u.email]  || 0
       }));
 
-    res.json(notReported);
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
