@@ -545,6 +545,132 @@ router.delete("/admin/leave/:id", auth, async (req, res) => {
 });
 
 /* =========================
+   ADMIN - TL PERFORMANCE SUMMARY
+========================= */
+
+router.get("/admin/tl-performance", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
+
+    const User = require("../models/User");
+    const period = req.query.period || "weekly"; // weekly | monthly
+    const city   = req.query.city || "";
+
+    const now   = new Date();
+    const start = new Date();
+    if (period === "weekly") start.setDate(now.getDate() - 7);
+    else start.setDate(now.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+
+    const userQuery = { role: "tl" };
+    if (city && city !== "All") userQuery.city = city;
+    const allTLs = await User.find(userQuery).select("name email city phone reportingManager");
+    const tlEmails = allTLs.map(u => u.email);
+
+    const records = await Attendance.find({
+      tlEmail: { $in: tlEmails },
+      checkInTime: { $gte: start },
+      checkOutTime: { $ne: null }
+    });
+
+    const tlMap = {};
+    allTLs.forEach(u => {
+      tlMap[u.email] = {
+        tlName: u.name || "-",
+        tlEmail: u.email,
+        city: u.city || "-",
+        phone: u.phone || "-",
+        reportingManager: u.reportingManager || "-",
+        totalVisits: 0,
+        totalMinutes: 0,
+        storeBreakdown: {}
+      };
+    });
+
+    records.forEach(r => {
+      if (!tlMap[r.tlEmail]) return;
+      const mins = (r.checkOutTime - r.checkInTime) / 60000;
+      tlMap[r.tlEmail].totalVisits += 1;
+      tlMap[r.tlEmail].totalMinutes += mins;
+      const store = r.storeName || "Unknown";
+      if (!tlMap[r.tlEmail].storeBreakdown[store]) {
+        tlMap[r.tlEmail].storeBreakdown[store] = { visits: 0, totalMins: 0 };
+      }
+      tlMap[r.tlEmail].storeBreakdown[store].visits += 1;
+      tlMap[r.tlEmail].storeBreakdown[store].totalMins += mins;
+    });
+
+    const days = period === "weekly" ? 7 : 30;
+    const result = Object.values(tlMap).map(t => {
+      const avgMinsPerVisit = t.totalVisits > 0 ? Math.round(t.totalMinutes / t.totalVisits) : 0;
+      const avgVisitsPerDay = (t.totalVisits / days).toFixed(1);
+      const stores = Object.entries(t.storeBreakdown).map(([name, d]) => ({
+        storeName: name,
+        visits: d.visits,
+        avgMins: Math.round(d.totalMins / d.visits)
+      })).sort((a, b) => b.visits - a.visits);
+      return {
+        tlName: t.tlName, tlEmail: t.tlEmail, city: t.city,
+        phone: t.phone, reportingManager: t.reportingManager,
+        totalVisits: t.totalVisits,
+        avgMinsPerVisit,
+        avgVisitsPerDay,
+        stores
+      };
+    }).sort((a, b) => b.totalVisits - a.totalVisits);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - STORE HEATMAP
+========================= */
+
+router.get("/admin/store-heatmap", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
+
+    const period = req.query.period || "weekly";
+    const now    = new Date();
+    const start  = new Date();
+    if (period === "weekly") start.setDate(now.getDate() - 7);
+    else start.setDate(now.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+
+    const records = await Attendance.find({
+      checkInTime: { $gte: start },
+      checkOutTime: { $ne: null }
+    });
+
+    const storeMap = {};
+    records.forEach(r => {
+      const store = r.storeName || "Unknown";
+      if (!storeMap[store]) storeMap[store] = { totalVisits: 0, totalMins: 0, uniqueTLs: new Set() };
+      const mins = (r.checkOutTime - r.checkInTime) / 60000;
+      storeMap[store].totalVisits += 1;
+      storeMap[store].totalMins   += mins;
+      storeMap[store].uniqueTLs.add(r.tlEmail);
+    });
+
+    const result = Object.entries(storeMap).map(([name, d]) => ({
+      storeName:    name,
+      totalVisits:  d.totalVisits,
+      avgMins:      Math.round(d.totalMins / d.totalVisits),
+      uniqueTLs:    d.uniqueTLs.size
+    })).sort((a, b) => b.totalVisits - a.totalVisits);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
    ADMIN - NOT REPORTED
 ========================= */
 
