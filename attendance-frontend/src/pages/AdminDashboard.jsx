@@ -1,695 +1,744 @@
-import { useEffect, useState } from "react";
-import api from "../Services/api";
+const express = require("express");
+const router = express.Router();
 
-const CITIES = ["All", "NCR", "Kolkata", "Mumbai", "Bengaluru", "Hyderabad"];
+const Store = require("../models/Store");
+const Attendance = require("../models/Attendance");
+const auth = require("../middleware/auth");
 
-const COLS = [
-  { key: "date",             label: "Date" },
-  { key: "tlName",           label: "TL Name" },
-  { key: "userEmail",        label: "User Email" },
-  { key: "punchIn",          label: "Punch IN" },
-  { key: "punchOut",         label: "Punch OUT" },
-  { key: "duration",         label: "Duration" },
-  { key: "city",             label: "City" },
-  { key: "storeName",        label: "Store Name" },
-  { key: "reportingManager", label: "Reporting Manager" },
-];
+const IST = "Asia/Kolkata";
 
-const toCSV = (data) => {
-  const headers = ["Date","Email","Punch In","Punch Out","Duration","City","Store Name","TL Name","Reporting Manager"];
-  const rows = data.map(r => [
-    r.date, r.userEmail, r.punchIn, r.punchOut,
-    r.duration, r.city, r.storeName, r.tlName, r.reportingManager
-  ].map(v => `"${(v ?? "").toString().replace(/"/g, '""')}"`));
-  return [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-};
+/* =========================
+   PUNCH IN ROUTE
+========================= */
 
-const downloadCSV = (data, filename) => {
-  const blob = new Blob([toCSV(data)], { type: "text/csv" });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement("a");
-  a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
-};
+router.post("/punchin", auth, async (req, res) => {
 
-function AdminDashboard() {
-  const [records, setRecords]       = useState([]);
-  const [filtered, setFiltered]     = useState([]);
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState("");
-  const [search, setSearch]         = useState("");
-  const [cityFilter, setCityFilter] = useState("All");
-  const [dateFilter, setDateFilter] = useState("");
+try {
 
-  const [activeTab, setActiveTab] = useState("attendance");
+const email = req.user.email;
+const { latitude, longitude } = req.body;
 
-  // Leaves state
-  const [leaves, setLeaves]               = useState([]);
-  const [leavesLoading, setLeavesLoading] = useState(false);
-  const [leavesError, setLeavesError]     = useState("");
-  const [leaveSearch, setLeaveSearch]     = useState("");
-  const [leaveDateFilter, setLeaveDateFilter] = useState("");
+/* VALIDATE GPS INPUT */
 
-  // Not Reported state
-  const [notReported, setNotReported]               = useState([]);
-  const [notReportedLoading, setNotReportedLoading] = useState(false);
-  const [notReportedError, setNotReportedError]     = useState("");
-  const [notReportedSearch, setNotReportedSearch]   = useState("");
-  const [notReportedDate, setNotReportedDate]       = useState("");
-
-  const token = localStorage.getItem("token");
-
-  /* ── Fetch attendance (unchanged) ── */
-  const fetchAll = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const res = await api.get("/attendance/admin/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setRecords(res.data);
-      setFiltered(res.data);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to load data");
-    }
-    setLoading(false);
-  };
-
-  /* ── Fetch leaves ── */
-  const fetchLeaves = async () => {
-    setLeavesLoading(true);
-    setLeavesError("");
-    try {
-      const res = await api.get("/attendance/admin/leaves", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setLeaves(res.data);
-    } catch (err) {
-      setLeavesError(err.response?.data?.message || "Failed to load leaves");
-    }
-    setLeavesLoading(false);
-  };
-
-  const fetchNotReported = async (date = "", city = "All") => {
-    setNotReportedLoading(true);
-    setNotReportedError("");
-    try {
-      const params = [];
-      if (date) params.push(`date=${date}`);
-      if (city && city !== "All") params.push(`city=${encodeURIComponent(city)}`);
-      const url = `/attendance/admin/not-reported${params.length ? "?" + params.join("&") : ""}`;
-      const res = await api.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setNotReported(res.data);
-    } catch (err) {
-      setNotReportedError(err.response?.data?.message || "Failed to load data");
-    }
-    setNotReportedLoading(false);
-  };
-
-  useEffect(() => { fetchAll(); fetchLeaves(); fetchNotReported("", cityFilter); }, []);
-
-  useEffect(() => { fetchNotReported(notReportedDate, cityFilter); }, [notReportedDate, cityFilter]);
-
-  /* ── Attendance filter ── */
-  useEffect(() => {
-    let data = [...records];
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      data = data.filter(r =>
-        r.userEmail?.toLowerCase().includes(q) ||
-        r.tlName?.toLowerCase().includes(q) ||
-        r.storeName?.toLowerCase().includes(q) ||
-        r.reportingManager?.toLowerCase().includes(q)
-      );
-    }
-    if (cityFilter !== "All") {
-      data = data.filter(r => r.city === cityFilter);
-    }
-    if (dateFilter) {
-      const [y, m, d] = dateFilter.split("-");
-      const fmt = `${d}/${m}/${y}`;
-      data = data.filter(r => r.date === fmt);
-    }
-    setFiltered(data);
-  }, [search, cityFilter, dateFilter, records]);
-
-  /* ── Leaves filter ── */
-  const filteredLeaves = leaves.filter(l => {
-    const q = leaveSearch.toLowerCase();
-    const matchSearch = !q ||
-      l.tlEmail?.toLowerCase().includes(q) ||
-      l.tlName?.toLowerCase().includes(q) ||
-      l.reportingManager?.toLowerCase().includes(q);
-    const matchCity = cityFilter === "All" || l.city === cityFilter;
-    let matchDate = true;
-    if (leaveDateFilter) {
-      const [y, m, d] = leaveDateFilter.split("-");
-      matchDate = l.date === `${d}/${m}/${y}`;
-    }
-    return matchSearch && matchCity && matchDate;
-  });
-
-  // If date filter is selected use it, else use today (resets at 7AM)
-  const now          = new Date();
-  const statDate     = now.getHours() < 7 ? new Date(now - 86400000) : now;
-  const todayStr     = dateFilter
-    ? (() => { const [y, m, d] = dateFilter.split("-"); return `${d}/${m}/${y}`; })()
-    : statDate.toLocaleDateString("en-GB");
-
-  const statsRecords    = cityFilter === "All" ? records : records.filter(r => r.city === cityFilter);
-  const statsLeaves     = cityFilter === "All" ? leaves  : leaves.filter(l => l.city === cityFilter);
-
-  const todayRecords    = statsRecords.filter(r => r.date === todayStr);
-  const todayLeaveCount = statsLeaves.filter(l => l.date === todayStr).length;
-
-  // Total Records = raw count (all today punch-ins + today leaves)
-  const totalRecords    = todayRecords.length + todayLeaveCount;
-  // Active TLs = unique TLs currently in field (punched in today, NOT punched out)
-  const totalTLs        = [...new Set(todayRecords.filter(r => !r.punchOut || r.punchOut === "-").map(r => r.userEmail))].length;
-  // Today Visits = total store visits (each punch-in = 1 visit)
-  const todayVisits     = todayRecords.length;
-  // Currently In = total open punch-ins today (store visits still open, no punchout)
-  const activeNow       = todayRecords.filter(r => !r.punchOut || r.punchOut === "-").length;
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) return;
-    try {
-      await api.delete(`/attendance/admin/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-      setRecords(prev => prev.filter(r => r._id !== id));
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete record");
-    }
-  };
-
-  const handleDeleteLeave = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this leave record? This cannot be undone.")) return;
-    try {
-      await api.delete(`/attendance/admin/leave/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-      setLeaves(prev => prev.filter(l => l._id !== id));
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete leave record");
-    }
-  };
-
-  const to12hr = (t) => {
-    if (!t || t === "-") return t;
-    const [hStr, mStr] = t.split(":");
-    const h = parseInt(hStr, 10);
-    if (isNaN(h)) return t;
-    const ampm = h >= 12 ? "PM" : "AM";
-    const h12  = h % 12 || 12;
-    return `${h12}:${mStr} ${ampm}`;
-  };
-
-  const clearFilters = () => { setSearch(""); setCityFilter("All"); setDateFilter(""); };
-  const hasFilter    = search || cityFilter !== "All" || dateFilter;
-
-  return (
-    <div style={s.page}>
-
-      {/* ── Top Bar ── */}
-      <header style={s.navbar}>
-        <div style={s.navInner} className="nav-inner">
-          <div style={s.navLeft}>
-            <h2 style={s.navTitle}>Attendance Overview</h2>
-            <span style={s.navSub}>{todayStr} · Live Insights</span>
-          </div>
-          <div style={s.navRight}>
-            <span style={s.adminBadge}>🔐 Admin Access</span>
-          </div>
-        </div>
-      </header>
-
-      <main style={s.main} className="main-content">
-
-        {/* ── Unified Filter Bar ── */}
-        <div style={s.filterBar}>
-          <input
-            style={s.searchInput}
-            placeholder="🔍  Search by email, TL name, store or manager..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          <select style={s.select} value={cityFilter} onChange={e => setCityFilter(e.target.value)}>
-            {CITIES.map(c => <option key={c} value={c}>{c === "All" ? "🇮🇳 All Cities" : `📍 ${c}`}</option>)}
-          </select>
-          <input
-            style={s.dateInput}
-            type="date"
-            value={dateFilter}
-            onChange={e => setDateFilter(e.target.value)}
-            title="Filter by date"
-          />
-          {hasFilter && (
-            <button style={s.clearBtn} onClick={clearFilters}>✕ Clear</button>
-          )}
-          <button style={s.refreshBtn} onClick={() => { fetchAll(); fetchLeaves(); fetchNotReported(notReportedDate, cityFilter); }}>↻ Refresh</button>
-        </div>
-
-        {/* ── Stats ── */}
-        <div style={s.statsHeaderRow}>
-          <span style={s.statsLabel}>Live Stats</span>
-          <span style={s.d0Badge}>D-0 · Today</span>
-        </div>
-        <div style={s.statsRow} className="stats-row">
-          {[
-            { label: "Total Records",    value: totalRecords,    icon: "📋", color: "#2874F0", bg: "#e8f0fe" },
-            { label: "Active TLs",       value: totalTLs,        icon: "👥", color: "#26a541", bg: "#e8f5e9" },
-            { label: "Today's Visits",   value: todayVisits,     icon: "📅", color: "#FB641B", bg: "#fff3e0" },
-            { label: "Currently In",     value: activeNow,       icon: "📍", color: "#6d28d9", bg: "#f3e8ff" },
-            { label: "Today's Absences", value: todayLeaveCount, icon: "🏖️", color: "#F57F17", bg: "#fff8e1" },
-          ].map(st => (
-            <div key={st.label} style={{ ...s.statCard, borderTop: `3px solid ${st.color}` }}>
-              <div style={{ ...s.statIcon, background: st.bg }}>{st.icon}</div>
-              <div>
-                <div style={{ ...s.statVal, color: st.color }}>{st.value}</div>
-                <div style={s.statLbl}>{st.label}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* ── Tabs ── */}
-        <div style={s.tabBar}>
-          <button
-            style={activeTab === "attendance" ? s.tabActive : s.tabInactive}
-            onClick={() => setActiveTab("attendance")}
-          >
-            📋 Attendance
-          </button>
-          <button
-            style={activeTab === "leaves" ? s.tabActive : s.tabInactive}
-            onClick={() => setActiveTab("leaves")}
-          >
-            🏖️ Leaves & Week Offs
-            {todayLeaveCount > 0 && <span style={s.tabBadge}>{todayLeaveCount}</span>}
-          </button>
-          <button
-            style={activeTab === "not-reported" ? s.tabActive : s.tabInactive}
-            onClick={() => setActiveTab("not-reported")}
-          >
-            ⚠️ Not Reported
-            {notReported.length > 0 && <span style={{ ...s.tabBadge, background: "#c62828" }}>{notReported.length}</span>}
-          </button>
-        </div>
-
-        {/* ── Attendance Tab ── */}
-        {activeTab === "attendance" && (
-          <>
-
-            {/* ── Table Card ── */}
-            <div style={s.tableCard}>
-              <div style={s.tableTop}>
-                <div>
-                  <h3 style={s.tableTitle}>Attendance Records</h3>
-                  <p style={s.tableSubtitle}>All TL punch-in/out data from the field</p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <span style={s.tableCount}>{filtered.length} / {records.length} records</span>
-                  <button style={s.exportBtn} onClick={() => downloadCSV(filtered, `attendance-filtered-${Date.now()}.csv`)}>⬇ Filtered</button>
-                  <button style={s.exportBtn} onClick={() => downloadCSV(records, `attendance-all-${Date.now()}.csv`)}>⬇ All</button>
-                </div>
-              </div>
-
-              {loading ? (
-                <div style={s.centerMsg}>
-                  <div style={s.spinner} />
-                  <p style={s.msgTxt}>Loading attendance data...</p>
-                </div>
-              ) : error ? (
-                <div style={s.centerMsg}>
-                  <p style={s.errTxt}>⚠️ {error}</p>
-                  <button style={s.retryBtn} onClick={fetchAll}>Retry</button>
-                </div>
-              ) : (
-                <div style={s.tableWrap}>
-                  <table style={s.table}>
-                    <thead>
-                      <tr>
-                        <th style={s.thIdx}>#</th>
-                        {COLS.map(c => <th key={c.key} style={s.th}>{c.label}</th>)}
-                        <th style={s.th}>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.length === 0 ? (
-                        <tr>
-                          <td colSpan={COLS.length + 1} style={s.emptyCell}>
-                            <div style={s.emptyState}>
-                              <span style={{ fontSize: 40 }}>📭</span>
-                              <p style={s.emptyTxt}>No records found</p>
-                              <p style={s.emptyHint}>Try adjusting your filters</p>
-                            </div>
-                          </td>
-                        </tr>
-                      ) : (
-                        filtered.map((row, i) => (
-                          <tr key={i} style={i % 2 === 0 ? s.trEven : s.trOdd}>
-                            <td style={s.tdIdx}>{i + 1}</td>
-                            <td style={s.td}><span style={s.dateTxt}>{row.date}</span></td>
-                            <td style={s.td}>
-                              <span style={s.tlName}>{row.tlName !== "-" ? row.tlName : <span style={s.dash}>—</span>}</span>
-                            </td>
-                            <td style={s.td}>
-                              <div style={s.emailCell}>
-                                <div style={s.avatar}>{row.userEmail?.charAt(0).toUpperCase()}</div>
-                                <span style={s.emailTxt}>{row.userEmail}</span>
-                              </div>
-                            </td>
-                            <td style={s.td}><span style={s.punchInTag}>{to12hr(row.punchIn)}</span></td>
-                            <td style={s.td}>
-                              {row.punchOut !== "-"
-                                ? <span style={s.punchOutTag}>{to12hr(row.punchOut)}</span>
-                                : <span style={s.dash}>—</span>}
-                            </td>
-                            <td style={s.td}>
-                              {row.duration !== "-"
-                                ? <span style={s.durBadge}>{row.duration}</span>
-                                : <span style={s.dash}>—</span>}
-                            </td>
-                            <td style={s.td}>
-                              {row.city !== "-"
-                                ? <span style={s.cityBadge}>{row.city}</span>
-                                : <span style={s.dash}>—</span>}
-                            </td>
-                            <td style={s.td}>
-                              <div style={s.storeCell}>
-                                <span style={s.storeDot} />
-                                <span>{row.storeName}</span>
-                              </div>
-                            </td>
-                            <td style={s.td}>
-                              {row.reportingManager !== "-"
-                                ? <span style={s.managerTxt}>{row.reportingManager}</span>
-                                : <span style={s.dash}>—</span>}
-                            </td>
-                            <td style={s.td}>
-                              <button style={s.deleteBtn} onClick={() => handleDelete(row._id)}>🗑️</button>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-
-        {/* ── Leaves Tab ── */}
-        {activeTab === "leaves" && (
-          <div style={s.tableCard}>
-            <div style={s.tableTop}>
-              <div>
-                <h3 style={s.tableTitle}>Leave & Week Off Records</h3>
-                <p style={s.tableSubtitle}>All TL absence requests</p>
-              </div>
-              <span style={s.tableCount}>{filteredLeaves.length} / {leaves.length} records</span>
-            </div>
-
-            {/* Leaves Filters */}
-            <div style={{ ...s.filterBar, padding: "12px 24px", marginBottom: 0, borderBottom: "1px solid #f0f0f0" }}>
-              <input
-                style={s.searchInput}
-                placeholder="🔍  Search by email, TL name or manager..."
-                value={leaveSearch}
-                onChange={e => setLeaveSearch(e.target.value)}
-              />
-              <input
-                style={s.dateInput}
-                type="date"
-                value={leaveDateFilter}
-                onChange={e => setLeaveDateFilter(e.target.value)}
-                title="Filter by date"
-              />
-              {(leaveSearch || leaveDateFilter) && (
-                <button style={s.clearBtn} onClick={() => { setLeaveSearch(""); setLeaveDateFilter(""); }}>✕ Clear</button>
-              )}
-              {cityFilter !== "All" && (
-                <span style={s.cityBadge}>📍 {cityFilter}</span>
-              )}
-            </div>
-
-            {leavesLoading ? (
-              <div style={s.centerMsg}><div style={s.spinner} /><p style={s.msgTxt}>Loading...</p></div>
-            ) : leavesError ? (
-              <div style={s.centerMsg}><p style={s.errTxt}>⚠️ {leavesError}</p><button style={s.retryBtn} onClick={fetchLeaves}>Retry</button></div>
-            ) : (
-              <div style={s.tableWrap}>
-                <table style={{ ...s.table, minWidth: 900 }}>
-                  <thead>
-                    <tr>
-                      <th style={s.thIdx}>#</th>
-                      <th style={s.th}>Date</th>
-                      <th style={s.th}>Type</th>
-                      <th style={s.th}>TL Email</th>
-                      <th style={s.th}>TL Name</th>
-                      <th style={s.th}>City</th>
-                      <th style={s.th}>Phone</th>
-                      <th style={s.th}>Reporting Manager</th>
-                      <th style={s.th}>Reason</th>
-                      <th style={s.th}>Applied At</th>
-                      <th style={s.th}>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredLeaves.length === 0 ? (
-                      <tr>
-                        <td colSpan={10} style={s.emptyCell}>
-                          <div style={s.emptyState}>
-                            <span style={{ fontSize: 40 }}>🏖️</span>
-                            <p style={s.emptyTxt}>No leave records found</p>
-                            <p style={s.emptyHint}>Try adjusting your filters</p>
-                          </div>
-                        </td>
-                      </tr>
-                    ) : (
-                      filteredLeaves.map((l, i) => (
-                        <tr key={l._id} style={i % 2 === 0 ? s.trEven : s.trOdd}>
-                          <td style={s.tdIdx}>{i + 1}</td>
-                          <td style={s.td}><span style={s.dateTxt}>{l.date}</span></td>
-                          <td style={s.td}>
-                            <span style={l.leaveType === "leave" ? s.leaveTag : s.weekoffTag}>
-                              {l.leaveType === "leave" ? "🏖️ Leave" : "📅 Week Off"}
-                            </span>
-                          </td>
-                          <td style={s.td}>
-                            <div style={s.emailCell}>
-                              <div style={s.avatar}>{l.tlEmail?.charAt(0).toUpperCase()}</div>
-                              <span style={s.emailTxt}>{l.tlEmail}</span>
-                            </div>
-                          </td>
-                          <td style={s.td}><span style={s.tlName}>{l.tlName || <span style={s.dash}>—</span>}</span></td>
-                          <td style={s.td}>{l.city ? <span style={s.cityBadge}>{l.city}</span> : <span style={s.dash}>—</span>}</td>
-                          <td style={s.td}>{l.phone || <span style={s.dash}>—</span>}</td>
-                          <td style={s.td}>{l.reportingManager || <span style={s.dash}>—</span>}</td>
-                          <td style={s.td}>{l.reason || <span style={s.dash}>—</span>}</td>
-                          <td style={s.td}>{new Date(l.appliedAt).toLocaleString()}</td>
-                          <td style={s.td}>
-                            <button style={s.deleteBtn} onClick={() => handleDeleteLeave(l._id)}>🗑️</button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ── Not Reported Tab ── */}
-        {activeTab === "not-reported" && (
-          <div style={s.tableCard}>
-            <div style={s.tableTop}>
-              <div>
-                <h3 style={s.tableTitle}>Not Reported Today</h3>
-                <p style={s.tableSubtitle}>TLs who have not punched in or applied leave today</p>
-              </div>
-              <span style={s.tableCount}>{notReported.length} TLs</span>
-            </div>
-
-            <div style={{ ...s.filterBar, padding: "12px 24px", marginBottom: 0, borderBottom: "1px solid #f0f0f0" }}>
-              <input
-                style={s.searchInput}
-                placeholder="🔍  Search by name, email or manager..."
-                value={notReportedSearch}
-                onChange={e => setNotReportedSearch(e.target.value)}
-              />
-              <input
-                style={s.dateInput}
-                type="date"
-                value={notReportedDate}
-                onChange={e => setNotReportedDate(e.target.value)}
-                title="Filter by date"
-              />
-              {(notReportedSearch || notReportedDate) && (
-                <button style={s.clearBtn} onClick={() => { setNotReportedSearch(""); setNotReportedDate(""); }}>✕ Clear</button>
-              )}
-            </div>
-
-            {notReportedLoading ? (
-              <div style={s.centerMsg}><div style={s.spinner} /><p style={s.msgTxt}>Loading...</p></div>
-            ) : notReportedError ? (
-              <div style={s.centerMsg}><p style={s.errTxt}>⚠️ {notReportedError}</p><button style={s.retryBtn} onClick={fetchNotReported}>Retry</button></div>
-            ) : (
-              <div style={s.tableWrap}>
-                <table style={{ ...s.table, minWidth: 700 }}>
-                  <thead>
-                    <tr>
-                      <th style={s.thIdx}>#</th>
-                      <th style={s.th}>TL Name</th>
-                      <th style={s.th}>TL Email</th>
-                      <th style={s.th}>City</th>
-                      <th style={s.th}>Phone</th>
-                      <th style={s.th}>Reporting Manager</th>
-                      <th style={s.th}>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {notReported.filter(r => {
-                      const q = notReportedSearch.toLowerCase();
-                      return !q ||
-                        r.tlName?.toLowerCase().includes(q) ||
-                        r.tlEmail?.toLowerCase().includes(q) ||
-                        r.reportingManager?.toLowerCase().includes(q);
-                    }).length === 0 ? (
-                      <tr>
-                        <td colSpan={6} style={s.emptyCell}>
-                          <div style={s.emptyState}>
-                            <span style={{ fontSize: 40 }}>✅</span>
-                            <p style={s.emptyTxt}>All TLs have reported today</p>
-                          </div>
-                        </td>
-                      </tr>
-                    ) : (
-                      notReported
-                        .filter(r => {
-                          const q = notReportedSearch.toLowerCase();
-                          return !q ||
-                            r.tlName?.toLowerCase().includes(q) ||
-                            r.tlEmail?.toLowerCase().includes(q) ||
-                            r.reportingManager?.toLowerCase().includes(q);
-                        })
-                        .map((r, i) => (
-                          <tr key={r.tlEmail} style={i % 2 === 0 ? s.trEven : s.trOdd}>
-                            <td style={s.tdIdx}>{i + 1}</td>
-                            <td style={s.td}><span style={s.tlName}>{r.tlName}</span></td>
-                            <td style={s.td}>
-                              <div style={s.emailCell}>
-                                <div style={s.avatar}>{r.tlEmail?.charAt(0).toUpperCase()}</div>
-                                <span style={s.emailTxt}>{r.tlEmail}</span>
-                              </div>
-                            </td>
-                            <td style={s.td}>{r.city !== "-" ? <span style={s.cityBadge}>{r.city}</span> : <span style={s.dash}>—</span>}</td>
-                            <td style={s.td}>{r.phone !== "-" ? r.phone : <span style={s.dash}>—</span>}</td>
-                            <td style={s.td}>{r.reportingManager !== "-" ? <span style={s.managerTxt}>{r.reportingManager}</span> : <span style={s.dash}>—</span>}</td>
-                            <td style={s.td}>
-                              {r.visitCount === 0
-                                ? <span style={s.notReportedTag}>Not Reported</span>
-                                : <span style={s.oneStoreTag}>1 Store Visited</span>}
-                            </td>
-                          </tr>
-                        ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
-
-      </main>
-    </div>
-  );
+if (!latitude || !longitude) {
+return res.status(400).json({
+message: "Latitude and longitude are required"
+});
 }
 
-const s = {
-  page: { minHeight: "100vh", background: "#F1F3F6", display: "flex", flexDirection: "column", fontFamily: "'Segoe UI', system-ui, sans-serif" },
+/* FIND NEAREST STORE */
 
-  navbar: { background: "#fff", borderBottom: "1px solid #e0e0e0", position: "sticky", top: 0, zIndex: 100 },
-  navInner: { padding: "0 28px", height: 80, display: "flex", alignItems: "center", justifyContent: "space-between" },
-  navLeft: { display: "flex", flexDirection: "column" },
-  navTitle: { color: "#212121", fontWeight: 700, fontSize: 18, margin: 0 },
-  navSub: { color: "#878787", fontSize: 12, fontWeight: 500 },
-  navRight: { display: "flex", alignItems: "center", gap: 14 },
-  adminBadge: { background: "#e8f0fe", color: "#2874F0", padding: "6px 16px", borderRadius: 20, fontSize: 12, fontWeight: 700 },
+const nearestStore = await Store.findOne({
+location: {
+$near: {
+$geometry: {
+type: "Point",
+coordinates: [longitude, latitude]
+},
+$maxDistance: 100
+}
+}
+});
 
-  main: { padding: "28px 28px 40px", flex: 1 },
+if (!nearestStore) {
+return res.status(400).json({
+message: "You are not near any store"
+});
+}
 
-  statsHeaderRow: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
-  statsLabel:     { fontSize: 15, fontWeight: 700, color: "#212121" },
-  d0Badge:        { background: "#e8f5e9", color: "#2e7d32", padding: "3px 12px", borderRadius: 20, fontSize: 12, fontWeight: 700, letterSpacing: 0.5 },
+/* CHECK IF ALREADY PUNCHED IN (open punch-in exists) */
 
-  statsRow: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 24 },
-  statCard: { background: "#fff", borderRadius: 12, padding: "18px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", gap: 14 },
-  statIcon: { width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 },
-  statVal: { fontSize: 26, fontWeight: 800, lineHeight: 1 },
-  statLbl: { fontSize: 12, color: "#878787", marginTop: 4, fontWeight: 500 },
+const openPunch = await Attendance.findOne({
+tlEmail: email,
+checkOutTime: null
+});
 
-  tabBar:      { display: "flex", gap: 8, marginBottom: 20 },
-  tabActive:   { padding: "9px 20px", background: "#2874F0", color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 },
-  tabInactive: { padding: "9px 20px", background: "#fff", color: "#555", border: "1.5px solid #e0e0e0", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 },
-  tabBadge:    { background: "#FFA000", color: "#fff", borderRadius: 20, fontSize: 11, fontWeight: 700, padding: "1px 7px" },
+if (openPunch) {
+const hoursOpen = (new Date() - openPunch.checkInTime) / 3600000;
+if (hoursOpen < 12) {
+return res.status(400).json({
+message: "You already have an open punch-in. Please punch out first."
+});
+}
+// expired (>8hrs) — auto close silently, allow new punch-in
+await Attendance.updateOne(
+{ _id: openPunch._id },
+{ $set: { checkOutTime: null } }
+);
+}
 
-  filterBar: { display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap", alignItems: "center" },
-  searchInput: { flex: "1 1 260px", padding: "10px 16px", border: "1.5px solid #e0e0e0", borderRadius: 8, fontSize: 14, outline: "none", background: "#fff", fontFamily: "inherit" },
-  select: { padding: "10px 14px", border: "1.5px solid #e0e0e0", borderRadius: 8, fontSize: 14, outline: "none", background: "#fff", cursor: "pointer", fontFamily: "inherit" },
-  dateInput: { padding: "10px 12px", border: "1.5px solid #e0e0e0", borderRadius: 8, fontSize: 14, outline: "none", background: "#fff", fontFamily: "inherit" },
-  clearBtn: { padding: "10px 16px", background: "#fdecea", color: "#c62828", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" },
-  refreshBtn: { padding: "10px 18px", background: "#2874F0", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" },
+/* VISIT COUNT */
 
-  tableCard: { background: "#fff", borderRadius: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.07)", overflow: "hidden" },
-  tableTop: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 24px", borderBottom: "1px solid #f0f0f0", flexWrap: "wrap", gap: 8 },
-  tableTitle: { fontSize: 16, fontWeight: 700, color: "#212121", marginBottom: 2 },
-  tableSubtitle: { fontSize: 12, color: "#aaa" },
-  tableCount: { fontSize: 13, color: "#878787", background: "#F1F3F6", padding: "5px 14px", borderRadius: 20, fontWeight: 500 },
-  tableWrap: { overflowX: "auto" },
-  table: { width: "100%", borderCollapse: "collapse", minWidth: 1500 },
-  thIdx: { padding: "11px 12px", textAlign: "center", fontSize: 11, fontWeight: 700, color: "#bbb", background: "#fafafa", borderBottom: "1px solid #f0f0f0", whiteSpace: "nowrap" },
-  th: { padding: "11px 14px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#878787", textTransform: "uppercase", letterSpacing: 0.5, background: "#fafafa", borderBottom: "1px solid #f0f0f0", whiteSpace: "nowrap" },
-  tdIdx: { padding: "11px 12px", textAlign: "center", fontSize: 12, color: "#ccc", borderBottom: "1px solid #f5f5f5", verticalAlign: "middle" },
-  td: { padding: "11px 14px", fontSize: 13, color: "#212121", borderBottom: "1px solid #f5f5f5", verticalAlign: "middle", whiteSpace: "nowrap" },
-  trEven: { background: "#fff" },
-  trOdd: { background: "#fafafa" },
+const visitCount = await Attendance.countDocuments({
+tlEmail: email
+});
 
-  centerMsg: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "64px 24px", gap: 12 },
-  spinner: { width: 36, height: 36, border: "3px solid #e0e0e0", borderTop: "3px solid #2874F0", borderRadius: "50%", animation: "spin 0.8s linear infinite" },
-  msgTxt: { fontSize: 14, color: "#878787" },
-  errTxt: { fontSize: 15, color: "#c62828", fontWeight: 600 },
-  retryBtn: { padding: "9px 22px", background: "#2874F0", color: "#fff", border: "none", borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" },
-  emptyCell: { padding: "56px 20px", textAlign: "center" },
-  emptyState: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
-  emptyTxt: { fontSize: 15, fontWeight: 600, color: "#555" },
-  emptyHint: { fontSize: 13, color: "#aaa" },
+/* SAVE ATTENDANCE */
 
-  dateTxt: { fontWeight: 600, color: "#212121", fontSize: 13 },
-  emailCell: { display: "flex", alignItems: "center", gap: 8 },
-  avatar: { width: 28, height: 28, borderRadius: "50%", background: "#e8f0fe", color: "#2874F0", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 12, flexShrink: 0 },
-  emailTxt: { fontSize: 13, color: "#212121" },
-  punchInTag: { background: "#e8f5e9", color: "#2e7d32", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
-  punchOutTag: { background: "#fdecea", color: "#c62828", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
-  dash: { color: "#ccc", fontSize: 13 },
-  coordTxt: { fontSize: 11, color: "#555", fontFamily: "monospace", maxWidth: 200, display: "inline-block", overflow: "hidden", textOverflow: "ellipsis" },
-  exportBtn: { padding: "10px 14px", background: "#26a541", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer" },
-  deleteBtn: { background: "#fdecea", color: "#c62828", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", fontWeight: 700 },
-  distBadge: { background: "#e8f0fe", color: "#2874F0", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
-  durBadge: { background: "#f3e8ff", color: "#6d28d9", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 600 },
-  cityBadge: { background: "#e0f2fe", color: "#0369a1", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
-  storeCell: { display: "flex", alignItems: "center", gap: 6 },
-  storeDot: { width: 7, height: 7, borderRadius: "50%", background: "#2874F0", flexShrink: 0 },
-  tlName: { fontWeight: 600, color: "#212121" },
-  managerTxt: { color: "#555", fontWeight: 500 },
-  mapLink: { display: "inline-flex", alignItems: "center", gap: 4, background: "#e8f0fe", color: "#2874F0", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600, textDecoration: "none", transition: "transform 0.2s" },
+const attendance = new Attendance({
 
-  notReportedTag: { background: "#fdecea", color: "#c62828", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
-  oneStoreTag:    { background: "#fff3e0", color: "#e65100", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
+tlEmail: email,
+storeId: nearestStore._id,
+storeName: nearestStore.name,
+visitNumber: visitCount + 1,
 
-  leaveTag:   { background: "#fff8e1", color: "#F57F17", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
-  weekoffTag: { background: "#f3f3f3", color: "#546E7A", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
+checkInTime: new Date(),
+
+checkInLocation: {
+latitude: latitude,
+longitude: longitude
+}
+
+});
+
+await attendance.save();
+
+/* RESPONSE */
+
+res.json({
+message: "Punch In successful",
+store: nearestStore.name,
+visitNumber: attendance.visitNumber
+});
+
+} catch (err) {
+
+console.error(err);
+
+res.status(500).json({
+message: "Server error"
+});
+
+}
+
+});
+
+/* =========================
+   PUNCH OUT ROUTE
+========================= */
+
+router.post("/punchout", auth, async (req,res)=>{
+
+try{
+
+const email = req.user.email;
+const {latitude,longitude} = req.body;
+
+if(!latitude || !longitude){
+return res.status(400).json({
+message:"Latitude and longitude are required"
+});
+}
+
+
+/* FIND OPEN ATTENDANCE */
+
+const openAttendance = await Attendance.findOne({
+tlEmail:email,
+checkOutTime:null
+}).sort({checkInTime:-1});
+
+
+if(!openAttendance){
+return res.status(400).json({
+message:"No open punch-in found"
+});
+}
+
+/* BLOCK PUNCH OUT IF OLDER THAN 8 HOURS */
+
+const hoursOpen = (new Date() - openAttendance.checkInTime) / 3600000;
+if (hoursOpen > 12) {
+return res.status(400).json({
+message: "Punch out window expired. You can only punch out within 8 hours of punch in."
+});
+}
+
+
+/* GET STORE */
+
+const store = await Store.findById(openAttendance.storeId);
+
+
+/* CHECK DISTANCE */
+
+const distance = require("geolib").getDistance(
+{
+latitude: latitude,
+longitude: longitude
+},
+{
+latitude: store.location.coordinates[1],
+longitude: store.location.coordinates[0]
+}
+);
+
+
+if(distance > 100){
+return res.status(400).json({
+message:"You are too far from store to punch out",
+distance:distance
+});
+}
+
+
+/* UPDATE ATTENDANCE */
+
+openAttendance.checkOutTime = new Date();
+
+openAttendance.checkOutLocation = {
+latitude: latitude,
+longitude: longitude
 };
 
-export default AdminDashboard;
+await openAttendance.save();
+
+
+res.json({
+message:"Punch Out successful",
+store:store.name
+});
+
+}catch(err){
+
+console.error(err);
+
+res.status(500).json({
+message:"Server error"
+});
+
+}
+
+});
+
+/* =========================
+   ADMIN ALL ATTENDANCE (FULL REPORT)
+========================= */
+
+router.get("/admin/all", auth, async (req, res) => {
+
+try {
+
+if (req.user.role !== "admin") {
+return res.status(403).json({ message: "Access denied" });
+}
+
+const User = require("../models/User");
+
+const users = await User.find({}).select("name email city phone reportingManager role");
+const userMap = {};
+users.forEach(u => { userMap[u.email] = u; });
+
+const records = await Attendance.find().sort({ checkInTime: -1 });
+
+const report = records.map(r => {
+const u = userMap[r.tlEmail] || {};
+
+let duration = null;
+if (r.checkOutTime) {
+const mins = Math.round((r.checkOutTime - r.checkInTime) / 60000);
+const h = Math.floor(mins / 60);
+const m = mins % 60;
+duration = h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+const checkInLat = r.checkInLocation ? r.checkInLocation.latitude : null;
+const checkInLng = r.checkInLocation ? r.checkInLocation.longitude : null;
+const checkOutLat = r.checkOutLocation ? r.checkOutLocation.latitude : null;
+const checkOutLng = r.checkOutLocation ? r.checkOutLocation.longitude : null;
+
+return {
+_id: r._id,
+date: r.checkInTime ? new Date(r.checkInTime).toLocaleDateString("en-GB", { timeZone: IST }) : "-",
+userEmail: r.tlEmail,
+punchIn: r.checkInTime ? new Date(r.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: IST }) : "-",
+punchOut: r.checkOutTime ? new Date(r.checkOutTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: IST }) : "-",
+location: checkInLat && checkInLng ? `${checkInLat},${checkInLng}` : "-",
+fixedSite: checkOutLat && checkOutLng ? `${checkOutLat},${checkOutLng}` : "-",
+distance: r.distanceMeters ? `${r.distanceMeters}m OK` : "100m OK",
+duration: duration || "-",
+city: u.city || "-",
+storeName: r.storeName || "-",
+tlName: u.name || "-",
+tlNo: u.phone || "-",
+reportingManager: u.reportingManager || "-"
+};
+});
+
+res.json(report);
+
+} catch (err) {
+console.error(err);
+res.status(500).json({ message: "Server error" });
+}
+
+});
+
+/* =========================
+   ADMIN ATTENDANCE REPORT
+========================= */
+
+router.get("/admin/report", async (req,res)=>{
+
+try{
+
+const records = await Attendance.find().sort({checkInTime:-1});
+
+const report = records.map(r => {
+
+let timeSpent = null;
+
+if(r.checkOutTime){
+timeSpent = Math.round(
+(r.checkOutTime - r.checkInTime) / 60000
+);
+}
+
+return {
+
+tlEmail: r.tlEmail,
+store: r.storeName,
+visitNumber: r.visitNumber,
+checkIn: r.checkInTime,
+checkOut: r.checkOutTime,
+timeSpentMinutes: timeSpent
+
+};
+
+});
+
+res.json(report);
+
+}catch(err){
+
+console.error(err);
+
+res.status(500).json({
+message:"Server error"
+});
+
+}
+
+});
+
+/* =========================
+   DAILY TL PERFORMANCE REPORT
+========================= */
+
+router.get("/admin/daily-report", async (req, res) => {
+
+try {
+
+const date = req.query.date || new Date().toISOString().split("T")[0];
+
+const start = new Date(date);
+start.setHours(0,0,0,0);
+
+const end = new Date(date);
+end.setHours(23,59,59,999);
+
+const records = await Attendance.find({
+checkInTime: { $gte: start, $lte: end }
+});
+
+const tlMap = {};
+
+records.forEach(r => {
+
+if(!tlMap[r.tlEmail]){
+tlMap[r.tlEmail] = {
+tlEmail: r.tlEmail,
+totalVisits: 0,
+firstPunchIn: r.checkInTime,
+lastPunchOut: r.checkOutTime,
+totalMinutes: 0
+};
+}
+
+tlMap[r.tlEmail].totalVisits += 1;
+
+if(r.checkOutTime){
+const minutes = (r.checkOutTime - r.checkInTime) / 60000;
+tlMap[r.tlEmail].totalMinutes += minutes;
+
+if(r.checkOutTime > tlMap[r.tlEmail].lastPunchOut){
+tlMap[r.tlEmail].lastPunchOut = r.checkOutTime;
+}
+}
+
+});
+
+res.json(Object.values(tlMap));
+
+}catch(err){
+
+console.error(err);
+
+res.status(500).json({
+message:"Server error"
+});
+
+}
+
+});
+
+/* =========================
+   MY ATTENDANCE (TL VIEW)
+========================= */
+
+router.get("/my-attendance", auth, async (req,res)=>{
+
+try{
+
+const email = req.user.email;
+
+const User = require("../models/User");
+const user = await User.findOne({ email }).select("name city");
+const city = user ? user.city : "";
+const name = user ? user.name : "";
+
+const records = await Attendance.find({
+tlEmail: email
+}).sort({checkInTime:-1});
+
+const enriched = records.map(r => ({
+  ...r.toObject(),
+  city,
+  name
+}));
+
+res.json(enriched);
+
+}catch(err){
+
+console.error(err);
+
+res.status(500).json({
+message:"Server error"
+});
+
+}
+
+});
+
+/* =========================
+   APPLY LEAVE / WEEK OFF (TL)
+========================= */
+
+router.post("/apply-leave", auth, async (req, res) => {
+  try {
+    const Leave = require("../models/Leave");
+    const User  = require("../models/User");
+
+    const email = req.user.email;
+    const { leaveType, reason } = req.body;
+
+    if (!leaveType || !["leave", "weekoff"].includes(leaveType)) {
+      return res.status(400).json({ message: "leaveType must be 'leave' or 'weekoff'" });
+    }
+
+    const today = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+
+    const existing = await Leave.findOne({ tlEmail: email, date: today });
+    if (existing) {
+      return res.status(400).json({
+        message: existing.leaveType === "leave"
+          ? "Leave already applied for today"
+          : "Week Off already marked for today"
+      });
+    }
+
+    const user = await User.findOne({ email }).select("name city phone reportingManager");
+
+    const leave = new Leave({
+      tlEmail:          email,
+      tlName:           user?.name            || "",
+      city:             user?.city            || "",
+      phone:            user?.phone           || "",
+      reportingManager: user?.reportingManager || "",
+      leaveType,
+      date:   today,
+      reason: reason || ""
+    });
+
+    await leave.save();
+    res.json({
+      message: leaveType === "leave" ? "Leave applied successfully" : "Week Off marked successfully",
+      date: today,
+      leaveType
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   MY LEAVES (TL VIEW)
+========================= */
+
+router.get("/my-leaves", auth, async (req, res) => {
+  try {
+    const Leave = require("../models/Leave");
+    const leaves = await Leave.find({ tlEmail: req.user.email }).sort({ appliedAt: -1 });
+    res.json(leaves);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - ALL LEAVES
+========================= */
+
+router.get("/admin/leaves", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    const Leave = require("../models/Leave");
+    const leaves = await Leave.find().sort({ appliedAt: -1 });
+    res.json(leaves);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - DELETE ATTENDANCE
+========================= */
+
+router.delete("/admin/:id", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    const deleted = await Attendance.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Record not found" });
+    res.json({ message: "Record deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - DELETE LEAVE
+========================= */
+
+router.delete("/admin/leave/:id", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    const Leave = require("../models/Leave");
+    const deleted = await Leave.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Record not found" });
+    res.json({ message: "Leave record deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - TL PERFORMANCE SUMMARY
+========================= */
+
+router.get("/admin/tl-performance", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
+
+    const User = require("../models/User");
+    const period = req.query.period || "weekly"; // weekly | monthly
+    const city   = req.query.city || "";
+
+    const now   = new Date();
+    const start = new Date();
+    if (period === "weekly") start.setDate(now.getDate() - 7);
+    else start.setDate(now.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+
+    const userQuery = { role: "tl" };
+    if (city && city !== "All") userQuery.city = city;
+    const allTLs = await User.find(userQuery).select("name email city phone reportingManager");
+    const tlEmails = allTLs.map(u => u.email);
+
+    const records = await Attendance.find({
+      tlEmail: { $in: tlEmails },
+      checkInTime: { $gte: start },
+      checkOutTime: { $ne: null }
+    });
+
+    const tlMap = {};
+    allTLs.forEach(u => {
+      tlMap[u.email] = {
+        tlName: u.name || "-",
+        tlEmail: u.email,
+        city: u.city || "-",
+        phone: u.phone || "-",
+        reportingManager: u.reportingManager || "-",
+        totalVisits: 0,
+        totalMinutes: 0,
+        storeBreakdown: {}
+      };
+    });
+
+    records.forEach(r => {
+      if (!tlMap[r.tlEmail]) return;
+      const mins = (r.checkOutTime - r.checkInTime) / 60000;
+      tlMap[r.tlEmail].totalVisits += 1;
+      tlMap[r.tlEmail].totalMinutes += mins;
+      const store = r.storeName || "Unknown";
+      if (!tlMap[r.tlEmail].storeBreakdown[store]) {
+        tlMap[r.tlEmail].storeBreakdown[store] = { visits: 0, totalMins: 0 };
+      }
+      tlMap[r.tlEmail].storeBreakdown[store].visits += 1;
+      tlMap[r.tlEmail].storeBreakdown[store].totalMins += mins;
+    });
+
+    const days = period === "weekly" ? 7 : 30;
+    const result = Object.values(tlMap).map(t => {
+      const avgMinsPerVisit = t.totalVisits > 0 ? Math.round(t.totalMinutes / t.totalVisits) : 0;
+      const avgVisitsPerDay = (t.totalVisits / days).toFixed(1);
+      const stores = Object.entries(t.storeBreakdown).map(([name, d]) => ({
+        storeName: name,
+        visits: d.visits,
+        avgMins: Math.round(d.totalMins / d.visits)
+      })).sort((a, b) => b.visits - a.visits);
+      return {
+        tlName: t.tlName, tlEmail: t.tlEmail, city: t.city,
+        phone: t.phone, reportingManager: t.reportingManager,
+        totalVisits: t.totalVisits,
+        avgMinsPerVisit,
+        avgVisitsPerDay,
+        stores
+      };
+    }).sort((a, b) => b.totalVisits - a.totalVisits);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - STORE HEATMAP
+========================= */
+
+router.get("/admin/store-heatmap", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
+
+    const period = req.query.period || "weekly";
+    const now    = new Date();
+    const start  = new Date();
+    if (period === "weekly") start.setDate(now.getDate() - 7);
+    else start.setDate(now.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+
+    const records = await Attendance.find({
+      checkInTime: { $gte: start },
+      checkOutTime: { $ne: null }
+    });
+
+    const storeMap = {};
+    records.forEach(r => {
+      const store = r.storeName || "Unknown";
+      if (!storeMap[store]) storeMap[store] = { totalVisits: 0, totalMins: 0, uniqueTLs: new Set() };
+      const mins = (r.checkOutTime - r.checkInTime) / 60000;
+      storeMap[store].totalVisits += 1;
+      storeMap[store].totalMins   += mins;
+      storeMap[store].uniqueTLs.add(r.tlEmail);
+    });
+
+    const result = Object.entries(storeMap).map(([name, d]) => ({
+      storeName:    name,
+      totalVisits:  d.totalVisits,
+      avgMins:      Math.round(d.totalMins / d.totalVisits),
+      uniqueTLs:    d.uniqueTLs.size
+    })).sort((a, b) => b.totalVisits - a.totalVisits);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - NOT REPORTED
+========================= */
+
+const TEST_EMAILS = ["hs8103536@gmail.com", "saiketramteke07@gmail.com"];
+
+router.get("/admin/not-reported", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const User  = require("../models/User");
+    const Leave = require("../models/Leave");
+
+    // Accept ?date=YYYY-MM-DD or default to today
+    let dateStr;
+    if (req.query.date) {
+      const [y, m, d] = req.query.date.split("-");
+      dateStr = `${d}/${m}/${y}`;
+    } else {
+      dateStr = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+    }
+
+    const [dd, mm, yyyy] = dateStr.split("/");
+    const start = new Date(`${yyyy}-${mm}-${dd}T00:00:00+05:30`);
+    const end   = new Date(`${yyyy}-${mm}-${dd}T23:59:59+05:30`);
+
+    const city = req.query.city; // optional city filter
+
+    const userQuery = { role: "tl" };
+    if (city && city !== "All") userQuery.city = city;
+
+    const [allTLs, dayAttendanceRaw, dayLeaves] = await Promise.all([
+      User.find(userQuery).select("name email city phone reportingManager"),
+      Attendance.aggregate([
+        { $match: { checkInTime: { $gte: start, $lte: end } } },
+        { $group: { _id: "$tlEmail", visitCount: { $sum: 1 } } }
+      ]),
+      Leave.distinct("tlEmail", { date: dateStr })
+    ]);
+
+    // Map email -> visitCount
+    const visitMap = {};
+    dayAttendanceRaw.forEach(r => { visitMap[r._id] = r.visitCount; });
+
+    const leaveSet = new Set(dayLeaves);
+
+    const result = allTLs
+      .filter(u => !TEST_EMAILS.includes(u.email) && !leaveSet.has(u.email))
+      .filter(u => (visitMap[u.email] || 0) < 2)
+      .map(u => ({
+        tlName:           u.name            || "-",
+        tlEmail:          u.email           || "-",
+        city:             u.city            || "-",
+        phone:            u.phone           || "-",
+        reportingManager: u.reportingManager || "-",
+        visitCount:       visitMap[u.email]  || 0
+      }));
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   EXPORT ROUTER
+========================= */
+
+module.exports = router;
