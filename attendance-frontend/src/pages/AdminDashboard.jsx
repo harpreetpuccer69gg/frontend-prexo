@@ -90,13 +90,14 @@ function AdminDashboard() {
     setLeavesLoading(false);
   };
 
-  const fetchNotReported = async (date = "") => {
+  const fetchNotReported = async (date = "", city = "All") => {
     setNotReportedLoading(true);
     setNotReportedError("");
     try {
-      const url = date
-        ? `/attendance/admin/not-reported?date=${date}`
-        : "/attendance/admin/not-reported";
+      const params = [];
+      if (date) params.push(`date=${date}`);
+      if (city && city !== "All") params.push(`city=${encodeURIComponent(city)}`);
+      const url = `/attendance/admin/not-reported${params.length ? "?" + params.join("&") : ""}`;
       const res = await api.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -107,9 +108,9 @@ function AdminDashboard() {
     setNotReportedLoading(false);
   };
 
-  useEffect(() => { fetchAll(); fetchLeaves(); fetchNotReported(); }, []);
+  useEffect(() => { fetchAll(); fetchLeaves(); fetchNotReported("", cityFilter); }, []);
 
-  useEffect(() => { fetchNotReported(notReportedDate); }, [notReportedDate]);
+  useEffect(() => { fetchNotReported(notReportedDate, cityFilter); }, [notReportedDate, cityFilter]);
 
   /* ── Attendance filter ── */
   useEffect(() => {
@@ -244,7 +245,7 @@ function AdminDashboard() {
           {hasFilter && (
             <button style={s.clearBtn} onClick={clearFilters}>✕ Clear</button>
           )}
-          <button style={s.refreshBtn} onClick={() => { fetchAll(); fetchLeaves(); fetchNotReported(notReportedDate); }}>↻ Refresh</button>
+          <button style={s.refreshBtn} onClick={() => { fetchAll(); fetchLeaves(); fetchNotReported(notReportedDate, cityFilter); }}>↻ Refresh</button>
         </div>
 
         {/* ── Stats ── */}
@@ -545,6 +546,7 @@ function AdminDashboard() {
                       <th style={s.th}>City</th>
                       <th style={s.th}>Phone</th>
                       <th style={s.th}>Reporting Manager</th>
+                      <th style={s.th}>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -585,6 +587,11 @@ function AdminDashboard() {
                             <td style={s.td}>{r.city !== "-" ? <span style={s.cityBadge}>{r.city}</span> : <span style={s.dash}>—</span>}</td>
                             <td style={s.td}>{r.phone !== "-" ? r.phone : <span style={s.dash}>—</span>}</td>
                             <td style={s.td}>{r.reportingManager !== "-" ? <span style={s.managerTxt}>{r.reportingManager}</span> : <span style={s.dash}>—</span>}</td>
+                            <td style={s.td}>
+                              {r.visitCount === 0
+                                ? <span style={s.notReportedTag}>Not Reported</span>
+                                : <span style={s.oneStoreTag}>1 Store Visited</span>}
+                            </td>
                           </tr>
                         ))
                     )}
@@ -677,6 +684,9 @@ const s = {
   tlName: { fontWeight: 600, color: "#212121" },
   managerTxt: { color: "#555", fontWeight: 500 },
   mapLink: { display: "inline-flex", alignItems: "center", gap: 4, background: "#e8f0fe", color: "#2874F0", padding: "4px 10px", borderRadius: 6, fontSize: 12, fontWeight: 600, textDecoration: "none", transition: "transform 0.2s" },
+
+  notReportedTag: { background: "#fdecea", color: "#c62828", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
+  oneStoreTag:    { background: "#fff3e0", color: "#e65100", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
 
   leaveTag:   { background: "#fff8e1", color: "#F57F17", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
   weekoffTag: { background: "#f3f3f3", color: "#546E7A", padding: "3px 9px", borderRadius: 6, fontSize: 12, fontWeight: 700 },
