@@ -45,7 +45,7 @@ function BarChart({ data }) {
         {data.map((d, i) => (
           <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
             <div style={{ fontSize: 10, color: "#2874F0", fontWeight: 700 }}>{d.count}</div>
-            <div style={{ width: "100%", background: i === data.length - 1 ? "#2874F0" : "#bdd3ff", borderRadius: "4px 4px 0 0", height: `${Math.max((d.count / max) * 60, 4)}px", transition: "height 0.5s" }} />
+            <div style={{ width: "100%", background: i === data.length - 1 ? "#2874F0" : "#bdd3ff", borderRadius: "4px 4px 0 0", height: Math.max((d.count / max) * 60, 4) + "px", transition: "height 0.5s" }} />
             <div style={{ fontSize: 10, color: "#878787", whiteSpace: "nowrap" }}>{d.label}</div>
           </div>
         ))}
