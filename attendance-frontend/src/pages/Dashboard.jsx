@@ -23,6 +23,16 @@ function Dashboard() {
   const [attendance, setAttendance]   = useState([]);
   const [loading, setLoading]         = useState(false);
   const [userProfile, setUserProfile] = useState({ name: "", city: "" });
+  const [clock, setClock]             = useState(new Date());
+
+  // Live clock
+  useEffect(() => {
+    const t = setInterval(() => setClock(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const clockStr = clock.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const dateStr2 = clock.toLocaleDateString("en-GB", { weekday: "long", day: "2-digit", month: "short", year: "numeric" });
 
   // Leave state
   const [leaves, setLeaves]               = useState([]);
@@ -172,7 +182,11 @@ function Dashboard() {
             {userProfile.city && <div style={m.city}>📍 {userProfile.city}</div>}
           </div>
         </div>
-        <button style={m.logoutBtn} onClick={handleLogout}>Logout</button>
+        <div style={{ textAlign: "right" }}>
+          <div style={{ color: "#fff", fontWeight: 800, fontSize: 22, letterSpacing: 1 }}>{clockStr}</div>
+          <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, marginTop: 2 }}>{dateStr2}</div>
+          <button style={m.logoutBtn} onClick={handleLogout}>Logout</button>
+        </div>
       </div>
 
       {/* Content */}
@@ -329,10 +343,10 @@ const m = {
   app:     { minHeight: "100vh", background: "#F1F3F6", display: "flex", flexDirection: "column", fontFamily: "'Segoe UI', system-ui, sans-serif", maxWidth: 480, margin: "0 auto", position: "relative" },
   header:  { background: "linear-gradient(135deg, #1a3a6e 0%, #2874F0 100%)", padding: "20px 20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" },
   headerLeft: { display: "flex", alignItems: "center", gap: 12 },
-  avatar:  { width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.25)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 18, flexShrink: 0 },
-  greeting:{ color: "#fff", fontWeight: 700, fontSize: 16 },
+  avatar:  { width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.25)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 20, flexShrink: 0, border: "2px solid rgba(255,255,255,0.4)" },
+  greeting:{ color: "#fff", fontWeight: 700, fontSize: 15 },
   city:    { color: "rgba(255,255,255,0.75)", fontSize: 12, marginTop: 2 },
-  logoutBtn: { background: "rgba(255,255,255,0.15)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.4)", borderRadius: 8, padding: "7px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer" },
+  logoutBtn: { background: "rgba(255,255,255,0.15)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.4)", borderRadius: 8, padding: "5px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer", marginTop: 6 },
 
   content: { flex: 1, padding: "16px 16px 90px", overflowY: "auto" },
 
