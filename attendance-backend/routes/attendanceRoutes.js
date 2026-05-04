@@ -712,22 +712,23 @@ router.get("/admin/not-reported", auth, async (req, res) => {
       Leave.distinct("tlEmail", { date: dateStr })
     ]);
 
-    // Map email -> visitCount
+    // Map email -> visitCount (lowercase keys for safe comparison)
     const visitMap = {};
-    dayAttendanceRaw.forEach(r => { visitMap[r._id] = r.visitCount; });
+    dayAttendanceRaw.forEach(r => { visitMap[r._id.toLowerCase().trim()] = r.visitCount; });
 
-    const leaveSet = new Set(dayLeaves);
+    // leaveSet with lowercase emails for safe comparison
+    const leaveSet = new Set(dayLeaves.map(e => e.toLowerCase().trim()));
 
     const result = allTLs
-      .filter(u => !TEST_EMAILS.includes(u.email) && !leaveSet.has(u.email))
-      .filter(u => (visitMap[u.email] || 0) < 2)
+      .filter(u => !TEST_EMAILS.includes(u.email.toLowerCase().trim()) && !leaveSet.has(u.email.toLowerCase().trim()))
+      .filter(u => (visitMap[u.email.toLowerCase().trim()] || 0) < 2)
       .map(u => ({
         tlName:           u.name            || "-",
         tlEmail:          u.email           || "-",
         city:             u.city            || "-",
         phone:            u.phone           || "-",
         reportingManager: u.reportingManager || "-",
-        visitCount:       visitMap[u.email]  || 0
+        visitCount:       visitMap[u.email.toLowerCase().trim()]  || 0
       }));
 
     res.json(result);
