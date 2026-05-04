@@ -56,6 +56,7 @@ function AdminDashboard() {
   const [notReportedError, setNotReportedError]     = useState("");
   const [notReportedSearch, setNotReportedSearch]   = useState("");
   const [notReportedDate, setNotReportedDate]       = useState("");
+  const [notReportedStatus, setNotReportedStatus]   = useState("all");
 
   // TL Performance state
   const [tlPerf, setTlPerf]               = useState([]);
@@ -577,8 +578,17 @@ function AdminDashboard() {
                 onChange={e => setNotReportedDate(e.target.value)}
                 title="Filter by date"
               />
-              {(notReportedSearch || notReportedDate) && (
-                <button style={s.clearBtn} onClick={() => { setNotReportedSearch(""); setNotReportedDate(""); }}>✕ Clear</button>
+              <select
+                style={s.select}
+                value={notReportedStatus}
+                onChange={e => setNotReportedStatus(e.target.value)}
+              >
+                <option value="all">All</option>
+                <option value="not-reported">🔴 Not Reported</option>
+                <option value="1-store">🟠 1 Store Visited</option>
+              </select>
+              {(notReportedSearch || notReportedDate || notReportedStatus !== "all") && (
+                <button style={s.clearBtn} onClick={() => { setNotReportedSearch(""); setNotReportedDate(""); setNotReportedStatus("all"); }}>✕ Clear</button>
               )}
             </div>
 
@@ -603,10 +613,15 @@ function AdminDashboard() {
                   <tbody>
                     {notReported.filter(r => {
                       const q = notReportedSearch.toLowerCase();
-                      return !q ||
+                      const matchSearch = !q ||
                         r.tlName?.toLowerCase().includes(q) ||
                         r.tlEmail?.toLowerCase().includes(q) ||
                         r.reportingManager?.toLowerCase().includes(q);
+                      const matchStatus =
+                        notReportedStatus === "all" ||
+                        (notReportedStatus === "not-reported" && r.visitCount === 0) ||
+                        (notReportedStatus === "1-store" && r.visitCount === 1);
+                      return matchSearch && matchStatus;
                     }).length === 0 ? (
                       <tr>
                         <td colSpan={6} style={s.emptyCell}>
@@ -620,10 +635,15 @@ function AdminDashboard() {
                       notReported
                         .filter(r => {
                           const q = notReportedSearch.toLowerCase();
-                          return !q ||
+                          const matchSearch = !q ||
                             r.tlName?.toLowerCase().includes(q) ||
                             r.tlEmail?.toLowerCase().includes(q) ||
                             r.reportingManager?.toLowerCase().includes(q);
+                          const matchStatus =
+                            notReportedStatus === "all" ||
+                            (notReportedStatus === "not-reported" && r.visitCount === 0) ||
+                            (notReportedStatus === "1-store" && r.visitCount === 1);
+                          return matchSearch && matchStatus;
                         })
                         .map((r, i) => (
                           <tr key={r.tlEmail} style={i % 2 === 0 ? s.trEven : s.trOdd}>
