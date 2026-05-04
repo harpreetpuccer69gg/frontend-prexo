@@ -207,18 +207,75 @@ function Dashboard() {
               </div>
             )}
 
+            {/* Live Status Badge */}
+            <div style={{ ...m.statusBadge, background: openPunch ? "#e8f5e9" : todayLeave ? "#fff8e1" : "#f5f5f5", borderColor: openPunch ? "#2e7d32" : todayLeave ? "#FFA000" : "#e0e0e0" }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: openPunch ? "#2e7d32" : todayLeave ? "#FFA000" : "#bdbdbd", boxShadow: openPunch ? "0 0 0 3px rgba(46,125,50,0.2)" : "none", animation: openPunch ? "pulse 1.5s infinite" : "none" }} />
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: openPunch ? "#2e7d32" : todayLeave ? "#e65100" : "#555" }}>
+                  {openPunch ? `Currently at ${openPunch.storeName}` : todayLeave ? (todayLeave.leaveType === "leave" ? "On Leave Today" : "Week Off Today") : "Not Checked In"}
+                </div>
+                <div style={{ fontSize: 11, color: "#888", marginTop: 1 }}>
+                  {openPunch ? `Since ${new Date(openPunch.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}` : todayLeave ? todayLeave.reason || "" : "Tap Punch In to start"}
+                </div>
+              </div>
+            </div>
+
+            {/* Today Summary Card */}
+            <div style={m.summaryCard}>
+              <div style={m.summaryTitle}>📊 Today's Summary</div>
+              <div style={m.summaryGrid}>
+                <div style={m.summaryItem}>
+                  <div style={m.summaryVal}>{todayAttendance.length}</div>
+                  <div style={m.summaryLbl}>Stores Visited</div>
+                </div>
+                <div style={m.summaryItem}>
+                  <div style={{ ...m.summaryVal, color: todayAttendance.length >= 2 ? "#2e7d32" : "#c62828" }}>
+                    {todayAttendance.length >= 2 ? "✅" : "⚠️"}
+                  </div>
+                  <div style={m.summaryLbl}>{todayAttendance.length >= 2 ? "Target Met" : "Target Pending"}</div>
+                </div>
+                <div style={m.summaryItem}>
+                  <div style={m.summaryVal}>
+                    {todayAttendance.filter(a => a.checkOutTime).reduce((total, a) => {
+                      return total + Math.round((new Date(a.checkOutTime) - new Date(a.checkInTime)) / 60000);
+                    }, 0)}m
+                  </div>
+                  <div style={m.summaryLbl}>Total Time</div>
+                </div>
+                <div style={m.summaryItem}>
+                  <div style={{ ...m.summaryVal, color: openPunch ? "#e65100" : "#878787" }}>
+                    {openPunch ? "Active" : "—"}
+                  </div>
+                  <div style={m.summaryLbl}>Current Status</div>
+                </div>
+              </div>
+              {/* Progress Bar */}
+              <div style={{ marginTop: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#878787", marginBottom: 4 }}>
+                  <span>Daily Target: 2 Stores</span>
+                  <span>{Math.min(todayAttendance.length, 2)}/2</span>
+                </div>
+                <div style={{ background: "#f0f0f0", borderRadius: 8, height: 8, overflow: "hidden" }}>
+                  <div style={{ width: Math.min((todayAttendance.length / 2) * 100, 100) + "%", background: todayAttendance.length >= 2 ? "#2e7d32" : "#2874F0", height: "100%", borderRadius: 8, transition: "width 0.6s ease" }} />
+                </div>
+              </div>
+            </div>
+
             {/* Stats Row */}
             <div style={m.statsRow}>
-              <div style={m.statCard}>
+              <div style={{ ...m.statCard, borderTop: "3px solid #2874F0" }}>
+                <div style={m.statIcon}>🏪</div>
                 <div style={m.statNum}>{todayAttendance.length}</div>
                 <div style={m.statLabel}>Today's Visits</div>
               </div>
-              <div style={m.statCard}>
+              <div style={{ ...m.statCard, borderTop: `3px solid ${openPunch ? "#e65100" : "#2e7d32"}` }}>
+                <div style={m.statIcon}>{openPunch ? "⚡" : "✅"}</div>
                 <div style={{ ...m.statNum, color: openPunch ? "#e65100" : "#2e7d32" }}>{openPunch ? "Active" : "Clear"}</div>
                 <div style={m.statLabel}>Status</div>
               </div>
-              <div style={m.statCard}>
-                <div style={m.statNum}>{attendance.length}</div>
+              <div style={{ ...m.statCard, borderTop: "3px solid #6d28d9" }}>
+                <div style={m.statIcon}>📍</div>
+                <div style={{ ...m.statNum, color: "#6d28d9" }}>{attendance.length}</div>
                 <div style={m.statLabel}>Total Visits</div>
               </div>
             </div>
@@ -226,12 +283,16 @@ function Dashboard() {
             {/* Punch Buttons */}
             <div style={m.punchRow}>
               <button style={m.punchInBtn} onClick={handlePunchIn} disabled={loading}>
-                <span style={m.punchIcon}>🟢</span>
+                <div style={m.punchCircle}>
+                  <span style={{ fontSize: 36 }}>🟢</span>
+                </div>
                 <span style={m.punchLabel}>{loading ? "Detecting..." : "Punch In"}</span>
                 <span style={m.punchSub}>Mark store arrival</span>
               </button>
               <button style={m.punchOutBtn} onClick={handlePunchOut} disabled={loading}>
-                <span style={m.punchIcon}>🔴</span>
+                <div style={{ ...m.punchCircle, background: "rgba(255,255,255,0.15)", boxShadow: "0 0 0 8px rgba(255,255,255,0.08)" }}>
+                  <span style={{ fontSize: 36 }}>🔴</span>
+                </div>
                 <span style={m.punchLabel}>{loading ? "Detecting..." : "Punch Out"}</span>
                 <span style={m.punchSub}>Mark store departure</span>
               </button>
@@ -273,25 +334,46 @@ function Dashboard() {
             {attendance.length === 0 ? (
               <div style={m.empty}><span style={{ fontSize: 48 }}>📋</span><p>No records yet</p><p style={{ fontSize: 13, color: "#aaa" }}>Punch in at a store to get started</p></div>
             ) : (
-              attendance.map((a, i) => (
-                <div key={i} style={m.historyCard}>
-                  <div style={m.historyTop}>
-                    <div style={m.storeName}>
-                      <span style={m.storeDot} />
-                      {a.storeName}
+              <div style={m.timeline}>
+                {attendance.map((a, i) => (
+                  <div key={i} style={m.timelineItem}>
+                    {/* Line */}
+                    <div style={m.timelineLine}>
+                      <div style={{ ...m.timelineDot, background: a.checkOutTime ? "#2e7d32" : "#e65100" }} />
+                      {i < attendance.length - 1 && <div style={m.timelineConnector} />}
                     </div>
-                    <span style={a.checkOutTime ? m.completedBadge : m.activeBadge}>
-                      {a.checkOutTime ? "Completed" : "Active"}
-                    </span>
+                    {/* Card */}
+                    <div style={m.timelineCard}>
+                      <div style={m.timelineTop}>
+                        <div style={m.timelineStore}>{a.storeName}</div>
+                        <span style={a.checkOutTime ? m.completedBadge : m.activeBadge}>
+                          {a.checkOutTime ? "Done" : "Active"}
+                        </span>
+                      </div>
+                      <div style={m.timelineDate}>
+                        📅 {new Date(a.checkInTime).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+                      </div>
+                      <div style={m.timelineRow}>
+                        <div style={m.timelineTime}>
+                          <span style={m.punchInDot} />
+                          <span>In: {new Date(a.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span>
+                        </div>
+                        {a.checkOutTime && (
+                          <div style={m.timelineTime}>
+                            <span style={m.punchOutDot} />
+                            <span>Out: {new Date(a.checkOutTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span>
+                          </div>
+                        )}
+                        {getTimeSpent(a.checkInTime, a.checkOutTime) && (
+                          <div style={m.timelineDuration}>
+                            ⏱ {getTimeSpent(a.checkInTime, a.checkOutTime)}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div style={m.historyMeta}>
-                    <span>📅 {new Date(a.checkInTime).toLocaleDateString("en-GB")}</span>
-                    <span>🟢 {new Date(a.checkInTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span>
-                    {a.checkOutTime && <span>🔴 {new Date(a.checkOutTime).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span>}
-                    {getTimeSpent(a.checkInTime, a.checkOutTime) && <span>⏱ {getTimeSpent(a.checkInTime, a.checkOutTime)}</span>}
-                  </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         )}
@@ -352,16 +434,26 @@ const m = {
 
   banner:  { display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 12, border: "1.5px solid", marginBottom: 16 },
 
-  statsRow: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 16 },
+  statusBadge: { display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 12, border: "1.5px solid", marginBottom: 14, background: "#f5f5f5" },
+
+  summaryCard:  { background: "#fff", borderRadius: 16, padding: "16px", marginBottom: 14, boxShadow: "0 2px 12px rgba(0,0,0,0.07)" },
+  summaryTitle: { fontSize: 14, fontWeight: 700, color: "#212121", marginBottom: 12 },
+  summaryGrid:  { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 4 },
+  summaryItem:  { textAlign: "center" },
+  summaryVal:   { fontSize: 18, fontWeight: 800, color: "#2874F0" },
+  summaryLbl:   { fontSize: 10, color: "#878787", marginTop: 2, fontWeight: 500 },
+
+  statsRow: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 14 },
   statCard: { background: "#fff", borderRadius: 12, padding: "14px 10px", textAlign: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" },
-  statNum:  { fontSize: 22, fontWeight: 800, color: "#2874F0" },
-  statLabel:{ fontSize: 11, color: "#878787", marginTop: 2, fontWeight: 500 },
+  statIcon: { fontSize: 20, marginBottom: 4 },
+  statNum:  { fontSize: 20, fontWeight: 800, color: "#2874F0" },
+  statLabel:{ fontSize: 10, color: "#878787", marginTop: 2, fontWeight: 500 },
 
   punchRow:   { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 },
-  punchInBtn: { background: "linear-gradient(135deg, #1a5dc8, #2874F0)", color: "#fff", border: "none", borderRadius: 16, padding: "20px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", boxShadow: "0 4px 16px rgba(40,116,240,0.35)", transition: "transform 0.15s" },
-  punchOutBtn:{ background: "linear-gradient(135deg, #c84b00, #FB641B)", color: "#fff", border: "none", borderRadius: 16, padding: "20px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: "pointer", boxShadow: "0 4px 16px rgba(251,100,27,0.35)", transition: "transform 0.15s" },
-  punchIcon:  { fontSize: 28 },
-  punchLabel: { fontSize: 15, fontWeight: 700 },
+  punchInBtn: { background: "linear-gradient(145deg, #1a5dc8, #2874F0)", color: "#fff", border: "none", borderRadius: 20, padding: "24px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, cursor: "pointer", boxShadow: "0 8px 24px rgba(40,116,240,0.45)", transition: "transform 0.15s, box-shadow 0.15s" },
+  punchOutBtn:{ background: "linear-gradient(145deg, #c84b00, #FB641B)", color: "#fff", border: "none", borderRadius: 20, padding: "24px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, cursor: "pointer", boxShadow: "0 8px 24px rgba(251,100,27,0.45)", transition: "transform 0.15s, box-shadow 0.15s" },
+  punchCircle: { width: 72, height: 72, borderRadius: "50%", background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 8px rgba(255,255,255,0.08)", marginBottom: 4 },
+  punchLabel: { fontSize: 16, fontWeight: 800, letterSpacing: 0.5 },
   punchSub:   { fontSize: 11, opacity: 0.8 },
 
   leaveRow:    { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 },
@@ -370,6 +462,21 @@ const m = {
   alreadyMarked: { background: "#e8f5e9", color: "#2e7d32", borderRadius: 12, padding: "12px 16px", fontSize: 14, fontWeight: 600, textAlign: "center", marginBottom: 14 },
 
   openPunchCard: { background: "#fff3e0", border: "1.5px solid #ffcc80", borderRadius: 12, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12, marginBottom: 14 },
+
+  timeline:          { display: "flex", flexDirection: "column", gap: 0 },
+  timelineItem:       { display: "flex", gap: 12 },
+  timelineLine:       { display: "flex", flexDirection: "column", alignItems: "center", width: 20, flexShrink: 0, paddingTop: 4 },
+  timelineDot:        { width: 14, height: 14, borderRadius: "50%", flexShrink: 0, border: "2px solid #fff", boxShadow: "0 0 0 2px #e0e0e0" },
+  timelineConnector:  { width: 2, flex: 1, background: "#e0e0e0", margin: "4px 0", minHeight: 20 },
+  timelineCard:       { background: "#fff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, flex: 1, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" },
+  timelineTop:        { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 },
+  timelineStore:      { fontWeight: 700, fontSize: 14, color: "#212121" },
+  timelineDate:       { fontSize: 11, color: "#878787", marginBottom: 8 },
+  timelineRow:        { display: "flex", flexWrap: "wrap", gap: 10 },
+  timelineTime:       { display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#555" },
+  timelineDuration:   { fontSize: 12, color: "#6d28d9", fontWeight: 600, background: "#f3e8ff", padding: "2px 8px", borderRadius: 20 },
+  punchInDot:         { width: 8, height: 8, borderRadius: "50%", background: "#2e7d32", flexShrink: 0 },
+  punchOutDot:        { width: 8, height: 8, borderRadius: "50%", background: "#c62828", flexShrink: 0 },
 
   sectionTitle: { fontSize: 16, fontWeight: 700, color: "#212121", marginBottom: 12 },
 
