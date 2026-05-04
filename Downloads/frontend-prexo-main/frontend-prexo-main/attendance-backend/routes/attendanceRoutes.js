@@ -545,8 +545,136 @@ router.delete("/admin/leave/:id", auth, async (req, res) => {
 });
 
 /* =========================
-   ADMIN - NOT REPORTED TODAY
+   ADMIN - TL PERFORMANCE SUMMARY
 ========================= */
+
+router.get("/admin/tl-performance", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
+
+    const User = require("../models/User");
+    const period = req.query.period || "weekly"; // weekly | monthly
+    const city   = req.query.city || "";
+
+    const now   = new Date();
+    const start = new Date();
+    if (period === "weekly") start.setDate(now.getDate() - 7);
+    else start.setDate(now.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+
+    const userQuery = { role: "tl" };
+    if (city && city !== "All") userQuery.city = city;
+    const allTLs = await User.find(userQuery).select("name email city phone reportingManager");
+    const tlEmails = allTLs.map(u => u.email);
+
+    const records = await Attendance.find({
+      tlEmail: { $in: tlEmails },
+      checkInTime: { $gte: start },
+      checkOutTime: { $ne: null }
+    });
+
+    const tlMap = {};
+    allTLs.forEach(u => {
+      tlMap[u.email] = {
+        tlName: u.name || "-",
+        tlEmail: u.email,
+        city: u.city || "-",
+        phone: u.phone || "-",
+        reportingManager: u.reportingManager || "-",
+        totalVisits: 0,
+        totalMinutes: 0,
+        storeBreakdown: {}
+      };
+    });
+
+    records.forEach(r => {
+      if (!tlMap[r.tlEmail]) return;
+      const mins = (r.checkOutTime - r.checkInTime) / 60000;
+      tlMap[r.tlEmail].totalVisits += 1;
+      tlMap[r.tlEmail].totalMinutes += mins;
+      const store = r.storeName || "Unknown";
+      if (!tlMap[r.tlEmail].storeBreakdown[store]) {
+        tlMap[r.tlEmail].storeBreakdown[store] = { visits: 0, totalMins: 0 };
+      }
+      tlMap[r.tlEmail].storeBreakdown[store].visits += 1;
+      tlMap[r.tlEmail].storeBreakdown[store].totalMins += mins;
+    });
+
+    const days = period === "weekly" ? 7 : 30;
+    const result = Object.values(tlMap).map(t => {
+      const avgMinsPerVisit = t.totalVisits > 0 ? Math.round(t.totalMinutes / t.totalVisits) : 0;
+      const avgVisitsPerDay = (t.totalVisits / days).toFixed(1);
+      const stores = Object.entries(t.storeBreakdown).map(([name, d]) => ({
+        storeName: name,
+        visits: d.visits,
+        avgMins: Math.round(d.totalMins / d.visits)
+      })).sort((a, b) => b.visits - a.visits);
+      return {
+        tlName: t.tlName, tlEmail: t.tlEmail, city: t.city,
+        phone: t.phone, reportingManager: t.reportingManager,
+        totalVisits: t.totalVisits,
+        avgMinsPerVisit,
+        avgVisitsPerDay,
+        stores
+      };
+    }).sort((a, b) => b.totalVisits - a.totalVisits);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - STORE HEATMAP
+========================= */
+
+router.get("/admin/store-heatmap", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
+
+    const period = req.query.period || "weekly";
+    const now    = new Date();
+    const start  = new Date();
+    if (period === "weekly") start.setDate(now.getDate() - 7);
+    else start.setDate(now.getDate() - 30);
+    start.setHours(0, 0, 0, 0);
+
+    const records = await Attendance.find({
+      checkInTime: { $gte: start },
+      checkOutTime: { $ne: null }
+    });
+
+    const storeMap = {};
+    records.forEach(r => {
+      const store = r.storeName || "Unknown";
+      if (!storeMap[store]) storeMap[store] = { totalVisits: 0, totalMins: 0, uniqueTLs: new Set() };
+      const mins = (r.checkOutTime - r.checkInTime) / 60000;
+      storeMap[store].totalVisits += 1;
+      storeMap[store].totalMins   += mins;
+      storeMap[store].uniqueTLs.add(r.tlEmail);
+    });
+
+    const result = Object.entries(storeMap).map(([name, d]) => ({
+      storeName:    name,
+      totalVisits:  d.totalVisits,
+      avgMins:      Math.round(d.totalMins / d.totalVisits),
+      uniqueTLs:    d.uniqueTLs.size
+    })).sort((a, b) => b.totalVisits - a.totalVisits);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* =========================
+   ADMIN - NOT REPORTED
+========================= */
+
+const TEST_EMAILS = ["hs8103536@gmail.com", "saiketramteke07@gmail.com"];
 
 router.get("/admin/not-reported", auth, async (req, res) => {
   try {
@@ -557,33 +685,53 @@ router.get("/admin/not-reported", auth, async (req, res) => {
     const User  = require("../models/User");
     const Leave = require("../models/Leave");
 
-    const today = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+    // Accept ?date=YYYY-MM-DD or default to today
+    let dateStr;
+    if (req.query.date) {
+      const [y, m, d] = req.query.date.split("-");
+      dateStr = `${d}/${m}/${y}`;
+    } else {
+      dateStr = new Date().toLocaleDateString("en-GB", { timeZone: IST });
+    }
 
-    const now   = new Date();
-    const start = new Date(now);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(now);
-    end.setHours(23, 59, 59, 999);
+    const [dd, mm, yyyy] = dateStr.split("/");
+    const start = new Date(`${yyyy}-${mm}-${dd}T00:00:00+05:30`);
+    const end   = new Date(`${yyyy}-${mm}-${dd}T23:59:59+05:30`);
 
-    const [allTLs, todayAttendance, todayLeaves] = await Promise.all([
-      User.find({ role: "tl" }).select("name email city phone reportingManager"),
-      Attendance.distinct("tlEmail", { checkInTime: { $gte: start, $lte: end } }),
-      Leave.distinct("tlEmail", { date: today })
+    const city = req.query.city; // optional city filter
+
+    const userQuery = { role: "tl" };
+    if (city && city !== "All") userQuery.city = city;
+
+    const [allTLs, dayAttendanceRaw, dayLeaves] = await Promise.all([
+      User.find(userQuery).select("name email city phone reportingManager"),
+      Attendance.aggregate([
+        { $match: { checkInTime: { $gte: start, $lte: end } } },
+        { $group: { _id: "$tlEmail", visitCount: { $sum: 1 } } }
+      ]),
+      Leave.distinct("tlEmail", { date: dateStr })
     ]);
 
-    const reportedEmails = new Set([...todayAttendance, ...todayLeaves]);
+    // Map email -> visitCount (lowercase keys for safe comparison)
+    const visitMap = {};
+    dayAttendanceRaw.forEach(r => { visitMap[r._id.toLowerCase().trim()] = r.visitCount; });
 
-    const notReported = allTLs
-      .filter(u => !reportedEmails.has(u.email))
+    // leaveSet with lowercase emails for safe comparison
+    const leaveSet = new Set(dayLeaves.map(e => e.toLowerCase().trim()));
+
+    const result = allTLs
+      .filter(u => !TEST_EMAILS.includes(u.email.toLowerCase().trim()) && !leaveSet.has(u.email.toLowerCase().trim()))
+      .filter(u => (visitMap[u.email.toLowerCase().trim()] || 0) < 2)
       .map(u => ({
         tlName:           u.name            || "-",
         tlEmail:          u.email           || "-",
         city:             u.city            || "-",
         phone:            u.phone           || "-",
-        reportingManager: u.reportingManager || "-"
+        reportingManager: u.reportingManager || "-",
+        visitCount:       visitMap[u.email.toLowerCase().trim()]  || 0
       }));
 
-    res.json(notReported);
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
