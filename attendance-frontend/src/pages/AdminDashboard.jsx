@@ -33,22 +33,51 @@ function SkeletonRows({ cols = 10, rows = 8 }) {
 function BarChart({ data }) {
   if (!data || data.length === 0) return null;
   const max = Math.max(...data.map(d => d.count), 1);
+  const total = data.reduce((s, d) => s + d.count, 0);
+  const avg   = Math.round(total / data.length);
+  const peak  = data.reduce((a, b) => a.count > b.count ? a : b);
   return (
-    <div style={{ background: "#fff", borderRadius: 12, padding: "20px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.07)", marginBottom: 24 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+    <div style={{ background: "linear-gradient(135deg, #1a3a6e 0%, #2874F0 100%)", borderRadius: 16, padding: "24px 28px", marginBottom: 24, boxShadow: "0 4px 20px rgba(40,116,240,0.25)" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#212121" }}>📈 Last 7 Days Attendance</div>
-          <div style={{ fontSize: 12, color: "#aaa" }}>Daily punch-in count</div>
+          <div style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>📈 Last 7 Days Attendance</div>
+          <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 3 }}>Daily punch-in activity</div>
+        </div>
+        <div style={{ display: "flex", gap: 16 }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: 22 }}>{total}</div>
+            <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11 }}>Total</div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: 22 }}>{avg}</div>
+            <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11 }}>Avg/Day</div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: 22 }}>{peak.count}</div>
+            <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 11 }}>Peak</div>
+          </div>
         </div>
       </div>
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 80 }}>
-        {data.map((d, i) => (
-          <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-            <div style={{ fontSize: 10, color: "#2874F0", fontWeight: 700 }}>{d.count}</div>
-            <div style={{ width: "100%", background: i === data.length - 1 ? "#2874F0" : "#bdd3ff", borderRadius: "4px 4px 0 0", height: Math.max((d.count / max) * 60, 4) + "px", transition: "height 0.5s" }} />
-            <div style={{ fontSize: 10, color: "#878787", whiteSpace: "nowrap" }}>{d.label}</div>
-          </div>
-        ))}
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 90 }}>
+        {data.map((d, i) => {
+          const h = Math.max((d.count / max) * 70, 4);
+          const isToday = i === data.length - 1;
+          const isPeak  = d.count === peak.count;
+          return (
+            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+              <div style={{ fontSize: 10, color: isToday ? "#fff" : "rgba(255,255,255,0.8)", fontWeight: 700 }}>{d.count}</div>
+              <div style={{ width: "100%", background: isToday ? "#fff" : isPeak ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.3)", borderRadius: "6px 6px 0 0", height: h + "px", transition: "height 0.6s ease", position: "relative" }}>
+                {isToday && <div style={{ position: "absolute", top: -4, left: "50%", transform: "translateX(-50%)", width: 8, height: 8, borderRadius: "50%", background: "#FFA000" }} />}
+              </div>
+              <div style={{ fontSize: 10, color: isToday ? "#fff" : "rgba(255,255,255,0.6)", whiteSpace: "nowrap", fontWeight: isToday ? 700 : 400 }}>{d.label}</div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 14, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.15)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 10, height: 10, borderRadius: 2, background: "#fff" }} /><span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Today</span></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 10, height: 10, borderRadius: 2, background: "rgba(255,255,255,0.7)" }} /><span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Peak Day</span></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 10, height: 10, borderRadius: 2, background: "rgba(255,255,255,0.3)" }} /><span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11 }}>Other Days</span></div>
       </div>
     </div>
   );
